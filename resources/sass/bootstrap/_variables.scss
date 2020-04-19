@@ -1,0 +1,96 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+
+// Colors
+$blue: #3490dc !default;
+$indigo: #6574cd !default;
+$purple: #9561e2 !default;
+$pink: #f66D9b !default;
+$red: #e3342f !default;
+$orange: #f6993f !default;
+$yellow: #f5a623 !default;
+$green: #38c172 !default;
+$teal: #4dc0b5 !default;
+$cyan: #6cb2eb !default;
+
+
+$primary: #0087c6 !default;
+$secondary: #DD1682 !default;
+$success: #7ed321 !default;
+$info: #3490dc !default;
+$warning: #f6993f !default;
+$danger: #f40057 !default;
+$light: #ffffff !default;
+$dark: #231f20 !default;
+
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "dark": $dark,
+    "light": $light,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+) !default;
+
+// Body
+$body-bg: #f6f6f6 !default;
+
+// Typography
+$font-family-sans-serif: "Nunito", sans-serif !default;
+$font-family-base: $font-family-sans-serif !default;
+$headings-font-family: Harry, "Nunito", sans-serif !default;
+
+
+$font-weight-lighter: 100 !default;
+$font-weight-light: 100 !default;
+$font-weight-normal: 400 !default;
+$font-weight-bold: 700 !default;
+$font-weight-bolder: 800 !default;
+$lead-font-weight: 400 !default;
+$headings-font-weight: 800 !default;
+
+
+$font-size-base: 1rem !default;
+$line-height-base: 1.6 !default;
+$font-size-xl: $font-size-base * 3.5 !default;
+
+$headings-font-size-base: 1.5rem !default;
+$h1-font-size: $headings-font-size-base * 2.5 !default;
+$h2-font-size: $headings-font-size-base * 2 !default;
+$h3-font-size: $headings-font-size-base * 1.75 !default;
+$h4-font-size: $headings-font-size-base * 1.5 !default;
+$h5-font-size: $headings-font-size-base * 1.25 !default;
+$h6-font-size: $headings-font-size-base !default;
+
+$headings-line-height: 1 !default;
+
+// Components
+$border-radius: 10px !default;
+$border-radius-lg: 20px !default;
+
+$box-shadow: 0 2px 4px 1px rgba(204, 204, 204, 0.5) !default;
+
+// Navbar
+$navbar-padding-y: 20px !default;
+$navbar-padding-x: 20px !default;
+$navbar-brand-height: 60px !default;
+$navbar-brand-padding-y: 0 !default;
+
+$navbar-light-color: #ffffff !default;
+
+// Custom
+$navbar-brand-img-height: 60px !default;
+$navbar-height: $navbar-brand-img-height + (2 * $navbar-padding-y) !default;
+
+// Cards
+$card-border-width: 0 !default;
+
+// Carousel
+$carousel-indicator-active-bg: #4a4a4a !default;

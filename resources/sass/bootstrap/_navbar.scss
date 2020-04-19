@@ -1,0 +1,23 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+
+.navbar {
+    box-shadow: $box-shadow;
+}
+
+.navbar-brand {
+    margin-right: 0;
+
+    img {
+        height: $navbar-brand-img-height;
+        object-fit: cover;
+        color: #ffffff;
+        @include media-breakpoint-up('md') {
+            min-width: 230px;
+        }
+    }
+}

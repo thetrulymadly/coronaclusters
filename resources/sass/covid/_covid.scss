@@ -1,0 +1,317 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+// Fonts
+@import "../fonts/nunito";
+@import "../fonts/harry";
+
+body {
+    position: relative;
+}
+
+.logo-sm {
+    min-width: 60px !important;
+}
+
+.navbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    flex-wrap: unset;
+}
+
+.navbar-brand img {
+    @include media-breakpoint-down('md') {
+        height: 30px;
+        min-width: 30px !important;
+    }
+}
+
+.header-title {
+    @extend .m-0;
+    @include media-breakpoint-down('md') {
+        font-size: 1.875rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.header-links {
+    @include media-breakpoint-down('md') {
+        width: 100%;
+        margin-top: 10px;
+        background-color: #f6f6f6;
+        text-align: left;
+        > a {
+            flex: 1;
+        }
+    }
+
+    .dropdown-toggle {
+        flex: 0;
+        margin-left: -5px;
+    }
+
+    .dropdown-menu {
+        right: 0;
+        padding: 0;
+        width: 20%;
+        left: unset;
+        box-shadow: $box-shadow;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        background-color: $body-bg;
+        @include media-breakpoint-down('md') {
+            background-color: $light;
+        }
+        color: $primary;
+        text-align: center;
+
+        &:hover, &:focus, &.active {
+            background-color: #0086c9 !important;
+            color: #ffffff !important;
+        }
+    }
+}
+
+.container-fluid {
+    padding-top: 100px;
+    padding-bottom: 15px;
+    height: auto;
+    position: relative;
+    overflow-y: scroll;
+}
+
+@include media-breakpoint-down('md') {
+    .navbar {
+        flex-direction: column;
+        margin-bottom: 1rem !important;
+        padding: 10px 0 0 0;
+    }
+    .container-fluid {
+        padding-top: 90px;
+    }
+}
+
+
+.table {
+    font-size: $font-size-sm;
+}
+
+#map {
+    height: 75vh;
+    @include media-breakpoint-down('sm') {
+        height: 50vh;
+        padding: 15px 0;
+    }
+}
+
+.card-stats {
+    @extend .justify-content-center;
+
+    .card-deck {
+        @extend .justify-content-center;
+    }
+
+    .card {
+        max-width: 10rem;
+    }
+}
+
+@include media-breakpoint-down('md') {
+
+    .card-stats {
+        display: flex;
+
+        .card-deck {
+            display: flex;
+            width: 50%;
+
+            + .card-deck {
+                margin-left: 10px;
+            }
+        }
+
+        .card {
+            width: 50%;
+            text-align: center;
+
+            + .card {
+                margin-left: 10px;
+            }
+        }
+
+
+        .card-header {
+            font-size: 0.75rem;
+            //font-weight: bold;
+            padding: 0.5rem !important;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 0.5rem !important;
+
+            > .d-flex {
+                flex-direction: column;
+                -webkit-flex-direction: column;
+                -ms-flex-direction: column;
+            }
+        }
+    }
+
+    .alert {
+        font-size: 0.7rem !important;
+        padding: 0.5rem;
+    }
+
+    table {
+        font-size: 0.7rem !important;
+    }
+}
+
+.covid-table-meta {
+    @extend .d-flex;
+    @extend .justify-content-between;
+    @include media-breakpoint-down('sm') {
+        flex-direction: column;
+        .dataTables_filter {
+            order: 1;
+        }
+        .dataTables_info {
+            order: 2;
+        }
+    }
+}
+
+#state-data {
+    @include media-breakpoint-down('sm') {
+        margin-bottom: 60px;
+    }
+}
+
+#raw-data {
+    @include media-breakpoint-down('sm') {
+        margin-bottom: 100px;
+    }
+}
+
+#data-nav {
+    @extend .d-flex;
+    @extend .justify-content-center;
+    @extend .flex-column;
+}
+
+#data-meta {
+    @extend .d-flex;
+    @extend .justify-content-center;
+    @extend .flex-column;
+    @include media-breakpoint-down('md') {
+        justify-content: unset !important;
+    }
+}
+
+#state-data-table {
+    td > div {
+        @extend .d-flex;
+        @extend .justify-content-between;
+    }
+}
+
+.footer .list-group-item-action {
+    color: $blue;
+    text-decoration: underline;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    border: 0;
+    margin-bottom: 0;
+
+    @include media-breakpoint-down('sm') {
+        padding: 0.5rem 0;
+    }
+}
+
+#covid-content {
+    .card-title {
+        font-family: "Nunito", sans-serif;
+        font-size: $font-size-lg;
+        font-weight: normal;
+        margin-bottom: 0;
+        line-height: 1.3;
+    }
+}
+
+ul.timeline-tracks {
+    margin-left: 1rem;
+    padding-left: 1.5rem;
+    border-left: $primary solid 1px;
+
+    > li {
+        &::marker {
+            color: $secondary;
+            font-size: 2.2rem;
+            font-weight: 900;
+        }
+
+        > a {
+            padding: 0 !important;
+            margin-top: -1rem;
+            @extend .text-left;
+            @extend .btn;
+            @extend .btn-link;
+        }
+
+        @extend .mb-5;
+
+        &:last-child {
+            @extend .mb-0;
+        }
+
+        > .collapse {
+            @extend .mt-3;
+        }
+    }
+
+    .timeline-cards {
+        .card {
+            &:nth-child(odd) {
+                .card-header {
+                    @extend .bg-primary-trans;
+                }
+            }
+
+            &:nth-child(even) {
+                .card-header {
+                    @extend .bg-secondary-trans;
+                }
+            }
+        }
+    }
+}
+
+.active-locale {
+    color: $light;
+    background-color: $primary;
+}
+
+.locale-selector {
+    .dropdown-menu {
+        left: 0;
+
+        a {
+            text-align: left;
+        }
+    }
+}

@@ -1,0 +1,121 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+
+// Yeti 4.3.1
+// Bootswatch
+
+//
+// Color system
+//
+
+$white: #fff;
+$gray-100: #f8f9fa;
+$gray-200: #eee;
+$gray-300: #dee2e6;
+$gray-400: #ccc;
+$gray-500: #adb5bd;
+$gray-600: #888;
+$gray-700: #495057;
+$gray-800: #333;
+$gray-900: #222;
+$black: #000;
+
+$blue: #008cba;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #F04124;
+$orange: #fd7e14;
+$yellow: #E99002;
+$green: #43ac6a;
+$teal: #20c997;
+$cyan: #5bc0de;
+
+$primary: $blue;
+$secondary: $gray-200;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-200;
+$dark: $gray-900;
+
+$yiq-contrasted-threshold: 200;
+
+// Components
+
+$border-radius: 0px;
+$border-radius-lg: 0px;
+$border-radius-sm: 0px;
+
+// Fonts
+
+$font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+$font-size-base: 0.9375rem;
+
+$headings-font-weight: 300;
+
+// Buttons
+
+$input-btn-padding-x: 0.5rem;
+
+$btn-font-weight: 300;
+
+// Dropdowns
+
+$dropdown-border-color: rgba($black, .1);
+$dropdown-divider-bg: rgba($black, .1);
+
+// Navs
+
+$nav-link-disabled-color: $gray-400;
+
+$nav-tabs-border-color: $dropdown-border-color;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color;
+$nav-tabs-link-active-border-color: $nav-tabs-border-color;
+
+// Navbar
+
+$navbar-dark-color: rgba($white, .7);
+$navbar-dark-hover-color: $white;
+
+// Pagination
+
+$pagination-color: $gray-600;
+$pagination-border-color: $nav-tabs-border-color;
+
+$pagination-active-border-color: darken($primary, 5%);
+
+$pagination-disabled-color: $gray-200;
+
+// Jumbotron
+
+$jumbotron-padding: 4rem;
+
+// Cards
+
+$card-inner-border-radius: 0px;
+
+// Badges
+
+$badge-font-weight: 300;
+$badge-padding-x: 1rem;
+
+// Progress bars
+
+$progress-bg: $gray-400;
+$progress-bar-color: $white;
+
+// List group
+
+$list-group-disabled-bg: $gray-200;
+
+// Close
+
+$close-color: $gray-600;
+$close-text-shadow: none;

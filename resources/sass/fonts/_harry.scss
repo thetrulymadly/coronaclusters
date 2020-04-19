@@ -1,0 +1,49 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+
+@font-face {
+    font-family: 'Harry';
+    src: url('../../fonts/harry/Harry-Thin.woff2') format('woff2'),
+    url('../../fonts/harry/Harry-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harry';
+    src: url('../../fonts/harry/Harry-Plain.woff2') format('woff2'),
+    url('../../fonts/harry/Harry-Plain.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harry';
+    src: local('Harry Heavy'), local('Harry-Heavy'),
+    url('../../fonts/harry/Harry-Heavy.woff2') format('woff2'),
+    url('../../fonts/harry/Harry-Heavy.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harry';
+    src: local('Harry Fat'), local('Harry-Fat'),
+    url('../../fonts/harry/Harry-Fat.woff2') format('woff2'),
+    url('../../fonts/harry/Harry-Fat.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harry';
+    src: local('Harry-Obese'), local('Harry-Obese'),
+    url('../../fonts/harry/Harry-Obese.woff2') format('woff2'),
+    url('../../fonts/harry/Harry-Obese.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}

@@ -1,0 +1,28 @@
+/*!
+ * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     20 April 2020
+ */
+
+.carousel-indicators {
+    @extend .position-relative, .mb-0, .mt-4;
+
+    li {
+        background-color: $white;
+        border-radius: 50%;
+        height: 8px;
+        width: 8px;
+        border: 1px solid $carousel-indicator-active-bg;
+    }
+
+    .active {
+        background-color: $carousel-indicator-active-bg;
+    }
+}
+
+.carousel-item {
+    .card {
+        box-shadow: none;
+    }
+}
