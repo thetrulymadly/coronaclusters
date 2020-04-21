@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 namespace App\Http\Controllers;
@@ -67,5 +67,23 @@ final class Helpers
         }
 
         return $time !== 0 ? $time . ' ' . trans_choice('covid.time.' . $ago . '_ago', $time) : trans('corona.time.just_now');
+    }
+
+    /**
+     * @param $path
+     *
+     * @return array
+     */
+    public static function extractStateCityFromUrl($path)
+    {
+        if (count(array_filter(explode('/', $path))) > 1) {
+            $city = substr($path, strrpos($path, '/') + 1);
+            $state = substr($path, 0, strrpos($path, '/'));
+        } else {
+            $city = '';
+            $state = $path;
+        }
+
+        return [Helpers::beautify($state), Helpers::beautify($city)];
     }
 }

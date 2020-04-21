@@ -3,11 +3,13 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 namespace App\Providers;
 
+use Api\Services\CovidDataService;
+use Api\Services\CovidDataServiceImpl;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -34,6 +36,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton(CovidDataService::class, CovidDataServiceImpl::class);
     }
 }

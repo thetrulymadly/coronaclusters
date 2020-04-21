@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 namespace App\Providers;
@@ -32,7 +32,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -105,7 +105,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
             ->middleware('api')
-            ->namespace($this->namespace)
+            ->namespace('Api\Http\Controllers')
             ->group(base_path('routes/api.php'));
     }
 }

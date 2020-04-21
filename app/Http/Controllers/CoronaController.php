@@ -3,11 +3,12 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 namespace App\Http\Controllers;
 
+use Api\Services\CovidDataService;
 use App\Models\CovidRawData;
 use App\Models\CovidStateData;
 use App\Models\CovidTesting;
@@ -23,6 +24,69 @@ class CoronaController extends Controller
 {
 
     /**
+     * @var \Api\Services\CovidDataService
+     */
+    private $covidDataService;
+
+    /**
+     * CoronaController constructor.
+     *
+     * @param \Api\Services\CovidDataService $covidDataService
+     */
+    public function __construct(CovidDataService $covidDataService)
+    {
+        $this->covidDataService = $covidDataService;
+    }
+
+    public function home()
+    {
+        // ------------------- State data ------------------- //
+        $stateData = $this->getStateData();
+
+        // ------------------- Aggregate data ------------------- //
+        $aggregateData = $stateData->where('state', 'Total')->first();
+        $aggregateData = [
+            'confirmed' => $aggregateData->confirmed ?? 0,
+            'active' => $aggregateData->active ?? 0,
+            'recovered' => $aggregateData->recovered ?? 0,
+            'deaths' => $aggregateData->deaths ?? 0,
+            'delta_confirmed' => $aggregateData->delta_confirmed ?? 0,
+            'delta_active' => $aggregateData->delta_active ?? 0,
+            'delta_recovered' => $aggregateData->delta_recovered ?? 0,
+            'delta_deaths' => $aggregateData->delta_deaths ?? 0,
+        ];
+
+        $aggregateData['location'] = trans('corona.places.india');
+        $date = CovidRawData::max('created_at');
+        $format = 'Y-m-d H:i:s';
+        $aggregateData['time_ago'] = Helpers::getTimeAgo($date, $format);
+        // Format the date
+        $date = explode(' ', $date);
+        $aggregateData['last_update_date'] = Carbon::createFromFormat(explode(' ', $format)[0], $date[0])->toDateString();
+        $aggregateData['last_update_time'] = $date[1] ?? '';
+
+        // ------------------- Page meta data ------------------- //
+        // Replace the number placeholder with the actual count
+        $title = trans('corona.page.home.title', $aggregateData);
+        $description = trans('corona.page.home.meta.description', $aggregateData);
+        $keywords = trans('corona.page.home.meta.keywords', $aggregateData);
+        $url = request()->url();
+        $templateType = 'country';
+        $mapCenter = [];
+        $timeline = null;
+        // Breadcrumbs
+        $breadcrumbs = $this->getBreadcrumbs();
+
+        $locations = [];
+        $districtData = [];
+        $cityData = [];
+
+        return view('index',
+            compact('stateData', 'districtData', 'cityData', 'aggregateData', 'timeline', 'title', 'description', 'url', 'keywords',
+                'templateType', 'mapCenter', 'breadcrumbs'));
+    }
+
+    /**
      * @param $string
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -30,25 +94,22 @@ class CoronaController extends Controller
     public function index(string $string = '')
     {
         // ------------------- Data Processing ------------------- //
-        if (empty($string)) {
-            $rawData = $this->makeRawDataQuery(null)->get();
-        } else {
-            // Parse the path to extract city/state
-            $path = request()->canonicalPath;
-            if (count(array_filter(explode('/', $path))) > 1) {
-                $city = substr($string, strrpos($string, '/') + 1);
-                $state = substr($string, 0, strrpos($string, '/'));
-            } else {
-                $city = '';
-                $state = $string;
-            }
 
-            $state = Helpers::beautify($state);
-            $city = Helpers::beautify($city);
-            $rawData = $this->makeRawDataQuery(null, $state, $city)->get();
-            if (!empty($string) && $rawData->isEmpty()) {
-                throw new NotFoundHttpException();
-            }
+        // Parse the path to extract city/state
+        $path = request()->canonicalPath;
+        if (count(array_filter(explode('/', $path))) > 1) {
+            $city = substr($string, strrpos($string, '/') + 1);
+            $state = substr($string, 0, strrpos($string, '/'));
+        } else {
+            $city = '';
+            $state = $string;
+        }
+
+        $state = Helpers::beautify($state);
+        $city = Helpers::beautify($city);
+        $rawData = $this->covidDataService->getRawData(null, $state, $city);
+        if (!empty($string) && $rawData->isEmpty()) {
+            throw new NotFoundHttpException();
         }
 
         if (!empty($city)) {
@@ -147,8 +208,7 @@ class CoronaController extends Controller
 
         return view('index',
             compact('rawData', 'stateData', 'districtData', 'cityData', 'aggregateData', 'timeline', 'title', 'description', 'url', 'keywords',
-                'templateType',
-                'mapCenter', 'breadcrumbs'));
+                'templateType', 'mapCenter', 'breadcrumbs'));
     }
 
     /**
@@ -287,7 +347,7 @@ class CoronaController extends Controller
     private function makeRawDataQuery(?Builder $data, ?string $state = '', ?string $city = '')
     {
         if ($data === null) {
-            $data = CovidRawData::query()->limit(500);
+            $data = CovidRawData::query();
         }
 
         if (!empty($city)) {

@@ -3,8 +3,10 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
+
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,5 @@
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::get('raw_data', 'CoronaApiController@getRawData');
+Route::get('geo_data', 'CoronaApiController@getGeoJson');

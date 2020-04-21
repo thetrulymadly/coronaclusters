@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 return [
@@ -121,7 +121,7 @@ return [
     'unknown' => 'Unknown',
     'updatetimestamp' => 'Tested On',
 
-    'raw_data' => 'City-wise Data',
+    'raw_data' => 'Raw Data',
     'city_wise_data' => 'City-wise Data',
     'district_wise_data' => 'District-wise Data',
     'state_wise_data' => 'State-wise Data',

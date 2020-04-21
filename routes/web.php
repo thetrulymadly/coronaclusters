@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     20 April 2020
+ * @since     21 April 2020
  */
 
 use Illuminate\Support\Facades\Route;
@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('', 'CoronaController@index');
+Route::get('', 'CoronaController@home');
 Route::get('timeline', 'CoronaController@timeline');
 Route::get('{string?}/timeline', 'CoronaController@timeline')->where('string', '.*');
 Route::get('corona-testing-per-day-india', 'CoronaController@testing')->where('string', '.*');
 
 // This should always be the last route in this file
-Route::get('{string?}', 'CoronaController@index')->where('string', '.*');
+Route::get('{string}', 'CoronaController@index')->where('string', '.*');

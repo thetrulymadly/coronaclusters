@@ -44,13 +44,7 @@
 
         {{-- Maps (Desktop Position 3) --}}
         <div class="col-lg-8 order-lg-3">
-            @if($rawData->isEmpty())
-                <div class="d-flex justify-content-center h-75 align-items-center">
-                    Coming Soon..!
-                </div>
-            @else
-                <div id="map"></div>
-            @endif
+            <div id="map"></div>
         </div>
 
         {{-- Map Note (Desktop Position 5) --}}
@@ -131,37 +125,39 @@
                                     @endforeach
                                 </tr>
                                 </thead>
-                                <tbody>
-                                @foreach($rawData as $data)
-                                    <tr>
-                                        @foreach(config('corona.table.raw_data') as $dataHeader)
-                                            @if($dataHeader === 'patientnumber')
-                                                <th scope="row">{{ $data->$dataHeader }}</th>
-                                            @elseif($dataHeader === 'source1' || $dataHeader === 'source2' || $dataHeader === 'source3')
-                                                @if(!empty($data[$dataHeader]))
-                                                    @php
-                                                        $linkName = explode('/', $data[$dataHeader]);
-                                                        if (isset($linkName[2])) {
-                                                            $linkName = $linkName[2];
-                                                        } else {
-                                                            $linkName = $data[$dataHeader];
-                                                        }
-                                                    @endphp
-                                                    <td data-order="{{ $linkName }}">
-                                                        <a href="{{ $data[$dataHeader] }}">{{ $data[$dataHeader] }}</a>
-                                                    </td>
+                                @if($templateType !== 'country')
+                                    <tbody>
+                                    @foreach($rawData as $data)
+                                        <tr>
+                                            @foreach(config('corona.table.raw_data') as $dataHeader)
+                                                @if($dataHeader === 'patientnumber')
+                                                    <th scope="row">{{ $data->$dataHeader }}</th>
+                                                @elseif($dataHeader === 'source1' || $dataHeader === 'source2' || $dataHeader === 'source3')
+                                                    @if(!empty($data[$dataHeader]))
+                                                        @php
+                                                            $linkName = explode('/', $data[$dataHeader]);
+                                                            if (isset($linkName[2])) {
+                                                                $linkName = $linkName[2];
+                                                            } else {
+                                                                $linkName = $data[$dataHeader];
+                                                            }
+                                                        @endphp
+                                                        <td data-order="{{ $linkName }}">
+                                                            <a href="{{ $data[$dataHeader] }}">{{ $data[$dataHeader] }}</a>
+                                                        </td>
+                                                    @else
+                                                        <td></td>
+                                                    @endif
+                                                @elseif($dataHeader === 'detectedstate' || $dataHeader === 'detectedcity' || $dataHeader === 'detecteddistrict')
+                                                    <td>{{ $data->$dataHeader }}</td>
                                                 @else
-                                                    <td></td>
+                                                    <td>{{ $data->$dataHeader }}</td>
                                                 @endif
-                                                {{--                                            @elseif($dataHeader === 'detectedstate' || $dataHeader === 'detectedcity' || $dataHeader === 'detecteddistrict')--}}
-                                                {{--                                                <td>{{ trans('places.'.$data->$dataHeader) }}</td>--}}
-                                            @else
-                                                <td>{{ $data->$dataHeader }}</td>
-                                            @endif
-                                        @endforeach
-                                    </tr>
-                                @endforeach
-                                </tbody>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -183,8 +179,8 @@
     <script src="{{ mix('js/corona.js') }}"></script>
 
     <script type="text/javascript">
-
         $(document).ready(function () {
+            @if($templateType === 'country')
             $('#raw-data-table').DataTable({
                 "pagingType": "full_numbers",
                 "scrollY": '65vh',
@@ -192,14 +188,53 @@
                 "scrollCollapse": true,
                 "scroller": true,
                 "order": [[0, "asc"]],
-                "deferRender": true
+                "deferRender": true,
+                "ajax": "api/raw_data",
+                "columns": [
+                    {'data': 'patientnumber'},
+                    {'data': 'agebracket'},
+                    {'data': 'contractedfromwhichpatientsuspected'},
+                    {'data': 'currentstatus'},
+                    {'data': 'statepatientnumber'},
+                    {'data': 'statuschangedate'},
+                    {'data': 'dateannounced'},
+                    {'data': 'detectedcity'},
+                    {'data': 'detecteddistrict'},
+                    {'data': 'detectedstate'},
+                    {'data': 'estimatedonsetdate'},
+                    {'data': 'gender'},
+                    {'data': 'nationality'},
+                    {'data': 'notes'},
+                    {'data': 'backupnotes'},
+                    {'data': 'source1'},
+                    {'data': 'source2'},
+                    {'data': 'source3'}
+                ]
             });
+            $('#state-data-table').DataTable({
+                "paging": false,
+                "scrollY": '70vh',
+                "scrollX": true,
+                "scrollCollapse": true,
+                "scroller": true,
+                "dom": 't',
+                "order": [[1, "desc"]]
+            });
+            @else
+            $('#raw-data-table').DataTable({
+                "pagingType": "full_numbers",
+                "scrollY": '65vh',
+                "scrollX": true,
+                "scrollCollapse": true,
+                "scroller": true,
+                "order": [[0, "asc"]]
+            });
+            @endif
+
 
 
             {{-- GROUPED DATA --}}
             @if($templateType === 'state')
-
-
             $('#city-data-table').DataTable({
                 "paging": false,
                 "scrollY": '70vh',
@@ -219,16 +254,6 @@
                 "dom": 't',
                 "order": [[1, "desc"]]
             });
-            @elseif($templateType === 'country')
-            $('#state-data-table').DataTable({
-                "paging": false,
-                "scrollY": '70vh',
-                "scrollX": true,
-                "scrollCollapse": true,
-                "scroller": true,
-                "dom": 't',
-                "order": [[1, "desc"]]
-            });
             @endif
 
             $('.dataTables_wrapper').css('height', $(window).height() - 145);
@@ -238,392 +263,381 @@
         });
     </script>
 
-    @if($rawData->isNotEmpty())
-        <script type="text/javascript">
-            const locations = [
-                    @foreach($rawData as $patient)
-                    @php
-                        $location = $patient->geo_city ?? $patient->geo_district ?? $patient->geo_state ?? $patient->geo_country;
-                        $lat =  $location[0]['lat'];
-                        $lng =  $location[0]['lng'];
-                    @endphp
-                {
-                    lat: Number('{{ $lat }}'), lng: Number('{{ $lng }}')
-                },
-                @endforeach
-            ];
+    <script type="text/javascript">
 
-            function initMap() {
 
-                    @php
-                        if (!empty($mapCenter)) {
-                            $lat =  $mapCenter[0]['lat'];
-                            $lng =  $mapCenter[0]['lng'];
-                        } else {
-                            $lat = 20.5937;
-                            $lng = 78.9629;
-                        }
+        function initMap() {
 
-                        switch ($templateType) {
-                            case 'country': {$zoom = 4; break;}
-                            case 'state': {$zoom = 8; break;}
-                            case 'city': {$zoom = 12; break;}
-                            default : {$zoom = 4; break;}
-                        }
-                    @endphp
+                @php
+                    if (!empty($mapCenter)) {
+                        $lat =  $mapCenter[0]['lat'];
+                        $lng =  $mapCenter[0]['lng'];
+                    } else {
+                        $lat = 20.5937;
+                        $lng = 78.9629;
+                    }
 
-                const center = {lat: Number('{{ $lat }}'), lng: Number('{{ $lng }}')};
+                    switch ($templateType) {
+                        case 'country': {$zoom = 4; break;}
+                        case 'state': {$zoom = 8; break;}
+                        case 'city': {$zoom = 12; break;}
+                        default : {$zoom = 4; break;}
+                    }
+                @endphp
 
-                const map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: Number('{{ $zoom }}'),
-                    center: center,
-                    zoomControl: false,
-                    mapTypeControl: false,
-                    scaleControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: true,
-                    styles: [
-                        {
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#1d2c4d"
-                                }
-                            ]
-                        },
-                        {
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#8ec3b9"
-                                }
-                            ]
-                        },
-                        {
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#1a3646"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "administrative.country",
-                            "elementType": "geometry.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#4b6878"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "administrative.land_parcel",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "administrative.land_parcel",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#64779e"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "administrative.neighborhood",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "administrative.province",
-                            "elementType": "geometry.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#4b6878"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "landscape.man_made",
-                            "elementType": "geometry.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#334e87"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "landscape.natural",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#023e58"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#283d6a"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#6f9ba5"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi",
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#1d2c4d"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi.business",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi.park",
-                            "elementType": "geometry.fill",
-                            "stylers": [
-                                {
-                                    "color": "#023e58"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi.park",
-                            "elementType": "labels.text",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "poi.park",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#3C7680"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#304a7d"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road",
-                            "elementType": "labels",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#98a5be"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road",
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#1d2c4d"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.arterial",
-                            "elementType": "labels",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.highway",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#2c6675"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.highway",
-                            "elementType": "geometry.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#255763"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.highway",
-                            "elementType": "labels",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.highway",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#b0d5ce"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.highway",
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#023e58"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "road.local",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "transit",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#98a5be"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "transit",
-                            "elementType": "labels.text.stroke",
-                            "stylers": [
-                                {
-                                    "color": "#1d2c4d"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "transit.line",
-                            "elementType": "geometry.fill",
-                            "stylers": [
-                                {
-                                    "color": "#283d6a"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "transit.station",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#3a4762"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "water",
-                            "elementType": "geometry",
-                            "stylers": [
-                                {
-                                    "color": "#0e1626"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "water",
-                            "elementType": "labels.text",
-                            "stylers": [
-                                {
-                                    "visibility": "off"
-                                }
-                            ]
-                        },
-                        {
-                            "featureType": "water",
-                            "elementType": "labels.text.fill",
-                            "stylers": [
-                                {
-                                    "color": "#4e6d70"
-                                }
-                            ]
-                        }
-                    ]
-                });
+            const center = {lat: Number('{{ $lat }}'), lng: Number('{{ $lng }}')};
 
-                // Create an array of alphabetical characters used to label the markers.
-                const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: Number('{{ $zoom }}'),
+                center: center,
+                zoomControl: false,
+                mapTypeControl: false,
+                scaleControl: false,
+                streetViewControl: false,
+                rotateControl: false,
+                fullscreenControl: true,
+                styles: [
+                    {
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#1d2c4d"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#8ec3b9"
+                            }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#1a3646"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#4b6878"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#64779e"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.neighborhood",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.province",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#4b6878"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "landscape.man_made",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#334e87"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "landscape.natural",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#023e58"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#283d6a"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#6f9ba5"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#1d2c4d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.business",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#023e58"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#3C7680"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#304a7d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#98a5be"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#1d2c4d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#2c6675"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#255763"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#b0d5ce"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#023e58"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#98a5be"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "color": "#1d2c4d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit.line",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#283d6a"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "transit.station",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#3a4762"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#0e1626"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#4e6d70"
+                            }
+                        ]
+                    }
+                ]
+            });
 
-                // Add some markers to the map.
-                // Note: The code uses the JavaScript Array.prototype.map() method to
-                // create an array of markers based on a given "locations" array.
-                // The map() method here has nothing to do with the Google Maps API.
-                var markers = locations.map(function (location, i) {
-                    return new google.maps.Marker({
-                        position: location,
-                        label: labels[i % labels.length],
-                        map: map
-                    });
-                });
+            {{--map.data.loadGeoJson('{{ config('app.url').'api/geo_data' }}');--}}
 
-                // Add a marker clusterer to manage the markers.
-                const markerCluster = new MarkerClusterer(map, markers, {
-                    imagePath: '{{ asset('images/google/markers/tmmarker') }}',
-                    imageSizes: [40, 60, 80, 100],
-                    averageCenter: true,
-                    enableRetinaIcons: true,
-                    imageExtension: 'png',
-                    minimumClusterSize: 1,
-                    title: 'Patient',
-                });
-            }
-        </script>
-        <script src="{{ asset('js/markerclustererplus.min.js') }}"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ config('corona.google_api_key') }}&callback=initMap"></script>
+            // Create an array of alphabetical characters used to label the markers.
+            const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-    @endif
+            // Add some markers to the map.
+            // Note: The code uses the JavaScript Array.prototype.map() method to
+            // create an array of markers based on a given "locations" array.
+            // The map() method here has nothing to do with the Google Maps API.
+            // var markers = locations.map(function (location, i) {
+            //     return new google.maps.Marker({
+            //         position: location,
+            //         label: labels[i % labels.length],
+            //         map: map
+            //     });
+            // });
+
+            // Add a marker clusterer to manage the markers.
+            const markerCluster = new MarkerClusterer(map, map.markers, {
+                imagePath: '{{ asset('images/google/markers/tmmarker') }}',
+                imageSizes: [40, 60, 80, 100],
+                averageCenter: true,
+                enableRetinaIcons: true,
+                imageExtension: 'png',
+                minimumClusterSize: 1,
+                title: 'Patient',
+            });
+        }
+    </script>
+    <script src="{{ asset('js/markerclustererplus.min.js') }}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('corona.google_api_key') }}&callback=initMap"></script>
+
 @endsection
