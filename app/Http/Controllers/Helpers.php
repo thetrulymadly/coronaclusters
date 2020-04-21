@@ -66,7 +66,7 @@ final class Helpers
             $ago = 'years';
         }
 
-        return $time !== 0 ? $time . ' ' . trans_choice('covid.time.' . $ago . '_ago', $time) : trans('corona.time.just_now');
+        return $time !== 0 ? $time . ' ' . trans_choice('corona.time.' . $ago . '_ago', $time) : trans('corona.time.just_now');
     }
 
     /**

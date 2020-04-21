@@ -60,7 +60,7 @@ class UpdateGeoJson extends Command
                     $location = $data->geo_city ?? $data->geo_district ?? $data->geo_state ?? $data->geo_country ?? [];
 
                     if (!empty($location)) {
-                        $json = '{"type": "Feature","geometry": {"type": "Point","coordinates": [' . $location[0]['lng'] . ', ' . $location[0]['lat'] . ']}, "properties": {"name": "' . $data->patientnumber . '"}},';
+                        $json = '{"type": "Feature","geometry": {"type": "Point","coordinates": [' . $location[0]['lng'] . ', ' . $location[0]['lat'] . ']}, "properties": {"name": "' . 'P' . $data->patientnumber . '"}},';
                         Storage::append($tempFile, $json);
                     }
                 }
@@ -68,7 +68,7 @@ class UpdateGeoJson extends Command
 
         $fh = Storage::readStream($tempFile);
         $stat = fstat($fh);
-        ftruncate($fh, $stat['size'] - 1);
+        ftruncate($fh, $stat['size'] - 2);
         fclose($fh);
 
         Storage::append($tempFile, ']}');

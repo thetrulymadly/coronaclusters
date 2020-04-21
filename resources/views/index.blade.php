@@ -625,16 +625,37 @@
             //     });
             // });
 
-            // Add a marker clusterer to manage the markers.
-            const markerCluster = new MarkerClusterer(map, map.markers, {
-                imagePath: '{{ asset('images/google/markers/tmmarker') }}',
-                imageSizes: [40, 60, 80, 100],
-                averageCenter: true,
-                enableRetinaIcons: true,
-                imageExtension: 'png',
-                minimumClusterSize: 1,
-                title: 'Patient',
+            map.data.loadGeoJson('{{ config('app.url').'api/geo_data' }}', null, function (features) {
+                // group items / cluster
+                const markers = features.map(function (feature) {
+                    const g = feature.getGeometry();
+                    const p = feature.getProperties();
+
+                    return marker = new google.maps.Marker({
+                        position: g.get(0),
+                        label: p.get('name'),
+                    });
+                });
+
+                // Add a marker clusterer to manage the markers.
+                const markerCluster = new MarkerClusterer(map, markers, {
+                    imagePath: '{{ asset('images/google/markers/tmmarker') }}',
+                    imageSizes: [40, 60, 80, 100],
+                    averageCenter: true,
+                    enableRetinaIcons: true,
+                    imageExtension: 'png',
+                    minimumClusterSize: 1,
+                    title: 'Patient',
+                });
+
+                // add event listener to the cluster
+                // google.maps.event.addListener(markerCluster, 'clusterclick', function (cluster) {
+                //     // handle clickevent
+                // });
+
             });
+
+
         }
     </script>
     <script src="{{ asset('js/markerclustererplus.min.js') }}"></script>
