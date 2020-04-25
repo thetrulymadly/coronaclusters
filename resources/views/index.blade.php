@@ -631,10 +631,12 @@
                     const g = feature.getGeometry();
                     const p = feature.getProperties();
 
-                    return marker = new google.maps.Marker({
+                    const marker = new google.maps.Marker({
                         position: g.get(0),
                         label: p.get('name'),
+                        map: map
                     });
+                    return marker;
                 });
 
                 // Add a marker clusterer to manage the markers.
@@ -652,10 +654,18 @@
                 // google.maps.event.addListener(markerCluster, 'clusterclick', function (cluster) {
                 //     // handle clickevent
                 // });
-
             });
 
-
+            // Add a marker clusterer to manage the markers.
+            const markerCluster = new MarkerClusterer(map, markers, {
+                imagePath: '{{ asset('images/google/markers/tmmarker') }}',
+                imageSizes: [40, 60, 80, 100],
+                averageCenter: true,
+                enableRetinaIcons: true,
+                imageExtension: 'png',
+                minimumClusterSize: 1,
+                title: 'Patient',
+            });
         }
     </script>
     <script src="{{ asset('js/markerclustererplus.min.js') }}"></script>
