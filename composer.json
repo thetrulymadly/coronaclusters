@@ -29,6 +29,7 @@
         "ext-json": "*",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
+        "joedixon/laravel-translation": "^1.1",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0"
     },
