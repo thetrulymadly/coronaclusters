@@ -3,14 +3,22 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     21 April 2020
+ * @since     26 April 2020
  */
 
 return [
     'active' => 'Active',
+    'advisory_text' =>
+        [
+            'text1' => 'Going out to buy essentials? Social Distancing is KEY! Maintain 2 metres distance between each other in the line.',
+            'text2' => 'Lockdown means LOCKDOWN! Avoid going out unless absolutely necessary. Stay safe!',
+            'text3' => '',
+            'text4' => '',
+        ],
     'agebracket' => 'Age Bracket',
     'backupnotes' => 'Backup Notes',
     'city' => 'City',
+    'city_wise_data' => 'City-wise Data',
     'clusters' => 'Clusters',
     'confirmed' => 'Confirmed',
     'contractedfromwhichpatientsuspected' => 'Contracted From (suspected)',
@@ -27,24 +35,40 @@ return [
     'detecteddistrict' => 'Detected District',
     'detectedstate' => 'Detected State',
     'district' => 'District',
+    'district_wise_data' => 'District-wise Data',
     'estimatedonsetdate' => 'Estimated on set Date',
+    'footer' =>
+        [
+            'link_cdc' => 'Centers for Disease Control and Prevention (CDC)',
+            'link_covid19_org' => 'APIs by Covid19India',
+            'link_crowdsource_db' => 'Crowdsourced Patient Database',
+            'link_global_tracker' => 'COVID-19 Global Tracker',
+            'link_mohfw' => 'Ministry of Health and Family Welfare, Gov. of India',
+            'link_mohfw_numbers' => 'MOHFW - HELPLINE NUMBERS [by State]',
+            'link_report_bug' => 'Report a bug',
+            'link_sitemap' => 'Sitemap',
+            'link_team_tm' => 'An effort by <a href="https://trulymadly.com/">Team TrulyMadly</a> to keep our loved ones safe and informed!',
+            'link_who' => 'WHO: COVID-19 Home Page',
+            'title_help_links' => 'Helpful Links',
+            'title_sources' => 'Sources',
+        ],
     'gender' => 'Gender',
     'help_links' => 'Helpful Links',
-    'lastupdatedtime' => 'Last Updated',
-    'nationality' => 'Nationality',
-    'notes' => 'Notes',
     'lastest_update_text' => 'Last case recorded in :location - :time_ago',
-    'advisory_text' => [
-        'text1' => 'Going out to buy essentials? Social Distancing is KEY! Maintain 2 metres distance between each other in the line.',
-        'text2' => 'Lockdown means LOCKDOWN! Avoid going out unless absolutely necessary. Stay safe!',
-        'text3' => '',
-        'text4' => '',
-    ],
-    'map_notes' => [
-        'note1' => 'Please note: Location is indicative of the city/district and not exact pin-point.',
-        'note2' => 'Tap on a cluster to zoom-in.',
-    ],
-    'title' => '<span class="text-primary">Corona</span> <span class="text-secondary">India</span> Tracker',
+    'lastupdatedtime' => 'Last Updated',
+    'locales' =>
+        [
+            'en' => 'English',
+            'hi' => 'हिन्दी',
+        ],
+    'map_notes' =>
+        [
+            'note1' => 'Please note: Location is indicative of the city/district and not exact pin-point.',
+            'note2' => 'Tap on a cluster to zoom-in.',
+        ],
+    'nationality' => 'Nationality',
+    'no_data' => 'No Data',
+    'notes' => 'Notes',
     'page' =>
         [
             'home' =>
@@ -77,12 +101,14 @@ return [
             'india' => 'India',
             'some_area' => 'the area',
         ],
+    'raw_data' => 'Raw Data',
     'recovered' => 'Recovered',
     'source' => 'Source',
     'source1' => 'Source 1',
     'source2' => 'Source 2',
     'source3' => 'Source 3',
     'state' => 'State',
+    'state_wise_data' => 'State-wise Data',
     'statepatientnumber' => 'State Patient Number',
     'statuschangedate' => 'Status Change Date',
     'table_active' => 'Active Cases',
@@ -97,6 +123,10 @@ return [
     'table_lastupdatedtime' => 'Last Updated',
     'table_recovered' => 'Total Recovered',
     'table_state' => 'State',
+    'testing' =>
+        [
+            'latest_update_text' => 'Last COVID test performed on - :datetime',
+        ],
     'time' =>
         [
             'days_ago' => 'day ago|days ago',
@@ -107,49 +137,21 @@ return [
             'seconds_ago' => 'second ago|seconds ago',
             'years_ago' => 'year ago|years ago',
         ],
-    'total_positive' => 'Positive for COVID',
-    'total_tested' => 'Patients Tested',
-    'totalindividualstested' => 'Patients Tested',
+    'timeline' => 'Timeline',
+    'timeline_link' => 'View complete timeline',
+    'timeline_title' => 'COVID-19 :location Timeline',
+    'title' => '<span class="text-primary">Corona</span> <span class="text-secondary">India</span> Tracker',
     'today_totalindividualstested' => 'Patients Tested So Far',
-    'totalpositivecases' => 'Positive so far',
     'today_totalpositivecases' => 'Positive',
-    'totalsamplestested' => 'Tested So Far',
-    'today_totalsamplestested' => 'New',
     'today_totalpositivecases_percent' => '% Positive',
+    'today_totalsamplestested' => 'New',
+    'total_positive' => 'Positive for COVID',
     'total_positive_percent' => 'Total % Positive',
     'total_samples' => 'Samples Tested',
+    'total_tested' => 'Patients Tested',
+    'totalindividualstested' => 'Patients Tested',
+    'totalpositivecases' => 'Positive so far',
+    'totalsamplestested' => 'Tested So Far',
     'unknown' => 'Unknown',
     'updatetimestamp' => 'Tested On',
-
-    'raw_data' => 'Raw Data',
-    'city_wise_data' => 'City-wise Data',
-    'district_wise_data' => 'District-wise Data',
-    'state_wise_data' => 'State-wise Data',
-
-    'footer' => [
-        'title_help_links' => 'Helpful Links',
-        'title_sources' => 'Sources',
-        'link_mohfw' => 'Ministry of Health and Family Welfare, Gov. of India',
-        'link_mohfw_numbers' => 'MOHFW - HELPLINE NUMBERS [by State]',
-        'link_who' => 'WHO: COVID-19 Home Page',
-        'link_cdc' => 'Centers for Disease Control and Prevention (CDC)',
-        'link_global_tracker' => 'COVID-19 Global Tracker',
-        'link_crowdsource_db' => 'Crowdsourced Patient Database',
-        'link_covid19_org' => 'APIs by Covid19India',
-        'link_report_bug' => 'Report a bug',
-        'link_sitemap' => 'Sitemap',
-        'link_team_tm' => 'An effort by <a href="https://trulymadly.com/">Team TrulyMadly</a> to keep our loved ones safe and informed!',
-    ],
-    'testing' => [
-        'latest_update_text' => 'Last COVID test performed on - :datetime',
-    ],
-    'timeline' => 'Timeline',
-    'timeline_title' => 'COVID-19 :location Timeline',
-    'timeline_link' => 'View complete timeline',
-    'locales' => [
-        'en' => 'English',
-        'hi' => 'हिन्दी',
-    ],
-
-    'no_data' => 'No Data',
 ];
