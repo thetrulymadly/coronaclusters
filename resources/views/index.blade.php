@@ -189,7 +189,7 @@
                 "scroller": true,
                 "order": [[0, "asc"]],
                 "deferRender": true,
-                "ajax": "api/raw_data",
+                "ajax": "{{ config('app.url').'api/raw_data' }}",
                 "columns": [
                     {'data': 'patientnumber'},
                     {'data': 'agebracket'},
