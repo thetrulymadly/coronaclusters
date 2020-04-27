@@ -30,13 +30,16 @@
                 <a href="https://bit.ly/patientdb" class="list-group-item list-group-item-action">
                     {{ trans('corona.footer.link_crowdsource_db') }}
                 </a>
-                <a href="https://github.com/covid19india/api" class="list-group-item list-group-item-action"><i class="fab fa-1x fa-github"></i>
+                <a href="https://github.com/covid19india/api" class="list-group-item list-group-item-action"><i class="fas fa-1x fa-link"></i>
                     {{ trans('corona.footer.link_covid19_org') }}
                 </a>
-                <a href="https://forms.gle/AUg1s1sk4e1tQZ4C8" class="list-group-item list-group-item-action"><i class="fas fa-1x fa-bug"></i>
+                <a href="https://github.com/thetrulymadly/coronaclusters" class="list-group-item list-group-item-action"><i class="fab fa-1x fa-github"></i>
+                    {{ trans('corona.footer.link_contribute') }}
+                </a>
+                <a href="https://github.com/thetrulymadly/coronaclusters/issues" class="list-group-item list-group-item-action"><i class="fas fa-1x fa-bug"></i>
                     {{ trans('corona.footer.link_report_bug') }}
                 </a>
-                <a href="{{ config('app.url').'/sitemap.xml' }}" class="list-group-item list-group-item-action">
+                <a href="{{ config('app.url').'sitemap.xml' }}" class="list-group-item list-group-item-action">
                     {{ trans('corona.footer.link_sitemap') }}
                 </a>
             </div>

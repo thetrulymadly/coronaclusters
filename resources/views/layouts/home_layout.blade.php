@@ -13,7 +13,7 @@
 
     <title>{{ $title }}</title>
 
-    @include('partials.meta_tags_covid', ['meta_title' => $title, 'meta_description' => $description, 'keywords' => $keywords, 'page_url' => $url ])
+    @include('partials.meta_tags', ['meta_title' => $title, 'meta_description' => $description, 'keywords' => $keywords, 'page_url' => $url ])
 </head>
 <body data-spy="scroll" data-target="#covid-nav" data-offset="200">
 
