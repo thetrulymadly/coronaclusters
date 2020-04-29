@@ -127,7 +127,7 @@ return [
     'table_state' => 'State',
     'testing' =>
         [
-            'latest_update_text' => 'Last COVID test performed on - :datetime',
+            'latest_update_text' => 'Last updated on - :datetime',
         ],
     'time' =>
         [
