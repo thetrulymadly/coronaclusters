@@ -74,7 +74,7 @@ class UpdateGeocodes extends Command
             $this->api_url = config('corona.api.google_geocode_api');
         }
 
-        $data = CovidRawData::where('geo_updated', false)->chunk(500, function ($data) {
+        CovidRawData::where('geo_updated', false)->chunk(500, function ($data) {
             // Get location data from google
             $geoCodes = [];
             foreach ($data as $patient) {
