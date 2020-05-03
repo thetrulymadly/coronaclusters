@@ -45,6 +45,11 @@ class UpdateGeocodes extends Command
     protected $errors = [];
 
     /**
+     * @var int
+     */
+    protected $updates = 0;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -69,42 +74,41 @@ class UpdateGeocodes extends Command
             $this->api_url = config('corona.api.google_geocode_api');
         }
 
-        $data = CovidRawData::where('geo_updated', false)->get();
-
-        // Get location data from google
-        $geoCodes = [];
-        foreach ($data as $patient) {
-            if (count($this->errors) > 5) {
-                break;
-            }
-            if (!empty($patient->detectedcity)) {
-                $geoCodes[$patient->id]['geo_city'] = $this->getGeocode($patient->detectedcity);
-            } elseif (!empty($patient->detecteddistrict)) {
-                $geoCodes[$patient->id]['geo_district'] = $this->getGeocode($patient->detectedstate);
-            } elseif (!empty($patient->detectedstate)) {
-                $geoCodes[$patient->id]['geo_state'] = $this->getGeocode($patient->detectedstate);
-            } else {
-                $geoCodes[$patient->id]['geo_country'] = $this->getGeocode('India');
-            }
-        }
-
-        // Save to DB
-        $updates = 0;
-        foreach ($geoCodes as $id => $geoCode) {
-            $column = key($geoCode);
-            $value = $geoCode[$column];
-            if (empty($value)) {
-                continue;
+        $data = CovidRawData::where('geo_updated', false)->chunk(500, function ($data) {
+            // Get location data from google
+            $geoCodes = [];
+            foreach ($data as $patient) {
+                if (count($this->errors) > 5) {
+                    break;
+                }
+                if (!empty($patient->detectedcity)) {
+                    $geoCodes[$patient->id]['geo_city'] = $this->getGeocode($patient->detectedcity);
+                } elseif (!empty($patient->detecteddistrict)) {
+                    $geoCodes[$patient->id]['geo_district'] = $this->getGeocode($patient->detectedstate);
+                } elseif (!empty($patient->detectedstate)) {
+                    $geoCodes[$patient->id]['geo_state'] = $this->getGeocode($patient->detectedstate);
+                } else {
+                    $geoCodes[$patient->id]['geo_country'] = $this->getGeocode('India');
+                }
             }
 
-            $patient = $data->where('id', $id)->first();
-            $patient->$column = array_values($geoCode);
-            $patient->geo_updated = true;
-            $patient->save();
-            $updates++;
-        }
+            // Save to DB
+            foreach ($geoCodes as $id => $geoCode) {
+                $column = key($geoCode);
+                $value = $geoCode[$column];
+                if (empty($value)) {
+                    continue;
+                }
 
-        $this->info('Updates: ' . $updates . ' / ' . $data->count());
+                $patient = $data->where('id', $id)->first();
+                $patient->$column = array_values($geoCode);
+                $patient->geo_updated = true;
+                $patient->save();
+                $this->updates++;
+            }
+        });
+
+        $this->info('Updates: ' . $this->updates . ' / ' . $data->count());
 
         if ($this->option('errors') && count($this->errors)) {
             $this->warn('Error: ' . json_encode($this->errors[0]));
