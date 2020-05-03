@@ -53,23 +53,23 @@ class UpdateGeoJson extends Command
         }
         Storage::put($tempFile, '{"type": "FeatureCollection", "features": [ ');
 
-        CovidRawData::select(['geo_state', 'geo_city', 'geo_district', 'geo_country', 'geo_updated', 'patientnumber'])
-            ->where('geo_updated', 1)
-            ->chunk(1000, function ($rawData) use ($tempFile) {
+        $latestId = CovidRawData::where('geo_updated', true)->max('id');
+        CovidRawData::where('geo_updated', true)->limit(10)
+            ->chunk(1000, function ($rawData) use ($tempFile, $latestId) {
                 foreach ($rawData as $data) {
                     $location = $data->geo_city ?? $data->geo_district ?? $data->geo_state ?? $data->geo_country ?? [];
 
                     if (!empty($location)) {
-                        $json = '{"type": "Feature","geometry": {"type": "Point","coordinates": [' . $location[0]['lng'] . ', ' . $location[0]['lat'] . ']}, "properties": {"name": "' . 'P' . $data->patientnumber . '"}},';
-                        Storage::append($tempFile, $json);
+                        if (!empty($data->numcases)) {
+                            for ($i = 1; $i <= $data->numcases; $i++) {
+                                $this->createFeature($tempFile, $location, $data, $latestId);
+                            }
+                        } else {
+                            $this->createFeature($tempFile, $location, $data, $latestId);
+                        }
                     }
                 }
             });
-
-        $fh = Storage::readStream($tempFile);
-        $stat = fstat($fh);
-        ftruncate($fh, $stat['size'] - 2);
-        fclose($fh);
 
         Storage::append($tempFile, ']}');
 
@@ -96,5 +96,14 @@ class UpdateGeoJson extends Command
         }
 
         return 0;
+    }
+
+    private function createFeature($tempFile, $location, $data, $latestId)
+    {
+        $json = '{"type": "Feature","geometry": {"type": "Point","coordinates": [' . $location[0]['lng'] . ', ' . $location[0]['lat'] . ']}, "properties": {"name": "' . 'P' . $data->patientnumber . '"}}';
+        if ($data->id !== $latestId) {
+            $json .= ',';
+        }
+        Storage::append($tempFile, $json);
     }
 }

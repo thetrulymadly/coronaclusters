@@ -66,6 +66,7 @@ class CovidRawData extends Model
      */
     protected $fillable = [
         'patientnumber',
+        'numcases',
         'agebracket',
         'contractedfromwhichpatientsuspected',
         'currentstatus',
