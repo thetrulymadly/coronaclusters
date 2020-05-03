@@ -108,7 +108,7 @@ class UpdateGeocodes extends Command
             }
         });
 
-        $this->info('Updates: ' . $this->updates . ' / ' . $data->count());
+        $this->info('Updates: ' . $this->updates . ' / ');
 
         if ($this->option('errors') && count($this->errors)) {
             $this->warn('Error: ' . json_encode($this->errors[0]));
