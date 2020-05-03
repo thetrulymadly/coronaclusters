@@ -264,10 +264,7 @@
     </script>
 
     <script type="text/javascript">
-
-
         function initMap() {
-
                 @php
                     if (!empty($mapCenter)) {
                         $lat =  $mapCenter[0]['lat'];
@@ -276,7 +273,6 @@
                         $lat = 20.5937;
                         $lng = 78.9629;
                     }
-
                     switch ($templateType) {
                         case 'country': {$zoom = 4; break;}
                         case 'state': {$zoom = 8; break;}
@@ -629,12 +625,10 @@
                 // group items / cluster
                 const markers = features.map(function (feature) {
                     const g = feature.getGeometry();
-                    const p = feature.getProperties();
 
                     const marker = new google.maps.Marker({
                         position: g.get(0),
-                        label: p.get('name'),
-                        map: map
+                        data : feature
                     });
                     return marker;
                 });
@@ -656,17 +650,12 @@
                 // });
             });
 
-            // Add a marker clusterer to manage the markers.
-            const markerCluster = new MarkerClusterer(map, markers, {
-                imagePath: '{{ asset('images/google/markers/tmmarker') }}',
-                imageSizes: [40, 60, 80, 100],
-                averageCenter: true,
-                enableRetinaIcons: true,
-                imageExtension: 'png',
-                minimumClusterSize: 1,
-                title: 'Patient',
+            map.data.setStyle(function (feature) {
+                return {icon: feature.getProperty('icon'), visible: false};
             });
         }
+
+        initMap();
     </script>
     <script src="{{ asset('js/markerclustererplus.min.js') }}"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('corona.google_api_key') }}&callback=initMap"></script>
