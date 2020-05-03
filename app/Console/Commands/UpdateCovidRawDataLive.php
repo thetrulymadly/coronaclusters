@@ -68,6 +68,7 @@ class UpdateCovidRawDataLive extends Command
             $newPatients = 0;
             foreach ($response['raw_data'] as $item) {
                 CovidRawData::updateOrCreate(['patientnumber' => 27891 + (int)$item['entryid']], [
+                    'numcases' => $item['numcases'],
                     'agebracket' => $item['agebracket'],
                     'backupnotes' => '',
                     'contractedfromwhichpatientsuspected' => $item['contractedfromwhichpatientsuspected'],
