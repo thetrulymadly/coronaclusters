@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     21 April 2020
+ * @since     04 May 2020
  */
 
 namespace App\Console\Commands;
@@ -54,7 +54,7 @@ class UpdateGeoJson extends Command
         Storage::put($tempFile, '{"type": "FeatureCollection", "features": [ ');
 
         $latestId = CovidRawData::where('geo_updated', true)->max('id');
-        CovidRawData::where('geo_updated', true)->limit(10)
+        CovidRawData::where('geo_updated', true)
             ->chunk(1000, function ($rawData) use ($tempFile, $latestId) {
                 foreach ($rawData as $data) {
                     $location = $data->geo_city ?? $data->geo_district ?? $data->geo_state ?? $data->geo_country ?? [];
