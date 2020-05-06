@@ -228,6 +228,12 @@ body {
     }
 }
 
+#testing-data-table_wrapper {
+    table, .dataTables_scrollHeadInner {
+        width: 100% !important;
+    }
+}
+
 .footer .list-group-item-action {
     color: $blue;
     text-decoration: underline;

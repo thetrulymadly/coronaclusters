@@ -2,7 +2,7 @@
     $pageSections = [
         ['url' => '#clusters', 'title' => 'clusters'],
         ['url' => '#data', 'title' => 'data'],
-        ['url' => 'timeline', 'title' => 'timeline'],
+        //['url' => 'timeline', 'title' => 'timeline'],
         ['section' => '#corona-testing-per-day-india', 'title' => 'corona_testing', 'active' => true],
         ['section' => '#help_links', 'title' => 'help_links'],
     ];
@@ -28,14 +28,14 @@
                 <div class="col-12 mt-3">
                     <div class="row">
                         <div class="col-12 card-stats">
-                            <div class="card-deck">
-                                @include('partials.stats', ['title' => 'total_samples', 'color' => 'primary', 'count' => $stats['total_samples'], 'countDelta' => $stats['delta_total_samples'] ?? 0])
-                                @include('partials.stats', ['title' => 'total_tested', 'color' => 'primary', 'count' => $stats['total_tested'], 'countDelta' => $stats['delta_total_tested'] ?? 0])
-                            </div>
-                            <div class="card-deck">
-                                @include('partials.stats', ['title' => 'total_positive', 'color' => 'danger', 'count' => $stats['total_positive'], 'countDelta' => $stats['delta_total_positive'] ?? 0])
-                                @include('partials.stats', ['title' => 'total_positive_percent', 'color' => 'danger', 'count' => $stats['total_positive_percent'], 'countDelta' => 0])
-                            </div>
+                            @include('partials.stats', ['title' => 'total_samples', 'color' => 'primary', 'count' => $stats['total_samples'], 'countDelta' => $stats['delta_total_samples'] ?? 0])
+{{--                            <div class="card-deck">--}}
+{{--                                @include('partials.stats', ['title' => 'total_tested', 'color' => 'primary', 'count' => $stats['total_tested'], 'countDelta' => $stats['delta_total_tested'] ?? 0])--}}
+{{--                            </div>--}}
+{{--                            <div class="card-deck">--}}
+{{--                                @include('partials.stats', ['title' => 'total_positive', 'color' => 'danger', 'count' => $stats['total_positive'], 'countDelta' => $stats['delta_total_positive'] ?? 0])--}}
+{{--                                @include('partials.stats', ['title' => 'total_positive_percent', 'color' => 'danger', 'count' => $stats['total_positive_percent'], 'countDelta' => 0])--}}
+{{--                            </div>--}}
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
             $('#testing-data-table').DataTable({
                 "paging": false,
                 "scrollY": '60vh',
-                "scrollX": "100%",
+                "scrollX": true,
                 "scrollCollapse": true,
                 "scroller": true,
                 "dom": 't',

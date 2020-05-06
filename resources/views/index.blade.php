@@ -2,8 +2,8 @@
     $pageSections = [
         ['section' => '#clusters', 'title' => 'clusters', 'active' => true],
         ['section' => '#data', 'title' => 'data'],
-        ['section' => '#timeline', 'title' => 'timeline'],
         ['url' => 'corona-testing-per-day-india', 'title' => 'corona_testing'],
+        //['section' => '#timeline', 'title' => 'timeline'],
         ['section' => '#help_links', 'title' => 'help_links'],
     ];
 @endphp
@@ -96,11 +96,6 @@
                            aria-selected="true">{{ trans('corona.state_wise_data') }}</a>
                     </li>
                 @endif
-                <li class="nav-item">
-                    <a class="nav-link @if($templateType === 'city') active @endif" id="raw-data-tab" data-toggle="tab" href="#raw-data" role="tab"
-                       aria-controls="raw data"
-                       aria-selected="false">{{ trans('corona.raw_data') }}</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -112,56 +107,6 @@
                 @includeWhen($templateType === 'state', 'partials.grouped_data', ['group' => 'district', 'groupData' => $districtData, 'active' => true, 'parentUrl' => $url])
                 @includeWhen($templateType === 'state', 'partials.grouped_data', ['group' => 'city', 'groupData' => $cityData, 'active' => false, 'parentUrl' => $url])
                 @includeWhen($templateType === 'country', 'partials.grouped_data', ['group' => 'state', 'groupData' => $stateData, 'active' => true, 'parentUrl' => $url])
-                {{-- RAW DATA --}}
-                <div class="tab-pane fade @if($templateType === 'city') show active @endif" id="raw-data" role="tabpanel"
-                     aria-labelledby="raw-data-tab">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <table id="raw-data-table" class="table table-striped table-bordered table-hover table-sm table-light">
-                                <thead class="thead-light">
-                                <tr>
-                                    @foreach(config('corona.table.raw_data') as $dataHeader)
-                                        <th scope="col">{{ trans('corona.'.$dataHeader) }}</th>
-                                    @endforeach
-                                </tr>
-                                </thead>
-                                @if($templateType !== 'country')
-                                    <tbody>
-                                    @foreach($rawData as $data)
-                                        <tr>
-                                            @foreach(config('corona.table.raw_data') as $dataHeader)
-                                                @if($dataHeader === 'patientnumber')
-                                                    <th scope="row">{{ $data->$dataHeader }}</th>
-                                                @elseif($dataHeader === 'source1' || $dataHeader === 'source2' || $dataHeader === 'source3')
-                                                    @if(!empty($data[$dataHeader]))
-                                                        @php
-                                                            $linkName = explode('/', $data[$dataHeader]);
-                                                            if (isset($linkName[2])) {
-                                                                $linkName = $linkName[2];
-                                                            } else {
-                                                                $linkName = $data[$dataHeader];
-                                                            }
-                                                        @endphp
-                                                        <td data-order="{{ $linkName }}">
-                                                            <a href="{{ $data[$dataHeader] }}">{{ $data[$dataHeader] }}</a>
-                                                        </td>
-                                                    @else
-                                                        <td></td>
-                                                    @endif
-                                                @elseif($dataHeader === 'detectedstate' || $dataHeader === 'detectedcity' || $dataHeader === 'detecteddistrict')
-                                                    <td>{{ $data->$dataHeader }}</td>
-                                                @else
-                                                    <td>{{ $data->$dataHeader }}</td>
-                                                @endif
-                                            @endforeach
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                @endif
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -181,36 +126,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             @if($templateType === 'country')
-            $('#raw-data-table').DataTable({
-                "pagingType": "full_numbers",
-                "scrollY": '65vh',
-                "scrollX": true,
-                "scrollCollapse": true,
-                "scroller": true,
-                "order": [[0, "asc"]],
-                "deferRender": true,
-                "ajax": "{{ config('app.url').'api/raw_data' }}",
-                "columns": [
-                    {'data': 'patientnumber'},
-                    {'data': 'agebracket'},
-                    {'data': 'contractedfromwhichpatientsuspected'},
-                    {'data': 'currentstatus'},
-                    {'data': 'statepatientnumber'},
-                    {'data': 'statuschangedate'},
-                    {'data': 'dateannounced'},
-                    {'data': 'detectedcity'},
-                    {'data': 'detecteddistrict'},
-                    {'data': 'detectedstate'},
-                    {'data': 'estimatedonsetdate'},
-                    {'data': 'gender'},
-                    {'data': 'nationality'},
-                    {'data': 'notes'},
-                    {'data': 'backupnotes'},
-                    {'data': 'source1'},
-                    {'data': 'source2'},
-                    {'data': 'source3'}
-                ]
-            });
             $('#state-data-table').DataTable({
                 "paging": false,
                 "scrollY": '70vh',
@@ -220,18 +135,7 @@
                 "dom": 't',
                 "order": [[1, "desc"]]
             });
-            @else
-            $('#raw-data-table').DataTable({
-                "pagingType": "full_numbers",
-                "scrollY": '65vh',
-                "scrollX": true,
-                "scrollCollapse": true,
-                "scroller": true,
-                "order": [[0, "asc"]]
-            });
             @endif
-
-
 
             {{-- GROUPED DATA --}}
             @if($templateType === 'state')
