@@ -203,7 +203,7 @@ class CoronaController extends Controller
         $breadcrumbs = $this->getBreadcrumbs();
 
         // History
-        $timeline = $this->createTimeline($state ?? '', $city ?? '');
+        $timeline = null;
         $timeline = array_slice($timeline, 0, 3);
 
         return view('index',
@@ -279,16 +279,16 @@ class CoronaController extends Controller
 
         $topTests = CovidTesting::where('totalsamplestested', '!=', 0)
             ->orderBy('totalsamplestested', 'desc')
-            ->get()
-            ->where('totalindividualstested', '!=', 0)->take(2)->toArray();
+            ->limit(2)
+            ->get()->toArray();
 
         $stats = [
             'total_samples' => $topTests[0]['totalsamplestested'],
-            'total_tested' => $topTests[0]['totalindividualstested'],
-            'total_positive' => $topTests[0]['totalpositivecases'],
-            'total_positive_percent' => round(($topTests[0]['totalpositivecases'] / $topTests[0]['totalindividualstested']) * 100, 2) . '%',
-            'delta_total_tested' => $topTests[0]['totalindividualstested'] - $topTests[1]['totalindividualstested'],
-            'delta_total_positive' => $topTests[0]['totalpositivecases'] - $topTests[1]['totalpositivecases'],
+//            'total_tested' => $topTests[0]['totalindividualstested'],
+//            'total_positive' => $topTests[0]['totalpositivecases'],
+//            'total_positive_percent' => round(($topTests[0]['totalpositivecases'] / $topTests[0]['totalindividualstested']) * 100, 2) . '%',
+//            'delta_total_tested' => $topTests[0]['totalindividualstested'] - $topTests[1]['totalindividualstested'],
+//            'delta_total_positive' => $topTests[0]['totalpositivecases'] - $topTests[1]['totalpositivecases'],
             'delta_total_samples' => $topTests[0]['totalsamplestested'] - $topTests[1]['totalsamplestested'],
             'last_testing_on' => $topTests[0]['updatetimestamp'],
         ];
