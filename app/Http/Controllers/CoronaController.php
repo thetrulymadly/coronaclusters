@@ -204,7 +204,7 @@ class CoronaController extends Controller
 
         // History
         $timeline = null;
-        $timeline = array_slice($timeline, 0, 3);
+//        $timeline = array_slice($timeline, 0, 3);
 
         return view('index',
             compact('rawData', 'stateData', 'districtData', 'cityData', 'aggregateData', 'timeline', 'title', 'description', 'url', 'keywords',
