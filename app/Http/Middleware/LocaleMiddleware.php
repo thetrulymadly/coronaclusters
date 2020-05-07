@@ -38,6 +38,14 @@ class LocaleMiddleware
                 'canonicalPath' => $this->getPathWithoutLocale($request),
                 'canonicalUrl' => config('app.url') . $this->getPathWithoutLocale($request) . '/',
             ]);
+        } else {
+            $request->merge([
+                'localeEnabled' => false,
+                'localePath' => '',
+                'localeUrl' => config('app.url'),
+                'canonicalPath' => $request->path(),
+                'canonicalUrl' => $request->getUri(),
+            ]);
         }
 
         return $next($request);
