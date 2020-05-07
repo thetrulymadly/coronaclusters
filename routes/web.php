@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('', 'CoronaController@home');
 //Route::get('timeline', 'CoronaController@timeline');
 //Route::get('{string?}/timeline', 'CoronaController@timeline')->where('string', '.*');
-Route::get('corona-testing-per-day-india', 'CoronaController@testing')->where('string', '.*');
+Route::get('corona-testing-per-day-india', 'CoronaController@testing');
 
 // This should always be the last route in this file
 Route::get('{string}', 'CoronaController@index')->where('string', '.*');
