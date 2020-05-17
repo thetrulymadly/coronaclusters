@@ -54,7 +54,7 @@ class UpdateCovidRawDataLive extends Command
         $client = new Client();
 
         try {
-            $response = $client->get(config('corona.api.raw_data_live'));
+            $response = $client->get(config('corona.api.raw_data_4'));
         } catch (Exception $exception) {
             $this->warn('Failed to fetch data');
             $this->error('Following error occurred: ' . $exception->getMessage());

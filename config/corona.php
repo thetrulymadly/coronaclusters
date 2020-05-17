@@ -19,7 +19,8 @@ return [
 
     'api' => [
         'raw_data' => 'https://api.covid19india.org/raw_data.json',
-        'raw_data_live' => 'https://api.covid19india.org/raw_data3.json',
+        'raw_data_3' => 'https://api.covid19india.org/raw_data3.json',
+        'raw_data_4' => 'https://api.covid19india.org/raw_data4.json',
         'data' => 'https://api.covid19india.org/data.json',
         'state_data' => 'https://api.covid19india.org/state_district_wise.json',
         'travel_history' => 'https://api.covid19india.org/travel_history.json',
