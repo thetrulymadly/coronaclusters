@@ -32,6 +32,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Silber\PageCache\Middleware\CacheResponse;
 
 /**
  * Class Kernel
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
             SubstituteBindings::class,
             LocaleMiddleware::class,
             RedirectsMiddleware::class,
+            CacheResponse::class,
         ],
 
         'api' => [
