@@ -8,15 +8,14 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
-use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RedirectsMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -32,6 +31,14 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace;
+use RenatoMarinho\LaravelPageSpeed\Middleware\DeferJavascript;
+use RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes;
+use RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss;
+use RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch;
+use RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments;
+use RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes;
+use RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls;
 use Silber\PageCache\Middleware\CacheResponse;
 
 /**
@@ -72,6 +79,14 @@ class Kernel extends HttpKernel
             LocaleMiddleware::class,
             RedirectsMiddleware::class,
             CacheResponse::class,
+            InlineCss::class,
+            ElideAttributes::class,
+            InsertDNSPrefetch::class,
+            RemoveComments::class,
+            TrimUrls::class,
+            RemoveQuotes::class,
+            CollapseWhitespace::class, // Note: This middleware invokes "RemoveComments::class" before it runs.
+            DeferJavascript::class,
         ],
 
         'api' => [
