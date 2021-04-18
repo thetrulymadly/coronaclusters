@@ -1,2 +1,4 @@
 sitemap.xml
 /mix-manifest.json
+page-cache/*
+!page-cache/.gitignore
