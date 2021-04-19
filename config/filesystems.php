@@ -69,8 +69,17 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+            'options' => ['CacheControl' => 'max-age=1296000, no-transform, public',
+                'ACL' => 'public-read', 'visibility' => 'public']
         ],
 
+        'asset-cdn' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'bucket' => env('AWS_CDN_BUCKET'),
+        ],
     ],
 
 ];

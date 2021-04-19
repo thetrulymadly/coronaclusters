@@ -88,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function registerCoronaRoutes($prefix = '')
     {
-        Route::middleware(['web', 'cache.headers:public;max_age=2628000;etag'])
+        Route::middleware(['web', 'cache.headers:public;max_age=1800;etag'])
             ->namespace($this->namespace)
             ->prefix($prefix)
             ->group(base_path('routes/web.php'));

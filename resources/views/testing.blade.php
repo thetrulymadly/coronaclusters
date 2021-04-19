@@ -84,7 +84,7 @@
 @endsection
 
 @section('scrips')
-    <script src="{{ mix('js/corona.js') }}"></script>
+    <script src="{{ mix_cdn('js/corona.js') }}"></script>
 
     <script type="text/javascript">
 

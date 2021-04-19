@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ mix('css/page.css') }}" rel="stylesheet">
+    <link href="{{ mix_cdn('css/page.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">

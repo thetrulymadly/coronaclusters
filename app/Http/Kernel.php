@@ -37,7 +37,6 @@ use RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes;
 use RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss;
 use RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch;
 use RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments;
-use RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes;
 use RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls;
 use Silber\PageCache\Middleware\CacheResponse;
 
@@ -84,7 +83,7 @@ class Kernel extends HttpKernel
             InsertDNSPrefetch::class,
             RemoveComments::class,
             TrimUrls::class,
-            RemoveQuotes::class,
+            \App\Http\Middleware\PageSpeed\RemoveQuotes::class,
             CollapseWhitespace::class, // Note: This middleware invokes "RemoveComments::class" before it runs.
             DeferJavascript::class,
         ],

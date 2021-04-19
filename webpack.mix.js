@@ -14,20 +14,20 @@ mix.webpackConfig({
             verbose: true,
             cleanStaleWebpackAssets: true,
             protectWebpackAssets: true,
-            cleanOnceBeforeBuildPatterns: ['*/*', '!vendor/*', '!*/.gitignore']
+            cleanOnceBeforeBuildPatterns: ['*/*', '!vendor/*', '!*/.gitignore', '!page-cache/*']
         })
     ]
 });
 
 mix.react('resources/js/app.js', 'public/js')
     .react('resources/js/corona.js', 'public/js')
-    .extract(['bootstrap', 'jquery', 'popper.js'])
+    // .extract(['bootstrap', 'jquery', 'popper.js'])
     .sass('resources/sass/covid/covid_yeti.scss', 'public/css')
     .sass('resources/sass/covid/covid_sandstone.scss', 'public/css')
     .sass('resources/sass/covid/covid_superhero.scss', 'public/css')
     .sass('resources/sass/covid/covid_boldstrap.scss', 'public/css')
     .sass('resources/sass/covid/covid_default.scss', 'public/css')
-    .styles(['node_modules/@fortawesome/fontawesome-free/css/all.css'], 'public/css/vendor.css')
+    // .styles(['node_modules/@fortawesome/fontawesome-free/css/all.css'], 'public/css/vendor.css')
     .copy('node_modules/@google/markerclustererplus/dist/markerclustererplus.min.js', 'public/js')
     .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
     .copyDirectory('resources/images', 'public/images')

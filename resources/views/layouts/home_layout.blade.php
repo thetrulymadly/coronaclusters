@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="{{ mix('css/vendor.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/covid_'.config('corona.theme').'.css') }}" rel="stylesheet">
+    <link href="{{ mix_cdn('css/covid_'.config('corona.theme').'.css') }}" rel="stylesheet">
     <link rel="canonical" href="{{ request()->get('canonicalUrl') ?? $url }}"/>
     <meta name="robot" content="all">
 
