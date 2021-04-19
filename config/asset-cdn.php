@@ -8,7 +8,6 @@ return [
 
     'filesystem' => [
         'disk' => 'asset-cdn',
-
         'options' => [
             //
         ],
@@ -51,7 +50,7 @@ return [
         'exclude' => [
             'paths' => [
                 'page-cache',
-                'vendor',
+                './vendor',
             ],
             'files' => [
                 //
