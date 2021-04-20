@@ -1,1 +1,3 @@
-User-agent: *
+user-agent: *
+disallow: /index.php
+sitemap: https://coronaclusters.in/sitemap.xml
