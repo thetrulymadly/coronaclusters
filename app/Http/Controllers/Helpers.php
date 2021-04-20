@@ -24,6 +24,9 @@ final class Helpers
      */
     public static function sanitize(string $string)
     {
+        // Remove index.php from url inserted by nginx
+        $string = str_replace('/index.php', '', $string);
+
         return strtolower(str_replace([' ', '_', '&', '(', ')', '%', '[', ']'], '-', $string));
     }
 
