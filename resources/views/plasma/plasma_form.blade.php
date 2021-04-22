@@ -1,9 +1,14 @@
 @php
+    $hideLocale = true;
+    $requestActive = $donorType === \App\Dictionary\PlasmaDonorType::REQUESTER;
+    $donorActive = $donorType === \App\Dictionary\PlasmaDonorType::DONOR;
     $pageSections = [
-        ['url' => '#clusters', 'title' => 'clusters'],
-        ['url' => '#data', 'title' => 'data'],
+        ['url' => 'request-plasma', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'active' => $requestActive, 'color' => $requestActive ? '' : 'text-secondary'],
+        ['url' => 'donate-plasma', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat', 'active' => $donorActive],
+        //['url' => '#clusters', 'title' => 'clusters'],
+        ['url' => '#data', 'title' => 'data', 'icon' => 'fa-chart-area'],
         //['url' => 'timeline', 'title' => 'timeline'],
-        ['section' => '#corona-testing-per-day-india', 'title' => 'corona_testing', 'active' => true],
+        ['section' => '#corona-testing-per-day-india', 'title' => 'corona_testing', 'icon' => 'fa-syringe'],
         ['section' => '#help_links', 'title' => 'help_links'],
     ];
 @endphp

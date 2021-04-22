@@ -162,4 +162,11 @@ return [
     'totalsamplestested_today' => 'Tested Today',
     'unknown' => 'Unknown',
     'updatetimestamp' => 'Tested On',
+
+    'plasma' => [
+        'request_plasma' => 'Request Plasma',
+        'donate_plasma' => 'Donate Plasma',
+        'request' => 'Request',
+        'donate' => 'Donate',
+    ],
 ];

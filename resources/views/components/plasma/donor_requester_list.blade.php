@@ -1,12 +1,16 @@
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title m-0">
+        <h4 class="card-title m-0 float-left">
             @if(isset($requesters) && $requesters === true)
                 Plasma Requests
             @else
                 Plasma Donors
             @endif
-        </h3>
+        </h4>
+        <div class="float-right d-none d-md-block">
+            <a href="{{ config('app.url').'request-plasma' }}" class="btn btn-secondary mr-3">Request <i class="fa fas fa-ambulance"></i></a>
+            <a href="{{ config('app.url').'donate-plasma' }}" class="btn btn-primary">Donate <i class="fa fas fa-heartbeat"></i></a>
+        </div>
     </div>
     <div class="card-body">
         @if($donors->isEmpty())
@@ -16,7 +20,7 @@
                 <p>There are no donors for plasma yet. We will update when someone is available to donate</p>
             @endif
         @else
-            <table class="table table-striped">
+            <table class="table table-striped table-hover table-sm">
                 <thead>
                 <tr>
                     <th>Location</th>

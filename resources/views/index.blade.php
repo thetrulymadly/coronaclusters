@@ -1,6 +1,9 @@
 @php
+    $hideLocale = false;
     $pageSections = [
-        ['section' => '#clusters', 'title' => 'clusters', 'active' => true],
+        ['url' => 'request-plasma', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'color' => 'text-secondary'],
+        ['url' => 'donate-plasma', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat'],
+        //['section' => '#clusters', 'title' => 'clusters', 'active' => true],
         ['section' => '#data', 'title' => 'data'],
         ['url' => 'corona-testing-per-day-india', 'title' => 'corona_testing'],
         //['section' => '#timeline', 'title' => 'timeline'],
