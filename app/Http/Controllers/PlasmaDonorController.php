@@ -42,10 +42,10 @@ class PlasmaDonorController extends Controller
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->breadCrumbs,
-            'title' => trans('corona.page.plasma_donor.title'),
-            'description' => trans('corona.page.plasma_donor.meta.description'),
+            'title' => trans('corona.page.donate_plasma.title'),
+            'description' => trans('corona.page.donate_plasma.meta.description'),
             'url' => request()->url(),
-            'keywords' => trans('corona.page.plasma_donor.meta.keywords'),
+            'keywords' => trans('corona.page.donate_plasma.meta.keywords'),
             'donors' => $donors,
             'donorType' => PlasmaDonorType::DONOR,
         ]);
