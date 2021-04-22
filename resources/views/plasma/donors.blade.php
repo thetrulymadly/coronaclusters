@@ -15,23 +15,8 @@
     <div class="row" id="plasma_donors">
 
         {{-- Last Update & Stats (Desktop Position 2) --}}
-        <div class="col-12 col-lg-6 order-lg-2">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title m-0">Plasma Donors</h3>
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        @foreach($donors as $donor)
-                            <li class="list-group-item">
-                                <span>{{ $donor->gender }}</span>
-                                <span>{{ $donor->age }}</span>
-                                <span>{{ $donor->blood_group }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
+        <div class="col-12">
+            @include('components.plasma.donor_requester_list', ['detailed' => true, 'requesters' => false])
         </div>
     </div>
 @endsection

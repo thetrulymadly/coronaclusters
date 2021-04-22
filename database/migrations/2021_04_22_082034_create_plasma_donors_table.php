@@ -13,8 +13,9 @@ class CreatePlasmaDonorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('plasma_donors', function (Blueprint $table) {
+        Schema::table('plasma_donors', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('uuid');
             $table->string('donor_type');
             $table->string('name')->nullable();
             $table->string('gender');
@@ -25,8 +26,8 @@ class CreatePlasmaDonorsTable extends Migration
             $table->string('city')->nullable();
             $table->string('district')->nullable();
             $table->string('state')->nullable();
-            $table->timestamp('date_of_positive')->nullable();
-            $table->timestamp('date_of_negative')->nullable();
+            $table->date('date_of_positive')->nullable()->change();
+            $table->date('date_of_negative')->nullable()->change();
             $table->timestamps();
         });
     }

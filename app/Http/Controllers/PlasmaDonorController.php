@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Dictionary\PlasmaDonorType;
+use App\Helpers\PlasmaHelper;
 use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class PlasmaDonorController extends Controller
      */
     public function index()
     {
-        $donors = PlasmaDonor::all();
+        $donors = PlasmaDonor::donor()->get();
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -35,7 +37,7 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $requests = PlasmaDonor::where('donor_type', 'requester')->get();
+        $requests = PlasmaDonor::requester()->get();
 
         return view('plasma.donate_plasma', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -57,7 +59,8 @@ class PlasmaDonorController extends Controller
     public function store(Request $request)
     {
         PlasmaDonor::create([
-            'donor_type' => 'Donor',
+            'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::DONOR),
+            'donor_type' => PlasmaDonorType::DONOR,
             'name' => $request->name,
             'gender' => $request->gender,
             'age' => $request->age,
@@ -67,11 +70,11 @@ class PlasmaDonorController extends Controller
             'city' => $request->city,
             'district' => $request->district,
             'state' => $request->state,
-            'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateTimeString(),
-            'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateTimeString(),
+            'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),
+            'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        return route('donate-plasma.index');
+        return redirect('plasma-donors');
     }
 
     /**
@@ -82,43 +85,6 @@ class PlasmaDonorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(PlasmaDonor $plasmaDonor)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\PlasmaDonor $plasmaDonor
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PlasmaDonor $plasmaDonor)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\PlasmaDonor $plasmaDonor
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PlasmaDonor $plasmaDonor)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\PlasmaDonor $plasmaDonor
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PlasmaDonor $plasmaDonor)
     {
         //
     }

@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['route' => 'donate-plasma.store']) !!}
+                    {!! Form::open(['url' => 'donate-plasma']) !!}
                     {!! Form::token(); !!}
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}
@@ -90,26 +90,7 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title m-0">Plasma Requests</h3>
-                </div>
-                <div class="card-body">
-                    @if(!empty($requests))
-                        <ul class="list-group">
-                            @foreach($requests as $request)
-                                <li class="list-group-item">
-                                    <span>{{ $donor->gender }}</span>
-                                    <span>{{ $donor->age }}</span>
-                                    <span>{{ $donor->blood_group }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p>There are no requests for plasma yet. We will update when someone requests</p>
-                    @endif
-                </div>
-            </div>
+            @include('components.plasma.donor_requester_list', ['donors' => $requests, 'requesters' => true])
         </div>
     </div>
 @endsection

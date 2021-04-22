@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Dictionary\PlasmaDonorType;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -33,23 +34,51 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PlasmaDonor extends Model
 {
-	protected $dates = [
-		'date_of_positive',
-		'date_of_negative'
-	];
 
-	protected $fillable = [
-		'donor_type',
-		'name',
-		'gender',
-		'age',
-		'blood_group',
-		'phone_number',
-		'hospital',
-		'city',
-		'district',
-		'state',
-		'date_of_positive',
-		'date_of_negative'
-	];
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'date_of_positive',
+        'date_of_negative',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'uuid',
+        'donor_type',
+        'name',
+        'gender',
+        'age',
+        'blood_group',
+        'phone_number',
+        'hospital',
+        'city',
+        'district',
+        'state',
+        'date_of_positive',
+        'date_of_negative',
+    ];
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeDonor($query)
+    {
+        return $query->where('donor_type', PlasmaDonorType::DONOR);
+    }
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeRequester($query)
+    {
+        return $query->where('donor_type', PlasmaDonorType::REQUESTER);
+    }
 }

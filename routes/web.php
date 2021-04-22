@@ -23,7 +23,9 @@ Route::get('', 'CoronaController@home');
 //Route::get('{string?}/timeline', 'CoronaController@timeline')->where('string', '.*');
 Route::get('corona-testing-per-day-india', 'CoronaController@testing');
 
-Route::resource('donate-plasma', 'PlasmaDonorController');
+Route::get('donate-plasma', 'PlasmaDonorController@create');
+Route::post('donate-plasma', 'PlasmaDonorController@store');
+Route::get('plasma-donors', 'PlasmaDonorController@index');
 
 // This should always be the last route in this file
 Route::get('{string}', 'CoronaController@index')->where('string', '.*');
