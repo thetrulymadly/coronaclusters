@@ -76,6 +76,11 @@
                         {!! Form::select('state', ['1' => 'Delhi', '2' => 'Haryana'], ['class' => 'form-control', 'required', 'placeholder' => 'Select your state']); !!}
                     </div>
 
+                    <div class="form-group">
+                        {!! Form::label('phone_number', 'Phone Number'.' *') !!}
+                        {!! Form::text('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your phone number']) !!}
+                    </div>
+
                     {!! Form::submit('Register to Donate', ['class' => 'btn btn-lg btn-block btn-success']); !!}
 
                     {{--            {!! Form::close() !!}--}}
