@@ -12,18 +12,26 @@
 @section('content')
     @include('components.breadcrumbs')
 
-    <div class="row" id="plasma_donors">
-
+    <div class="row">
         {{-- Last Update & Stats (Desktop Position 2) --}}
         <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title m-0">Donate Plasma</h3>
+                    <h3 class="card-title m-0">
+                        @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                            Donate Plasma
+                        @else
+                            Request Plasma
+                        @endif
+                    </h3>
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['url' => 'donate-plasma']) !!}
-                    {!! Form::token(); !!}
+                    @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                        {!! Form::open(['url' => 'donate-plasma']) !!}
+                    @else
+                        {!! Form::open(['url' => 'request-plasma']) !!}
+                    @endif
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}
                         {!! Form::text('name', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your full name']) !!}
@@ -76,21 +84,38 @@
                         {!! Form::select('state', ['1' => 'Delhi', '2' => 'Haryana'], ['class' => 'form-control', 'required', 'placeholder' => 'Select your state']); !!}
                     </div>
 
+                    @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
+                        <div class="form-group">
+                            {!! Form::label('hospital', 'Hospital') !!}
+                            {!! Form::textarea('hospital', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter the name and address of the hospital']) !!}
+                        </div>
+                    @endif
+
+
                     <div class="form-group">
                         {!! Form::label('phone_number', 'Phone Number'.' *') !!}
                         {!! Form::text('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your phone number']) !!}
                     </div>
 
-                    {!! Form::submit('Register to Donate', ['class' => 'btn btn-lg btn-block btn-success']); !!}
+                    @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                        {!! Form::submit('Register to Donate', ['class' => 'btn btn-lg btn-block btn-primary']); !!}
+                    @else
+                        {!! Form::submit('Register Plasma Request', ['class' => 'btn btn-lg btn-block btn-primary']); !!}
+                    @endif
 
-                    {{--            {!! Form::close() !!}--}}
+                    {!! Form::token(); !!}
+
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-lg-6">
-            @include('components.plasma.donor_requester_list', ['donors' => $requests, 'requesters' => true])
+            @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => true, 'detailed' => false])
+            @else
+                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => false, 'detailed' => false])
+            @endif
         </div>
     </div>
 @endsection

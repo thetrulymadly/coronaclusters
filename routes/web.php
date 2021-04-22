@@ -27,5 +27,9 @@ Route::get('donate-plasma', 'PlasmaDonorController@create');
 Route::post('donate-plasma', 'PlasmaDonorController@store');
 Route::get('plasma-donors', 'PlasmaDonorController@index');
 
+Route::get('request-plasma', 'PlasmaRequestController@create');
+Route::post('request-plasma', 'PlasmaRequestController@store');
+Route::get('plasma-requests', 'PlasmaRequestController@index');
+
 // This should always be the last route in this file
 Route::get('{string}', 'CoronaController@index')->where('string', '.*');

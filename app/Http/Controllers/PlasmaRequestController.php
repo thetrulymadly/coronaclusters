@@ -8,7 +8,7 @@ use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class PlasmaDonorController extends Controller
+class PlasmaRequestController extends Controller
 {
 
     /**
@@ -18,7 +18,7 @@ class PlasmaDonorController extends Controller
      */
     public function index()
     {
-        $donors = PlasmaDonor::donor()->get();
+        $donors = PlasmaDonor::requester()->get();
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -27,7 +27,7 @@ class PlasmaDonorController extends Controller
             'url' => request()->url(),
             'keywords' => trans('corona.page.plasma_donor.meta.keywords'),
             'donors' => $donors,
-            'donorType' => PlasmaDonorType::DONOR,
+            'donorType' => PlasmaDonorType::REQUESTER,
         ]);
     }
 
@@ -38,7 +38,7 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::requester()->get();
+        $donors = PlasmaDonor::donor()->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -47,7 +47,7 @@ class PlasmaDonorController extends Controller
             'url' => request()->url(),
             'keywords' => trans('corona.page.plasma_donor.meta.keywords'),
             'donors' => $donors,
-            'donorType' => PlasmaDonorType::DONOR,
+            'donorType' => PlasmaDonorType::REQUESTER,
         ]);
     }
 
@@ -61,8 +61,8 @@ class PlasmaDonorController extends Controller
     public function store(Request $request)
     {
         PlasmaDonor::create([
-            'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::DONOR),
-            'donor_type' => PlasmaDonorType::DONOR,
+            'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::REQUESTER),
+            'donor_type' => PlasmaDonorType::REQUESTER,
             'name' => $request->name,
             'gender' => $request->gender,
             'age' => $request->age,
@@ -71,11 +71,12 @@ class PlasmaDonorController extends Controller
             'city' => $request->city,
             'district' => $request->district,
             'state' => $request->state,
+            'hospital' => $request->hospital,
             'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        return redirect('plasma-donors');
+        return redirect('plasma-requests');
     }
 
     /**

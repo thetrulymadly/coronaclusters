@@ -13,10 +13,12 @@
     @include('components.breadcrumbs')
 
     <div class="row" id="plasma_donors">
-
-        {{-- Last Update & Stats (Desktop Position 2) --}}
         <div class="col-12">
-            @include('components.plasma.donor_requester_list', ['detailed' => true, 'requesters' => false])
+            @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => false, 'detailed' => true])
+            @else
+                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => true, 'detailed' => true])
+            @endif
         </div>
     </div>
 @endsection

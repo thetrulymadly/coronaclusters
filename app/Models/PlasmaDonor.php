@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Dictionary\PlasmaDonorType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -61,6 +62,16 @@ class PlasmaDonor extends Model
         'date_of_positive',
         'date_of_negative',
     ];
+
+    public function getDateOfPositiveAttribute()
+    {
+        return $this->attributes['date_of_positive'] ? Carbon::parse($this->attributes['date_of_positive'])->toDateString() : '';
+    }
+
+    public function getDateOfNegativeAttribute()
+    {
+        return $this->attributes['date_of_negative'] ? Carbon::parse($this->attributes['date_of_negative'])->toDateString() : '';
+    }
 
     /**
      * @param $query
