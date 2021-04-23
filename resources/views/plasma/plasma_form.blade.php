@@ -181,7 +181,7 @@
                         dataType: 'json',
                         data: function (params) {
                             return query = {
-                                // term: params.term,
+                                term: params.term,
                                 state_id: e.params.data.id
                             }
                         }
