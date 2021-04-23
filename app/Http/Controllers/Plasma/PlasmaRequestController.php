@@ -32,7 +32,7 @@ class PlasmaRequestController extends Controller
         $donors = PlasmaDonor::requester()->latestFirst()->get();
 
         return view('plasma.donors', [
-            'breadcrumbs' => $this->breadCrumbs,
+            'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('corona.page.plasma_request.title'),
             'description' => trans('corona.page.plasma_request.meta.description'),
             'url' => request()->url(),
@@ -54,7 +54,7 @@ class PlasmaRequestController extends Controller
 //        $cities =
 
         return view('plasma.plasma_form', [
-            'breadcrumbs' => $this->breadCrumbs,
+            'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('corona.page.request_plasma.title'),
             'description' => trans('corona.page.request_plasma.meta.description'),
             'url' => request()->url(),

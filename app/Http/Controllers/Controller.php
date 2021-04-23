@@ -23,19 +23,6 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @var array
-     */
-    protected $breadCrumbs;
-
-    /**
-     * PlasmaController constructor.
-     */
-    public function __construct()
-    {
-        $this->breadCrumbs = $this->getBreadcrumbs();
-    }
-
-    /**
      * @return array
      */
     protected function getBreadcrumbs()

@@ -1,5 +1,8 @@
 @php
     $hideLocale = false;
+    $nav = [
+        'current_page' => 'data',
+    ];
     $pageSections = [
         ['url' => 'plasma/request', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'color' => 'text-secondary'],
         ['url' => 'plasma/donate', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat'],
@@ -52,16 +55,20 @@
             <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
                 @if($templateType === 'state')
                     <li class="nav-item">
-                        <a class="nav-link active" id="district-data-tab" data-toggle="tab" href="#district-data" role="tab"
-                           aria-controls="district wise data" aria-selected="true">{{ trans('corona.district_wise_data') }}</a>
+                        <a class="nav-link active" id="district-data-tab" data-toggle="tab" href="#district-data"
+                           role="tab"
+                           aria-controls="district wise data"
+                           aria-selected="true">{{ trans('corona.district_wise_data') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="city-data-tab" data-toggle="tab" href="#city-data" role="tab" aria-controls="city wise data"
+                        <a class="nav-link" id="city-data-tab" data-toggle="tab" href="#city-data" role="tab"
+                           aria-controls="city wise data"
                            aria-selected="true">{{ trans('corona.city_wise_data') }}</a>
                     </li>
                 @elseif($templateType === 'country')
                     <li class="nav-item">
-                        <a class="nav-link active" id="state-data-tab" data-toggle="tab" href="#state-data" role="tab" aria-controls="state wise data"
+                        <a class="nav-link active" id="state-data-tab" data-toggle="tab" href="#state-data" role="tab"
+                           aria-controls="state wise data"
                            aria-selected="true">{{ trans('corona.state_wise_data') }}</a>
                     </li>
                 @endif
@@ -84,7 +91,8 @@
         @include('components.timeline_tracks', ['timeline' => $timeline, 'location' => $aggregateData['location']])
 
         <div class="w-100 py-3 text-center">
-            <a href="{{ request()->localeUrl ?? '' }}timeline"><i class="fas fa-1x fa-angle-double-right"></i> {{ trans('corona.timeline_link') }}</a>
+            <a href="{{ request()->localeUrl ?? '' }}timeline"><i
+                    class="fas fa-1x fa-angle-double-right"></i> {{ trans('corona.timeline_link') }}</a>
         </div>
     @endif
 @endsection

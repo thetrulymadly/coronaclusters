@@ -13,7 +13,7 @@
 </head>
 <body data-spy="scroll" data-target="#covid-nav" data-offset="200">
 
-@include('partials.header')
+@include('partials.header_v2')
 
 <div class="container-fluid">
     @yield('content')
