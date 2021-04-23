@@ -9,6 +9,8 @@
 namespace App\Models;
 
 use App\Dictionary\PlasmaDonorType;
+use App\Models\Geo\City;
+use App\Models\Geo\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -63,11 +65,17 @@ class PlasmaDonor extends Model
         'date_of_negative',
     ];
 
+    /**
+     * @return string
+     */
     public function getDateOfPositiveAttribute()
     {
         return $this->attributes['date_of_positive'] ? Carbon::parse($this->attributes['date_of_positive'])->toDateString() : '';
     }
 
+    /**
+     * @return string
+     */
     public function getDateOfNegativeAttribute()
     {
         return $this->attributes['date_of_negative'] ? Carbon::parse($this->attributes['date_of_negative'])->toDateString() : '';
@@ -91,5 +99,31 @@ class PlasmaDonor extends Model
     public function scopeRequester($query)
     {
         return $query->where('donor_type', PlasmaDonorType::REQUESTER);
+    }
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeLatestFirst($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function geoState()
+    {
+        return $this->hasOne(State::class, 'state_id', 'state');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function geoCity()
+    {
+        return $this->hasOne(City::class, 'city_id', 'city');
     }
 }

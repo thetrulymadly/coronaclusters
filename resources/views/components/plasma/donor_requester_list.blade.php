@@ -8,8 +8,8 @@
             @endif
         </h4>
         <div class="float-right d-none d-md-block">
-            <a href="{{ config('app.url').'request-plasma' }}" class="btn btn-secondary mr-3">Request <i class="fa fas fa-ambulance"></i></a>
-            <a href="{{ config('app.url').'donate-plasma' }}" class="btn btn-primary">Donate <i class="fa fas fa-heartbeat"></i></a>
+            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">Request <i class="fa fas fa-ambulance"></i></a>
+            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">Donate <i class="fa fas fa-heartbeat"></i></a>
         </div>
     </div>
     <div class="card-body">
@@ -39,7 +39,7 @@
                 <tbody>
                 @foreach($donors as $donor)
                     <tr>
-                        <td>{{ $donor->city ?? $donor->district ?? $donor->state }}</td>
+                        <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                         <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                         <td>{{ $donor->blood_group }}</td>
 

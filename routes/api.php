@@ -21,3 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('raw_data', 'CoronaApiController@getRawData');
 Route::get('geo_data', 'CoronaApiController@getGeoJson');
+Route::group(['prefix' => 'geo', 'namespace' => 'Geo'], function () {
+    Route::get('state/search', 'GeoController@searchState');
+    Route::get('city/search', 'GeoController@searchCity');
+});

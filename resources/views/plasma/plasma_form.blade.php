@@ -3,8 +3,8 @@
     $requestActive = $donorType === \App\Dictionary\PlasmaDonorType::REQUESTER;
     $donorActive = $donorType === \App\Dictionary\PlasmaDonorType::DONOR;
     $pageSections = [
-        ['url' => 'request-plasma', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'active' => $requestActive, 'color' => $requestActive ? '' : 'text-secondary'],
-        ['url' => 'donate-plasma', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat', 'active' => $donorActive],
+        ['url' => 'plasma/request', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'active' => $requestActive, 'color' => $requestActive ? '' : 'text-secondary'],
+        ['url' => 'plasma/donate', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat', 'active' => $donorActive],
         //['url' => '#clusters', 'title' => 'clusters'],
         ['url' => '#data', 'title' => 'data', 'icon' => 'fa-chart-area'],
         //['url' => 'timeline', 'title' => 'timeline'],
@@ -13,6 +13,10 @@
     ];
 @endphp
 @extends('layouts.home_layout')
+
+@section('styles')
+    <link href="{{ mix_cdn('css/select2.min.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
     @include('components.breadcrumbs')
@@ -33,9 +37,9 @@
                 <div class="card-body">
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
-                        {!! Form::open(['url' => 'donate-plasma']) !!}
+                        {!! Form::open(['url' => 'plasma/donate']) !!}
                     @else
-                        {!! Form::open(['url' => 'request-plasma']) !!}
+                        {!! Form::open(['url' => 'plasma/request']) !!}
                     @endif
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}
@@ -45,9 +49,11 @@
                     <div class="form-group">
                         {!! Form::label('gender', 'Gender'.' *') !!}
                         <div class="form-group">
-                            <label class="mr-2"><input type="radio" name="gender" value="male"><span class="px-1">Male</span></label>
+                            <label class="mr-2"><input type="radio" name="gender" value="male"><span
+                                    class="px-1">Male</span></label>
                             <label class="mr-2"><input type="radio" name="gender" value="female"><span class="px-1">Female</span></label>
-                            <label class="mr-2"><input type="radio" name="gender" value="other"><span class="px-1">Other</span></label>
+                            <label class="mr-2"><input type="radio" name="gender" value="other"><span
+                                    class="px-1">Other</span></label>
                         </div>
                         {{--                    <label class="radio-inline">--}}
                         {{--                        Gender--}}
@@ -56,14 +62,15 @@
                         {{--                    </label>--}}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('age', 'Age'.' *') !!}
+                        {!! Form::label('age', 'Age'.' * ' . '(Should be between 18 to 60)') !!}
                         {!! Form::number('age', 18, ['class' => 'form-control', 'required', 'placeholder' => 'Enter your Age', 'min'=> 18, 'max' => 60]); !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('blood_group', 'Blood Group'.' *') !!}
                         <div class="form-group">
                             @foreach(config('plasma_donor.blood_groups') as $bloodGroup)
-                                <label class="mr-2"><input type="radio" name="blood_group" value="{{ $bloodGroup }}"><span
+                                <label class="mr-2"><input type="radio" name="blood_group"
+                                                           value="{{ $bloodGroup }}"><span
                                         class="px-1">{{ $bloodGroup }}</span></label>
                             @endforeach
                         </div>
@@ -76,17 +83,13 @@
                         {!! Form::label('date_of_negative', 'Date of COVID-19 negative'.' *') !!}
                         {!! Form::date('date_of_negative', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Date of negative']); !!}
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}
-                        {!! Form::select('city', ['1' => 'New Delhi', '2' => 'Gurugram'], ['class' => 'form-control', 'required', 'placeholder' => 'Select your city']); !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('district', 'District'.' *', ['class' => 'pr-3']) !!}
-                        {!! Form::select('district', ['1' => 'South Delhi', '2' => 'Gurugram'], ['class' => 'form-control', 'required', 'placeholder' => 'Select your district']); !!}
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group form-inline">
                         {!! Form::label('state', 'State'.' *', ['class' => 'pr-3']) !!}
-                        {!! Form::select('state', ['1' => 'Delhi', '2' => 'Haryana'], ['class' => 'form-control', 'required', 'placeholder' => 'Select your state']); !!}
+                        {!! Form::select('state', [], null, ['class' => 'form-control select_state', 'required', 'placeholder' => 'Select your state']); !!}
+                    </div>
+                    <div class="form-group form-inline">
+                        {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}
+                        {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Select your city']); !!}
                     </div>
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
@@ -126,6 +129,85 @@
 @endsection
 
 @section('scrips')
+    <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ config('app.url').'api/geo/state/search' }}",
+                dataType: 'json',
+                success: function (data) {
+                    // create the option and append to Select2
+
+                    var option = new Option(data.text, data.id, false, false);
+                    $('.select_state').append(option).trigger('change');
+                }
+            });
+            //     .then(function (data) {
+            //     console.log(data.text, data.id)
+            //     // create the option and append to Select2
+            //     var option = new Option(data.text, data.id, false, false);
+            //     $('.select_state').append(option).trigger('change');
+            //
+            //     // manually trigger the `select2:select` event
+            //     // studentSelect.trigger({
+            //     //     type: 'select2:select',
+            //     //     params: {
+            //     //         data: data
+            //     //     }
+            //     // });
+            // });
+
+            $('.select_state').select2({
+                placeholder: 'Select your state',
+                // minimumInputLength: 3,
+                maximumInputLength: 20,
+                ajax: {
+                    type: 'GET',
+                    url: "{{ config('app.url').'api/geo/state/search' }}",
+                    dataType: 'json',
+                }
+            }).on('select2:select', function (e) {
+                // clear selected city
+                // $('.select_state').val(null).trigger('change');
+                // Prefill cities of the selected state
+                $('.select_city').select2({
+                    placeholder: 'Select your city',
+                    ajax: {
+                        type: 'GET',
+                        url: "{{ config('app.url').'api/geo/city/search' }}",
+                        dataType: 'json',
+                        data: function (params) {
+                            return query = {
+                                // term: params.term,
+                                state_id: e.params.data.id
+                            }
+                        }
+                    }
+                });
+            });
+            $('.select_city').select2({
+                placeholder: 'Select your city',
+                minimumInputLength: 3,
+                maximumInputLength: 20,
+                ajax: {
+                    type: 'GET',
+                    url: "{{ config('app.url').'api/geo/city/search' }}",
+                    dataType: 'json',
+                    data: function (params) {
+                        var state = $('.select_state').select2('data');
+                        return query = {
+                            term: params.term,
+                            state_id: state.id
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
     {{--    <script src="{{ mix_cdn('js/corona.js') }}"></script>--}}
 
     {{--    <script type="text/javascript">--}}

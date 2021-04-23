@@ -1,13 +1,24 @@
 <?php
+/**
+ * @copyright Copyright (c) 2021 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ *
+ * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
+ * @since     23 April 2021
+ */
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Plasma;
 
 use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
+use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+/**
+ * Class PlasmaDonorController
+ * @package App\Http\Controllers\Plasma
+ */
 class PlasmaDonorController extends Controller
 {
 
@@ -18,7 +29,7 @@ class PlasmaDonorController extends Controller
      */
     public function index()
     {
-        $donors = PlasmaDonor::donor()->get();
+        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latestFirst()->get();
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -38,7 +49,7 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::requester()->get();
+        $donors = PlasmaDonor::requester()->latestFirst()->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->breadCrumbs,
@@ -75,7 +86,7 @@ class PlasmaDonorController extends Controller
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        return redirect('plasma-donors');
+        return redirect('plasma/donors');
     }
 
     /**

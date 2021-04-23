@@ -87,6 +87,6 @@ final class Helpers
             $state = $path;
         }
 
-        return [Helpers::beautify($state), Helpers::beautify($city)];
+        return [self::beautify($state), self::beautify($city)];
     }
 }

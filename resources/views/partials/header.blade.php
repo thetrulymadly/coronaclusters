@@ -24,8 +24,8 @@
         @endif
 
         @php
-            if(count($pageSections) > 4) {
-                $moreSections = array_splice($pageSections, 4);
+            if(count($pageSections) > 3) {
+                $moreSections = array_splice($pageSections, 3);
             }
         @endphp
         @foreach($pageSections as $section)

@@ -5,6 +5,8 @@
     <link rel="canonical" href="{{ request()->get('canonicalUrl') ?? $url }}"/>
     <meta name="robot" content="all">
 
+    @yield('styles')
+
     <title>{{ $title }}</title>
 
     @include('partials.meta_tags', ['meta_title' => $title, 'meta_description' => $description, 'keywords' => $keywords, 'page_url' => $url ])

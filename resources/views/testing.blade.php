@@ -1,8 +1,8 @@
 @php
     $hideLocale = false;
     $pageSections = [
-        ['url' => 'request-plasma', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'color' => 'text-secondary'],
-        ['url' => 'donate-plasma', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat'],
+        ['url' => 'plasma/request', 'title' => 'plasma.request_plasma', 'icon' => 'fa-ambulance', 'color' => 'text-secondary'],
+        ['url' => 'plasma/donate', 'title' => 'plasma.donate_plasma', 'icon' => 'fa-heartbeat'],
         //['url' => '#clusters', 'title' => 'clusters'],
         ['url' => '#data', 'title' => 'data'],
         //['url' => 'timeline', 'title' => 'timeline'],
