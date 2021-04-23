@@ -36,7 +36,7 @@
         @endif
 
         {{-- Menu : Data --}}
-        <a href="{{ $nav['current_page'] === 'data' ? '#clusters' : $baseUrl }}" class="nav-item nav-link
+        <a href="{{ $nav['current_page'] === 'data' ? '#data' : $baseUrl }}" class="nav-item nav-link
         @if($nav['current_page'] === 'data') active @endif
         @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
         >
