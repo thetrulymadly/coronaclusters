@@ -51,27 +51,27 @@
                data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                aria-expanded="false">
                 <i class="fa fas fa-ambulance"></i>
-                {{ __('corona.plasma.title') }}
+                {{ __('plasma.plasma') }}
             </a>
             <div class="dropdown-menu">
                 <a href="{{ $baseUrl.'plasma' }}" class="dropdown-item
                 @if($nav['current_page'] === 'plasma') active @endif">
-                    {{ __('corona.plasma.title') }}
+                    {{ __('plasma.plasma') }}
                 </a>
 
                 <a href="{{ $baseUrl.'plasma/request' }}" class="dropdown-item
                 @if($nav['current_page'] === 'plasma/request') active @endif">
-                    {{ __('corona.plasma.request') }}
+                    {{ __('plasma.request') }}
                 </a>
 
                 <a href="{{ $baseUrl.'plasma/donate' }}" class="dropdown-item
                 @if($nav['current_page'] === 'plasma/donate') active @endif">
-                    {{ __('corona.plasma.donate') }}
+                    {{ __('plasma.donate') }}
                 </a>
 
                 <a href="{{ $baseUrl.'plasma/requests' }}" class="dropdown-item
                 @if($nav['current_page'] === 'plasma/requests') active @endif">
-                    {{ __('corona.plasma.request_list') }}
+                    {{ __('plasma.request_list') }}
                 </a>
 
                 <a href="{{ $baseUrl.'plasma/donors' }}" class="dropdown-item

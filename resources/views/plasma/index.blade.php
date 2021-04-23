@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-6">
             <div class="card bg-light mb-3 text-danger">
-                <div class="card-header">{{ trans('corona.plasma_requests') }}</div>
+                <div class="card-header">{{ trans('plasma.plasma_requests') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
                         <div>
@@ -37,7 +37,7 @@
 
         <div class="col-6">
             <div class="card bg-light mb-3 text-danger">
-                <div class="card-header">{{ trans('corona.plasma_donors') }}</div>
+                <div class="card-header">{{ trans('plasma.plasma_donors') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
                         <div>
