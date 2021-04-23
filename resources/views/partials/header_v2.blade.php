@@ -71,12 +71,12 @@
 
                 <a href="{{ $baseUrl.'plasma/requests' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/requests') active @endif">
-                    {{ __('plasma.request_list') }}
+                    {{ __('plasma.requests_list') }}
                 </a>
 
                 <a href="{{ $baseUrl.'plasma/donors' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/donors') active @endif">
-                    {{ __('plasma.donor_list') }}
+                    {{ __('plasma.donors_list') }}
                 </a>
             </div>
         </div>
