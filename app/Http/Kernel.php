@@ -77,7 +77,7 @@ class Kernel extends HttpKernel
             SubstituteBindings::class,
             LocaleMiddleware::class,
             RedirectsMiddleware::class,
-//            CacheResponse::class,
+            CacheResponse::class,
             InlineCss::class,
             ElideAttributes::class,
             InsertDNSPrefetch::class,
