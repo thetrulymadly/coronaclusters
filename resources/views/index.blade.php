@@ -18,7 +18,7 @@
 
 @section('content')
     @include('components.breadcrumbs')
-    <div class="row" id="clusters">
+    <div class="row" id="data">
         {{-- Stats (Desktop Position 4)--}}
         <div class="col-12 col-lg-6 order-lg-2">
             <div class="row">
@@ -50,7 +50,7 @@
 
     <hr>
 
-    <div class="row" id="data">
+    <div class="row" id="">
         <div class="col-12 mb-3">
             <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
                 @if($templateType === 'state')
