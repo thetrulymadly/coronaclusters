@@ -40,7 +40,7 @@
         @if($nav['current_page'] === 'data') active @endif
         @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
         >
-            <i class="mr-1 fa fas fa-chart-area"></i>
+            <i class="mr-1 fa fas fa-chart-area d-none d-md-inline-block"></i>
             {{ __('corona.data') }}
         </a>
 
@@ -50,7 +50,7 @@
             @if($plasmaActive) active @endif"
                data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                aria-expanded="false">
-                <i class="fa fas fa-ambulance"></i>
+                <i class="fa fas fa-ambulance d-none d-md-inline-block"></i>
                 {{ __('plasma.plasma') }}
             </a>
             <div class="dropdown-menu">
@@ -87,7 +87,7 @@
         @if($nav['current_page'] === 'corona-testing-per-day-india') active @endif
            @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
         >
-            <i class="mr-1 fa fas fa-syringe"></i>
+            <i class="mr-1 fa fas fa-syringe d-none d-md-inline-block"></i>
             {{ __('corona.corona_testing') }}
         </a>
 
@@ -95,8 +95,8 @@
         <a href="#help_links" class="nav-item nav-link
         @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
         >
-            <i class="mr-1 fa fas fa-hands-helping"></i>
-            {{ __('corona.help_links') }}
+            <i class="mr-1 fa fas fa-hands-helping d-none d-md-inline-block"></i>
+            {{ __('corona.help') }}
         </a>
 
         @if(!empty($navDropdown))
