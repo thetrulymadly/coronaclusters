@@ -54,27 +54,27 @@
                 {{ __('plasma.plasma') }}
             </a>
             <div class="dropdown-menu">
-                <a href="{{ $baseUrl.'plasma' }}" class="dropdown-item
+                <a href="{{ $baseUrl.'plasma' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma') active @endif">
-                    {{ __('plasma.plasma') }}
+                    {{ __('plasma.plasma_home') }}
                 </a>
 
-                <a href="{{ $baseUrl.'plasma/request' }}" class="dropdown-item
+                <a href="{{ $baseUrl.'plasma/request' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/request') active @endif">
                     {{ __('plasma.request') }}
                 </a>
 
-                <a href="{{ $baseUrl.'plasma/donate' }}" class="dropdown-item
+                <a href="{{ $baseUrl.'plasma/donate' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/donate') active @endif">
                     {{ __('plasma.donate') }}
                 </a>
 
-                <a href="{{ $baseUrl.'plasma/requests' }}" class="dropdown-item
+                <a href="{{ $baseUrl.'plasma/requests' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/requests') active @endif">
                     {{ __('plasma.request_list') }}
                 </a>
 
-                <a href="{{ $baseUrl.'plasma/donors' }}" class="dropdown-item
+                <a href="{{ $baseUrl.'plasma/donors' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/donors') active @endif">
                     {{ __('corona.plasma.donor_list') }}
                 </a>
@@ -82,9 +82,10 @@
         </div>
 
         {{-- Menu : Testing --}}
-        <a href="{{ $nav['current_page'] === 'corona-testing-per-day-india' ? '#corona-testing-per-day-india' : $baseUrl.'corona-testing-per-day-india' }}" class="nav-item nav-link
+        <a href="{{ $nav['current_page'] === 'corona-testing-per-day-india' ? '#corona-testing-per-day-india' : $baseUrl.'corona-testing-per-day-india' }}"
+           class="nav-item nav-link
         @if($nav['current_page'] === 'corona-testing-per-day-india') active @endif
-        @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
+           @if(isset($nav['color'])) {{ 'text-'.$nav['color'] }} @endif"
         >
             <i class="mr-1 fa fas fa-syringe"></i>
             {{ __('corona.corona_testing') }}
@@ -106,7 +107,7 @@
                 </a>
                 <div class="dropdown-menu">
                     @foreach($navDropdown as $dropdown)
-                        <a class="dropdown-item"
+                        <a class="dropdown-item text-left"
                            href="{{ $baseUrl.$dropdown['url'] }}">
                             {{ $dropdown['title'] }}
                         </a>

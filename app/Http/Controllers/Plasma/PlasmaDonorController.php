@@ -33,10 +33,10 @@ class PlasmaDonorController extends Controller
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
-            'title' => trans('corona.page.plasma_donor.title'),
-            'description' => trans('corona.page.plasma_donor.meta.description'),
+            'title' => trans('plasma.page.plasma_donors.title'),
+            'description' => trans('plasma.page.plasma_donors.meta.description'),
             'url' => request()->url(),
-            'keywords' => trans('corona.page.plasma_donor.meta.keywords'),
+            'keywords' => trans('plasma.page.plasma_donors.meta.keywords'),
             'donors' => $donors,
             'donorType' => PlasmaDonorType::DONOR,
         ]);
@@ -53,10 +53,10 @@ class PlasmaDonorController extends Controller
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
-            'title' => trans('corona.page.donate_plasma.title'),
-            'description' => trans('corona.page.donate_plasma.meta.description'),
+            'title' => trans('plasma.page.donate_plasma.title'),
+            'description' => trans('plasma.page.donate_plasma.meta.description'),
             'url' => request()->url(),
-            'keywords' => trans('corona.page.donate_plasma.meta.keywords'),
+            'keywords' => trans('plasma.page.donate_plasma.meta.keywords'),
             'donors' => $donors,
             'donorType' => PlasmaDonorType::DONOR,
         ]);

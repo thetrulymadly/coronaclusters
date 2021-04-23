@@ -2,14 +2,14 @@
     <div class="card-header">
         <h4 class="card-title m-0 float-left">
             @if(isset($requesters) && $requesters === true)
-                Plasma Requests
+                {{ __('plasma.requests') }}
             @else
-                Plasma Donors
+                {{ __('plasma.donors') }}
             @endif
         </h4>
         <div class="float-right d-none d-md-block">
-            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">Request <i class="fa fas fa-ambulance"></i></a>
-            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">Donate <i class="fa fas fa-heartbeat"></i></a>
+            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.requests') }} <i class="fa fas fa-ambulance"></i></a>
+            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donors') }} <i class="fa fas fa-heartbeat"></i></a>
         </div>
     </div>
     <div class="card-body">

@@ -29,10 +29,10 @@ class PlasmaController extends Controller
 
         return view('plasma.index', [
             'breadcrumbs' => $this->getBreadcrumbs(),
-            'title' => trans('corona.page.plasma.title'),
-            'description' => trans('corona.page.plasma.meta.description'),
+            'title' => trans('plasma.page.plasma.title'),
+            'description' => trans('plasma.page.plasma.meta.description'),
             'url' => request()->url(),
-            'keywords' => trans('corona.page.plasma.meta.keywords'),
+            'keywords' => trans('plasma.page.plasma.meta.keywords'),
             'plasmaCount' => $plasmaCount,
         ]);
     }

@@ -22,13 +22,13 @@
                         <div>
                             <h5 class="card-title m-0">{{ $plasmaCount['requests'] }}</h5>
                             @if($plasmaCount['requests_delta'] !== 0)
-                                <small>[ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['requests_delta'] ?? 0 }}
-                                    ]</small>
+                                <small>
+                                    [ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['requests_delta'] ?? 0 }} ]
+                                </small>
                             @endif
                         </div>
                         <a href="{{ config('app.url').'plasma/requests' }}" class="btn btn-outline-secondary">
-                            <small>Request List</small>
-                            <i class="fa fas fa-arrow-right ml-1"></i>
+                            <small>{{ __('plasma.requests_list') }}</small><i class="fa fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
                 </div>
@@ -43,13 +43,13 @@
                         <div>
                             <h5 class="card-title m-0">{{ $plasmaCount['donors'] }}</h5>
                             @if($plasmaCount['donors_delta'] !== 0)
-                                <small>[ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['donors_delta'] ?? 0 }}
-                                    ]</small>
+                                <small>
+                                    [ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['donors_delta'] ?? 0 }} ]
+                                </small>
                             @endif
                         </div>
                         <a href="{{ config('app.url').'plasma/donors' }}" class="btn btn-outline-primary">
-                            <small>Donor List</small>
-                            <i class="fa fas fa-arrow-right ml-1"></i>
+                            <small>{{ __('plasma.donors_list') }}</small><i class="fa fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
                 </div>
@@ -61,11 +61,12 @@
         <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0 float-left">Request Plasma</h5>
+                    <h5 class="card-title mb-0 float-left">{{ __('plasma.request_plasma') }}</h5>
 
                     <div class="float-right d-none d-md-block">
-                        <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-sm btn-secondary mr-3">Register
-                            Request <i class="fa fas fa-ambulance"></i></a>
+                        <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-sm btn-secondary mr-3">
+                            {{ __('plasma.register_request') }}<i class="fa fas fa-ambulance ml-1"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -79,8 +80,9 @@
                         </li>
                     </ul>
                     <a href="{{ config('app.url').'plasma/request' }}"
-                       class="btn btn-sm btn-secondary d-lg-none float-right">Register Request <i
-                            class="fa fas fa-ambulance"></i></a>
+                       class="btn btn-sm btn-secondary d-md-none float-right">
+                        {{ __('plasma.register_request') }}<i class="fa fas fa-ambulance ml-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -88,11 +90,12 @@
         <div class="col-12 col-lg-6">
             <div class="card mt-3 mt-lg-0">
                 <div class="card-header">
-                    <h5 class="card-title mb-0 float-left">Plasma Donation</h5>
+                    <h5 class="card-title mb-0 float-left">{{ __('plasma.plasma_donation') }}</h5>
 
                     <div class="float-right d-none d-md-block">
-                        <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-sm btn-primary">Donate <i
-                                class="fa fas fa-heartbeat"></i></a>
+                        <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-sm btn-primary">
+                            {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -116,8 +119,9 @@
                     </ul>
 
                     <a href="{{ config('app.url').'plasma/donate' }}"
-                       class="btn btn-sm btn-primary d-lg-none float-right">Donate <i
-                            class="fa fas fa-heartbeat"></i></a>
+                       class="btn btn-sm btn-primary d-md-none float-right">
+                        {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
