@@ -45,7 +45,7 @@
 
                         @if(isset($detailed) && $detailed === true)
                             <th>{{ $donor->phone_number }}</th>
-                            <th>{{ $donor->date_of_postive }}</th>
+                            <th>{{ $donor->date_of_positive }}</th>
                             <th>{{ $donor->date_of_negative }}</th>
                         @endif
 
