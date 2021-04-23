@@ -1,8 +1,6 @@
 @php
     $hideLocale = true;
     $requestActive = $donorType === \App\Dictionary\PlasmaDonorType::REQUESTER;
-    $donorActive = $donorType === \App\Dictionary\PlasmaDonorType::DONOR;
-    $hideLocale = true;
     $nav = [
         'current_page' => $requestActive ? 'plasma/request' : 'plasma/donate',
     ];

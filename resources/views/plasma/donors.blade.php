@@ -1,7 +1,8 @@
 @php
     $hideLocale = true;
+    $requestActive = $donorType === \App\Dictionary\PlasmaDonorType::REQUESTER;
     $nav = [
-        'current_page' => 'plasma',
+        'current_page' => $requestActive ? 'plasma/requests' : 'plasma/donors',
     ];
 @endphp
 @extends('layouts.home_layout')

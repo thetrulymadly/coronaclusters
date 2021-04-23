@@ -1,10 +1,10 @@
-<div class="card">
+<div class="card @if($detailed === false) mt-3 mt-lg-0 @endif">
     <div class="card-header">
         <h4 class="card-title m-0 float-left">
             @if(isset($requesters) && $requesters === true)
-                {{ __('plasma.requests') }}
+                {{ __('plasma.plasma_requests') }}
             @else
-                {{ __('plasma.donors') }}
+                {{ __('plasma.plasma_donors') }}
             @endif
         </h4>
         <div class="float-right d-none d-md-block">
