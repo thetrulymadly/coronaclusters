@@ -76,7 +76,7 @@
 
                 <a href="{{ $baseUrl.'plasma/donors' }}" class="dropdown-item text-left
                 @if($nav['current_page'] === 'plasma/donors') active @endif">
-                    {{ __('corona.plasma.donor_list') }}
+                    {{ __('plasma.donor_list') }}
                 </a>
             </div>
         </div>
