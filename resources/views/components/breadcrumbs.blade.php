@@ -1,6 +1,6 @@
 @if(!empty($breadcrumbs))
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb px-0">
             <li class="breadcrumb-item">
                 <a href="{{ request()->get('localeUrl') }}">
                     <i class="fas fa-home"></i>

@@ -9,18 +9,18 @@
 @section('content')
     @include('components.breadcrumbs')
 
-    <div class="alert bg-success-trans mt-3 mt-lg-0">
+    <div class="alert bg-success-trans mt-0">
         <strong>Your contribution may help save a life!</strong>
     </div>
 
     <div class="row">
         <div class="col-6">
             <div class="card bg-light mb-3 text-danger">
-                <div class="card-header">{{ trans('plasma.plasma_requests') }}</div>
+                <div class="card-header px-2">{{ trans('plasma.plasma_requests') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
                         <div>
-                            <h5 class="card-title m-0">{{ $plasmaCount['requests'] }}</h5>
+                            <h5 class="card-title mb-1 mb-md-0 mt-md-2">{{ $plasmaCount['requests'] }}</h5>
                             @if($plasmaCount['requests_delta'] !== 0)
                                 <small>
                                     [ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['requests_delta'] ?? 0 }} ]
@@ -37,11 +37,11 @@
 
         <div class="col-6">
             <div class="card bg-light mb-3 text-danger">
-                <div class="card-header">{{ trans('plasma.plasma_donors') }}</div>
+                <div class="card-header px-2">{{ trans('plasma.plasma_donors') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
                         <div>
-                            <h5 class="card-title m-0">{{ $plasmaCount['donors'] }}</h5>
+                            <h5 class="card-title mb-1 mb-md-0 mt-md-2">{{ $plasmaCount['donors'] }}</h5>
                             @if($plasmaCount['donors_delta'] !== 0)
                                 <small>
                                     [ <i class="fas fa-arrow-up"></i> {{ $plasmaCount['donors_delta'] ?? 0 }} ]
