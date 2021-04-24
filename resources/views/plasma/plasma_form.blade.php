@@ -68,27 +68,33 @@
                             @endforeach
                         </div>
                     </div>
+                    @php
+                        $dateOfPositiveRequired = $donorType === \App\Dictionary\PlasmaDonorType::DONOR;
+                    @endphp
                     <div class="form-group">
-                        {!! Form::label('date_of_positive', 'Date of COVID-19 positive'.' *') !!}
-                        {!! Form::date('date_of_positive', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Date of positive']); !!}
+                        {!! Form::label('date_of_positive', 'Date of COVID-19 positive'. ($dateOfPositiveRequired ? ' *' : '')) !!}
+                        {!! Form::date('date_of_positive', \Carbon\Carbon::now(), ['class' => 'form-control', $dateOfPositiveRequired ? 'required' : '', 'placeholder' => 'Enter Date of positive']); !!}
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('date_of_negative', 'Date of COVID-19 negative'.' *') !!}
-                        {!! Form::date('date_of_negative', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Date of negative']); !!}
-                    </div>
+
+                    @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                        <div class="form-group">
+                            {!! Form::label('date_of_negative', 'Date of COVID-19 negative'.' *') !!}
+                            {!! Form::date('date_of_negative', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Date of negative']); !!}
+                        </div>
+                    @endif
                     <div class="form-group form-inline">
                         {!! Form::label('state', 'State'.' *', ['class' => 'pr-3']) !!}
-                        {!! Form::select('state', [], null, ['class' => 'form-control select_state', 'required', 'placeholder' => 'Select your state']); !!}
+                        {!! Form::select('state', [], null, ['class' => 'form-control select_state', 'required', 'placeholder' => 'Type to search your state']); !!}
                     </div>
                     <div class="form-group form-inline">
                         {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}
-                        {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Select your city']); !!}
+                        {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Type to search your city']); !!}
                     </div>
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
                         <div class="form-group">
                             {!! Form::label('hospital', 'Hospital') !!}
-                            {!! Form::textarea('hospital', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter the name and address of the hospital']) !!}
+                            {!! Form::textarea('hospital', '', ['class' => 'form-control', 'placeholder' => 'Enter the name and address of the hospital']) !!}
                         </div>
                     @endif
 
@@ -154,7 +160,7 @@
             // });
 
             $('.select_state').select2({
-                placeholder: 'Select your state',
+                placeholder: 'Type to search your state',
                 // minimumInputLength: 3,
                 maximumInputLength: 20,
                 ajax: {
@@ -167,7 +173,7 @@
                 // $('.select_state').val(null).trigger('change');
                 // Prefill cities of the selected state
                 $('.select_city').select2({
-                    placeholder: 'Select your city',
+                    placeholder: 'Type to search your city',
                     ajax: {
                         type: 'GET',
                         url: "{{ config('app.url').'api/geo/city/search' }}",
@@ -182,7 +188,7 @@
                 });
             });
             $('.select_city').select2({
-                placeholder: 'Select your city',
+                placeholder: 'Type to search your city',
                 minimumInputLength: 3,
                 maximumInputLength: 20,
                 ajax: {

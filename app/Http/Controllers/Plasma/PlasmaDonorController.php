@@ -86,7 +86,7 @@ class PlasmaDonorController extends Controller
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        return redirect('plasma/donors');
+        return redirect('plasma/requests');
     }
 
     /**

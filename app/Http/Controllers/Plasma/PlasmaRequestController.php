@@ -51,8 +51,6 @@ class PlasmaRequestController extends Controller
     {
         $donors = PlasmaDonor::donor()->latestFirst()->get();
 
-//        $cities =
-
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('plasma.page.request_plasma.title'),
@@ -89,7 +87,7 @@ class PlasmaRequestController extends Controller
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        return redirect('plasma/requests');
+        return redirect('plasma/donors');
     }
 
     /**
