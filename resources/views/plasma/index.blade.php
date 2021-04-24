@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-6">
-            <div class="card bg-light mb-3 text-danger">
+            <div class="card bg-light mb-3 text-secondary">
                 <div class="card-header px-2">{{ trans('plasma.plasma_requests') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="col-6">
-            <div class="card bg-light mb-3 text-danger">
+            <div class="card bg-light mb-3 text-primary">
                 <div class="card-header px-2">{{ trans('plasma.plasma_donors') }}</div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row">
@@ -73,10 +73,7 @@
                     <p><strong>You CAN request plasma if:</strong></p>
                     <ul>
                         <li>A patient positive for COVID-19 has been prescribed for Plasma by the attending doctor,
-                            patient may be of any age group
-                        </li>
-                        <li>You already have a replacement donor or not – if you have a donor then we will facilitate
-                            their donation of Plasma
+                            patient must be of age group 18-60
                         </li>
                     </ul>
                     <a href="{{ config('app.url').'plasma/request' }}"
