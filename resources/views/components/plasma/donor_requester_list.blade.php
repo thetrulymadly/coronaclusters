@@ -16,7 +16,7 @@
     </div>
     <div class="card-body">
         @if($donors->isEmpty())
-            @if(isset($requesters) && $requesters === true)
+            @if($requesters === true)
                 <p>There are no requests for plasma yet. We will update when someone requests</p>
             @else
                 <p>There are no donors for plasma yet. We will update when someone is available to donate</p>
@@ -29,13 +29,20 @@
                         <th>Location</th>
                         <th>Donor</th>
                         <th>Blood Group</th>
-                        @if(isset($detailed) && $detailed === true)
+                        @if($detailed === true)
                             <th>Phone number</th>
                             <th>Date of positive</th>
-                            <th>Date of negative</th>
+                            @if($requesters === false)
+                                <th>Date of negative</th>
+                            @endif
                         @endif
-                        @if(isset($requesters) && $requesters === true)
+                        @if($requesters === true)
                             <th>Hospital</th>
+                        @endif
+                        @if($requesters === true)
+                            <th>Requested On</th>
+                        @else
+                            <th>Registered On</th>
                         @endif
                     </tr>
                     </thead>
@@ -46,15 +53,19 @@
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
 
-                            @if(isset($detailed) && $detailed === true)
+                            @if($detailed === true)
                                 <th>{{ $donor->phone_number }}</th>
                                 <th>{{ $donor->date_of_positive }}</th>
-                                <th>{{ $donor->date_of_negative }}</th>
+                                @if($requesters === false)
+                                    <th>{{ $donor->date_of_negative }}</th>
+                                @endif
                             @endif
 
-                            @if(isset($requesters) && $requesters === true)
+                            @if($requesters === true)
                                 <th>{{ $donor->hospital }}</th>
                             @endif
+
+                            <th>{{ $donor->created_at }}</th>
                         </tr>
                     @endforeach
                     </tbody>
