@@ -39,6 +39,15 @@ $theme-colors: (
     "danger": $danger,
 ) !default;
 
+$primary: theme-color('primary') !default;
+$secondary: theme-color('secondary') !default;
+$success: theme-color('success') !default;
+$info: $blue !default;
+$warning: $yellow !default;
+$danger: theme-color('danger') !default;
+$light: theme-color('light') !default;
+$dark: theme-color('dark') !default;
+
 // Body
 $body-bg: #f6f6f6 !default;
 
@@ -58,6 +67,9 @@ $headings-font-weight: 800 !default;
 
 
 $font-size-base: 1rem !default;
+$font-size-xl: $font-size-base * 3.5 !default;
+$font-size-md: $font-size-base * 1.125 !default;
+
 $line-height-base: 1.6 !default;
 $font-size-xl: $font-size-base * 3.5 !default;
 

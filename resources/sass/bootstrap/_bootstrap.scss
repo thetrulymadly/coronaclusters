@@ -13,68 +13,9 @@
 @import "card";
 @import "carousel";
 @import "footer";
+@import "custom";
 // Import Fontawesome
 @import '~@fortawesome/fontawesome-free/scss/brands';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
-
-$primary: theme-color('primary') !default;
-$secondary: theme-color('secondary') !default;
-$success: theme-color('success') !default;
-$info: $blue !default;
-$warning: $yellow !default;
-$danger: theme-color('danger') !default;
-$light: theme-color('light') !default;
-$dark: theme-color('dark') !default;
-.bg-primary-trans {
-    background-color: rgba($primary, 0.2);
-    color: $primary !important;
-}
-
-.bg-secondary-trans {
-    background-color: rgba($secondary, 0.2);
-    color: $secondary !important;
-}
-
-.bg-success-trans {
-    background-color: rgba($success, 0.2);
-    color: $success !important;
-}
-
-.bg-info-trans {
-    background-color: rgba($info, 0.2);
-    color: $info !important;
-}
-
-.bg-warning-trans {
-    background-color: rgba($warning, 0.2);
-    color: $warning !important;
-}
-
-.bg-danger-trans {
-    background-color: rgba($danger, 0.2);
-    color: $danger !important;
-}
-
-.bg-light-trans {
-    background-color: rgba($light, 0.2);
-    color: $light !important;
-}
-
-.bg-dark-trans {
-    background-color: rgba($dark, 0.2);
-    color: $dark !important;
-}
-
-.text-xl {
-    font-size: $font-size-xl;
-}
-
-.text-sm {
-    font-size: $font-size-sm;
-}
-
-.text-lg {
-    font-size: $font-size-lg;
-}

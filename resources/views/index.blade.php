@@ -18,14 +18,14 @@
 
 @section('content')
     @include('components.breadcrumbs')
-    <div class="row" id="data">
+    <div class="row mt-lg-3" id="data">
         {{-- Stats (Desktop Position 4)--}}
         <div class="col-12 col-lg-6 order-lg-2">
             <div class="row">
                 <div class="col-12 mb-3">
                     <div class="alert bg-danger-trans mb-0 mt-3 mt-lg-0">
                         <strong>
-                            {{ trans('corona.lastest_update_text', ['location' => $aggregateData['location'] ?? trans('corona.places.some_area'), 'time_ago' => $aggregateData['time_ago']]) }}
+                            {!! trans('corona.lastest_update_text', ['location' => $aggregateData['location'] ?? trans('corona.places.some_area'), 'time_ago' => $aggregateData['time_ago']]) !!}
                         </strong>
                     </div>
                 </div>
@@ -44,6 +44,13 @@
 
         {{-- SEO Content --}}
         <div class="col-12 col-lg-6 mb-3 order-lg-1">
+
+            <div class="alert bg-success-trans mb-3 mt-lg-0 text-center">
+                <strong>
+                    {!! trans('plasma.donate_plasma_cta') !!}
+                </strong>
+            </div>
+
             @include('partials.content', ['title' => trans('corona.page.home.h1', $aggregateData), 'body' => trans('corona.page.home.p1', $aggregateData)])
         </div>
     </div>

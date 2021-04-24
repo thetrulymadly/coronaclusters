@@ -1,0 +1,148 @@
+// -------------------------------
+// Text sizes
+// -------------------------------
+.text-xl {
+  font-size: $font-size-xl !important;
+}
+
+.text-lg {
+  font-size: $font-size-lg !important;
+}
+
+.text-md {
+  font-size: $font-size-md !important;
+}
+
+.text-base {
+  font-size: $font-size-base !important;
+}
+
+.text-sm {
+  font-size: $font-size-sm !important;
+}
+
+@include media-breakpoint-up('sm') {
+
+  .text-sm-xl {
+    font-size: $font-size-xl !important;
+  }
+
+  .text-sm-lg {
+    font-size: $font-size-lg !important;
+  }
+
+  .text-sm-md {
+    font-size: $font-size-md !important;
+  }
+
+  .text-sm-base {
+    font-size: $font-size-base !important;
+  }
+
+  .text-sm-sm {
+    font-size: $font-size-sm !important;
+  }
+}
+
+@include media-breakpoint-up('md') {
+
+  .text-md-xl {
+    font-size: $font-size-xl !important;
+  }
+
+  .text-md-lg {
+    font-size: $font-size-lg !important;
+  }
+
+  .text-md-md {
+    font-size: $font-size-md !important;
+  }
+
+  .text-md-base {
+    font-size: $font-size-base !important;
+  }
+
+  .text-md-sm {
+    font-size: $font-size-sm !important;
+  }
+}
+
+@include media-breakpoint-up('md') {
+  .text-md-xl {
+    font-size: $font-size-xl !important;
+  }
+
+  .text-md-lg {
+    font-size: $font-size-lg !important;
+  }
+
+  .text-md-md {
+    font-size: $font-size-md !important;
+  }
+
+  .text-md-base {
+    font-size: $font-size-base !important;
+  }
+
+  .text-md-sm {
+    font-size: $font-size-sm !important;
+  }
+}
+
+.text-bold {
+  font-weight: bold !important;
+}
+
+.text-gradient {
+  background: -webkit-linear-gradient(theme-color('secondary'), theme-color('primary'));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-shadow {
+  text-shadow: 1px 2px 3px rgba(0, 0, 0, .5);
+}
+
+
+// -------------------------------
+// Backgrounds
+// -------------------------------
+.bg-primary-trans {
+  background-color: rgba($primary, 0.2);
+  color: $primary !important;
+}
+
+.bg-secondary-trans {
+  background-color: rgba($secondary, 0.2);
+  color: $secondary !important;
+}
+
+.bg-success-trans {
+  background-color: rgba($success, 0.2);
+  color: $success !important;
+}
+
+.bg-info-trans {
+  background-color: rgba($info, 0.2);
+  color: $info !important;
+}
+
+.bg-warning-trans {
+  background-color: rgba($warning, 0.2);
+  color: $warning !important;
+}
+
+.bg-danger-trans {
+  background-color: rgba($danger, 0.2);
+  color: $danger !important;
+}
+
+.bg-light-trans {
+  background-color: rgba($light, 0.2);
+  color: $light !important;
+}
+
+.bg-dark-trans {
+  background-color: rgba($dark, 0.2);
+  color: $dark !important;
+}
