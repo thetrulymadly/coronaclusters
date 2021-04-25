@@ -1,17 +1,22 @@
 <div class="card @if($detailed === false) mt-3 mt-lg-0 @endif">
     <div class="card-header">
         <h4 class="card-title m-0 float-left">
-            @if(isset($requesters) && $requesters === true)
+            @if($requesters === true)
                 {{ __('plasma.plasma_requests') }}
             @else
                 {{ __('plasma.plasma_donors') }}
             @endif
         </h4>
+        <div class="float-right d-md-none">
+            <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}" class="">
+                <small>{{ __('plasma.view_all') }}</small><i class="fa fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
         <div class="float-right d-none d-md-block">
             <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.request') }}
-                <i class="fa fas fa-ambulance"></i></a>
-            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }} <i
-                    class="fa fas fa-heartbeat"></i></a>
+                <i class="fa fas fa-ambulance ml-1"></i></a>
+            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }}
+                <i class="fa fas fa-heartbeat ml-1"></i></a>
         </div>
     </div>
     <div class="card-body">
