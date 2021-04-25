@@ -14,7 +14,7 @@ class SendOtpRequest extends FormRequest
     public function rules()
     {
         return [
-            "phone_number" => "digits_between:7,13|required",
+            "phone_number" => 'digits_between:7,13|required',
         ];
     }
 }
