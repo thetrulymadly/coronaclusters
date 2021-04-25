@@ -82,7 +82,7 @@ class Kernel extends HttpKernel
             ElideAttributes::class,
             InsertDNSPrefetch::class,
             RemoveComments::class,
-            TrimUrls::class,
+//            TrimUrls::class, // Keep this commented, as this strips out https: and http from cdn urls
             \App\Http\Middleware\PageSpeed\RemoveQuotes::class,
             CollapseWhitespace::class, // Note: This middleware invokes "RemoveComments::class" before it runs.
             DeferJavascript::class,
