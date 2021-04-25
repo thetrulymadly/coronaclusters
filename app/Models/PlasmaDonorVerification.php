@@ -1,14 +1,14 @@
 <?php
 
-
 namespace App\Models;
-
 
 use Illuminate\Database\Eloquent\Model;
 
 class PlasmaDonorVerification extends Model
 {
+
     protected $table = 'plasma_donor_verifications';
+
     public $timestamps = true;
 
     protected $fillable = [
@@ -17,7 +17,8 @@ class PlasmaDonorVerification extends Model
         'otp',
         'gateway_name',
         'gateway_response',
-        'verified_at'
+        'verified_at',
+        'expires_at',
     ];
 
     public function donorData()

@@ -28,6 +28,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
             'gateway_name' => "speqtra",
             'gateway_response' => $gatewayResponse->getBody()->read(1024),
             'verified_at' => null,
+            'expires_at'=>now()->addMinutes(10),
         ];
 
         $model = new PlasmaDonorVerification();
@@ -46,6 +47,8 @@ class OtpVerificationServiceImpl implements OtpVerificationService
             ->first();
 
         abort_unless($donor, 422, "No user found with this phone number");
+
+        abort_if($donor->expires_at < now(),422,"Expired OTP. Please request a new");
 
         abort_if($donor->otp != $otp, 422, "Incorrect OTP");
 
