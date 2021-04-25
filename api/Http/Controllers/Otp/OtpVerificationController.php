@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Http\Controllers;
+namespace Api\Http\Controllers\Otp;
 
 use Api\Helpers\ResponseHelper;
 use Api\Http\Requests\Otp\SendOtpRequest;

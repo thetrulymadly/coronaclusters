@@ -25,10 +25,8 @@ Route::group(['prefix' => 'geo', 'namespace' => 'Geo'], function () {
     Route::get('state/search', 'GeoController@searchState');
     Route::get('city/search', 'GeoController@searchCity');
 });
-Route::post('/send', 'OtpVerificationController@send');
-Route::post('/verify', 'OtpVerificationController@verify');
-//
-//Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
-//    Route::post('/send', 'OtpVerificationController@send');
-//    Route::post('/verify', 'OtpVerificationController@verify');
-//});
+
+Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
+    Route::post('/send', 'OtpVerificationController@send');
+    Route::post('/verify', 'OtpVerificationController@verify');
+});
