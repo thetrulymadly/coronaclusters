@@ -29,6 +29,8 @@ return [
     |
     */
     'skip' => [
+        'plasma/request',
+        'plasma/donate',
         '*.xml',
         '*.less',
         '*.pdf',
