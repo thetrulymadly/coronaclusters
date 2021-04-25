@@ -29,20 +29,24 @@
                         <th>Location</th>
                         <th>Donor</th>
                         <th>Blood Group</th>
+                        <th>Phone number</th>
+
+                        @if($requesters === false)
+                            <th>Date of negative</th>
+                        @endif
+
                         @if($detailed === true)
-                            <th>Phone number</th>
                             <th>Date of positive</th>
-                            @if($requesters === false)
-                                <th>Date of negative</th>
+
+                            @if($requesters === true)
+                                <th>Hospital</th>
                             @endif
-                        @endif
-                        @if($requesters === true)
-                            <th>Hospital</th>
-                        @endif
-                        @if($requesters === true)
-                            <th>Requested On</th>
-                        @else
-                            <th>Registered On</th>
+
+                            @if($requesters === true)
+                                <th>Requested On</th>
+                            @else
+                                <th>Registered On</th>
+                            @endif
                         @endif
                     </tr>
                     </thead>
@@ -52,20 +56,21 @@
                             <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
+                            <td>{{ $donor->phone_number }}</td>
+
+                            @if($requesters === false)
+                                <td>{{ $donor->date_of_negative }}</td>
+                            @endif
 
                             @if($detailed === true)
-                                <th>{{ $donor->phone_number }}</th>
-                                <th>{{ $donor->date_of_positive }}</th>
-                                @if($requesters === false)
-                                    <th>{{ $donor->date_of_negative }}</th>
+                                <td>{{ $donor->date_of_positive }}</td>
+
+                                @if($requesters === true)
+                                    <td>{{ $donor->hospital }}</td>
                                 @endif
-                            @endif
 
-                            @if($requesters === true)
-                                <th>{{ $donor->hospital }}</th>
+                                <td>{{ $donor->created_at }}</td>
                             @endif
-
-                            <th>{{ $donor->created_at }}</th>
                         </tr>
                     @endforeach
                     </tbody>
