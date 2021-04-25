@@ -22,7 +22,7 @@ class PlasmaDonorVerification extends Model
 
     public function donorData()
     {
-        return $this->belongsTo(PlasmaDonor::class, 'id', 'donor_id');
+        return $this->belongsTo(PlasmaDonor::class, 'donor_id', 'id');
     }
 
 }

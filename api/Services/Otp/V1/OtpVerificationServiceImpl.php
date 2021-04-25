@@ -6,14 +6,14 @@ use Api\Services\Otp\OtpVerificationService;
 use App\Models\PlasmaDonor;
 use App\Models\PlasmaDonorVerification;
 use GuzzleHttp\Client;
-use League\Flysystem\Config;
 
 class OtpVerificationServiceImpl implements OtpVerificationService
 {
-
     public function send(string $phoneNumber)
     {
-        $donor = PlasmaDonor::where('phone_number', '=', $phoneNumber)->first();
+        $donor = PlasmaDonor::where('phone_number', '=', $phoneNumber)
+            ->where('verified', '=', '0')
+            ->first();
 
         abort_unless($donor, "422", "Unable to find user");
 
@@ -26,7 +26,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
             'phone_number' => $phoneNumber,
             'otp' => $otp,
             'gateway_name' => "speqtra",
-            'gateway_response' => $gatewayResponse,
+            'gateway_response' => $gatewayResponse->getBody()->read(1024),
             'verified_at' => null,
         ];
 
@@ -62,7 +62,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
             $phoneNumber = substr($phoneNumber, -10);
         }
 
-        $smsProvider = Config::get('sms.speqtra');
+        $smsProvider = config('sms.speqtra');
 
         $client = new Client();
         $response = $client->get($smsProvider["url"],
@@ -82,11 +82,18 @@ class OtpVerificationServiceImpl implements OtpVerificationService
 
     private function getMessage(string $otp)
     {
-        $message = Config::get('sms.format.otp');
+        $message = config('sms.format.otp');
         $message = $this->str_replace_first("{#var#}", "<#>", $message);
         $message = str_replace("{#var#}", $otp, $message);
-        $message = str_replace("{{android_hash}}", Config::get('sms.android_hash'), $message);
+        $message = str_replace("{{android_hash}}", config('sms.android_hash'), $message);
 
         return $message;
+    }
+
+    private function str_replace_first($from, $to, $content)
+    {
+        $from = '/' . preg_quote($from, '/') . '/';
+
+        return preg_replace($from, $to, $content, 1);
     }
 }
