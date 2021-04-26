@@ -35,6 +35,7 @@
         "laravel/telescope": "^3.2",
         "laravel/tinker": "^2.6",
         "laravelcollective/html": "^6.2",
+        "predis/predis": "^1.1",
         "renatomarinho/laravel-page-speed": "^2.0",
         "silber/page-cache": "^1.0",
         "yoeunes/toastr": "^1.2"
