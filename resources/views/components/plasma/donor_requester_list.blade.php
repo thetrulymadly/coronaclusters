@@ -7,11 +7,13 @@
                 {{ __('plasma.plasma_donors') }}
             @endif
         </h4>
-        <div class="float-right d-md-none">
-            <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}" class="">
-                <small>{{ __('plasma.view_all') }}</small><i class="fa fas fa-arrow-right ml-1"></i>
-            </a>
-        </div>
+        @if($detailed === false)
+            <div class="float-right d-md-none">
+                <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">
+                    {{ __('plasma.view_all') }}<i class="fa fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        @endif
         <div class="float-right d-none d-md-block">
             <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.request') }}
                 <i class="fa fas fa-ambulance ml-1"></i></a>
@@ -82,5 +84,20 @@
                 </table>
             </div>
         @endif
+    </div>
+    <div class="card-footer">
+        @if($detailed === false)
+            <div class="float-right d-none d-md-block">
+                <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">
+                    {{ __('plasma.view_all_requests') }}<i class="fa fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        @endif
+        <div class="btn-group btn-block d-md-none">
+            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.request') }}
+                <i class="fa fas fa-ambulance ml-1"></i></a>
+            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }}
+                <i class="fa fas fa-heartbeat ml-1"></i></a>
+        </div>
     </div>
 </div>

@@ -49,7 +49,7 @@ class PlasmaRequestController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::donor()->latestFirst()->get();
+        $donors = PlasmaDonor::donor()->latestFirst()->limit(10)->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
