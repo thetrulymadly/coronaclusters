@@ -31,9 +31,9 @@
                 <div class="card-body">
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
-                        {!! Form::open(['id' => 'plasma_donate_form']) !!}
+                        {!! Form::open(['url' => 'plasma/donate', 'id' => 'plasma_donate_form']) !!}
                     @else
-                        {!! Form::open(['id' => 'plasma_request_form']) !!}
+                        {!! Form::open(['url' => 'plasma/request', 'id' => 'plasma_request_form']) !!}
                     @endif
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}

@@ -37,14 +37,24 @@
                     </div>
                     <div class="modal-body">
                         <div class="d-flex justify-content-center">
-                            <form method="post" id="otp_verify_form" class="digit-group" data-group-name="digits"
-                                  data-autosubmit="false"
-                                  autocomplete="off">
-                                <input type="text" id="digit-1" name="digit-1" data-next="digit-2" autofocus/>
-                                <input type="text" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1"/>
-                                <input type="text" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2"/>
-                                <input type="text" id="digit-4" name="digit-4" data-next="digit-5" data-previous="digit-3"/>
-                            </form>
+                            {!! Form::open(['url' => 'plasma/donate', 'id' => 'otp_verify_form_new']) !!}
+                            {!! Form::label('otp', 'Enter OTP sent on your phone number') !!}
+                            {!! Form::text('otp', '', ['class' => 'form-control text-center', 'required', 'placeholder' => 'X X X X', 'maxlength' => 4, 'onkeypress' => 'return isNumberKey(event)']) !!}
+
+                            {!! Form::token(); !!}
+                            {!! Form::close() !!}
+
+                            {{--                            <form method="post" id="otp_verify_form" class="digit-group" data-group-name="digits"--}}
+                            {{--                                  data-autosubmit="false"--}}
+                            {{--                                  autocomplete="off">--}}
+                            {{--                                <input type="text" id="digit-1" name="digit-1" data-next="digit-2" autofocus/>--}}
+                            {{--                                <input type="text" id="digit-2" name="digit-2" data-next="digit-3"--}}
+                            {{--                                       data-previous="digit-1"/>--}}
+                            {{--                                <input type="text" id="digit-3" name="digit-3" data-next="digit-4"--}}
+                            {{--                                       data-previous="digit-2"/>--}}
+                            {{--                                <input type="text" id="digit-4" name="digit-4" data-next="digit-5"--}}
+                            {{--                                       data-previous="digit-3"/>--}}
+                            {{--                            </form>--}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -60,55 +70,62 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @toastr_render
 
-    <script type="text/javascript">
+    @if(session('verify_otp') && !empty(session('phone_number')))
+        <script type="text/javascript">
+            function isNumberKey(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                return !(charCode > 31 && (charCode < 48 || charCode > 57));
 
-        @if(session('verify_otp') && !empty(session('phone_number')))
-        $('#otp_modal').modal('show');
+            }
 
-        $('#otp_verify_form').find('input').each(function () {
-            $(this).attr('maxlength', 1);
-            $(this).on('keyup', function (e) {
-                var parent = $($(this).parent());
+            $('#otp_modal').modal('show');
 
-                if (e.keyCode === 8 || e.keyCode === 37) {
-                    var prev = parent.find('input#' + $(this).data('previous'));
+            $('#otp_verify_form').find('input').each(function () {
+                $(this).attr('maxlength', 1);
+                $(this).on('keyup', function (e) {
+                    var parent = $($(this).parent());
 
-                    if (prev.length) {
-                        $(prev).select();
-                    }
-                } else if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
-                    var next = parent.find('input#' + $(this).data('next'));
+                    if (e.keyCode === 8 || e.keyCode === 37) {
+                        var prev = parent.find('input#' + $(this).data('previous'));
 
-                    if (next.length) {
-                        $(next).select();
-                    } else {
-                        if (parent.data('autosubmit')) {
+                        if (prev.length) {
+                            $(prev).select();
+                        }
+                    } else if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
+                        var next = parent.find('input#' + $(this).data('next'));
 
+                        if (next.length) {
+                            $(next).select();
+                        } else {
+                            if (parent.data('autosubmit')) {
+
+                            }
                         }
                     }
-                }
+                });
             });
-        });
 
-        $('#verify_otp_btn').click(function () {
-            $('#otp_modal').modal('hide');
-            $.ajax({
-                type: 'POST',
-                url: "{{ config('app.url').'api/otp/verify' }}",
-                dataType: 'json',
-                async: true,
-                data: {
-                    phone_number: '{{ session('phone_number') }}',
-                    otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
-                },
-                success: function (data) {
-                    console.log('otp verified');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log('otp error');
-                }
+            $('#verify_otp_btn').click(function () {
+                $('#otp_modal').modal('hide');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ config('app.url').'api/otp/verify' }}",
+                    dataType: 'json',
+                    async: true,
+                    data: {
+                        phone_number: '{{ session('phone_number') }}',
+                        // otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
+                        otp: $('#otp').val()
+                    },
+                    success: function (data) {
+                        console.log('otp verified');
+                        toastr.success('', 'Verified!');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log('otp error');
+                    }
+                });
             });
-        });
-        @endif
-    </script>
+        </script>
+    @endif
 @endsection
