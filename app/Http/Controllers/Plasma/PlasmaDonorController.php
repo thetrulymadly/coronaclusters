@@ -8,12 +8,14 @@
 
 namespace App\Http\Controllers\Plasma;
 
+use Api\Services\Otp\OtpVerificationService;
 use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
 use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class PlasmaDonorController
@@ -23,13 +25,28 @@ class PlasmaDonorController extends Controller
 {
 
     /**
+     * @var \Api\Services\Otp\OtpVerificationService
+     */
+    private $otpService;
+
+    /**
+     * PlasmaRequestController constructor.
+     *
+     * @param \Api\Services\Otp\OtpVerificationService $otpService
+     */
+    public function __construct(OtpVerificationService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latestFirst()->get();
+        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latestFirst()->limit(5)->get();
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -49,7 +66,7 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::requester()->latestFirst()->limit(10)->get();
+        $donors = PlasmaDonor::requester()->latestFirst()->limit(5)->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -72,7 +89,8 @@ class PlasmaDonorController extends Controller
     public function store(Request $request)
     {
         if (PlasmaDonor::donor()->where('phone_number', $request->phone_number)->exists()) {
-            toastr()->success('Please check the request list to help', 'Already Registered');
+            toastr()->success('Please check the request list to help save lives.', 'Already Registered');
+
             return back();
         }
 
@@ -91,9 +109,12 @@ class PlasmaDonorController extends Controller
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        toastr()->success('Please search the request list to find a suitable donor.', 'Request registered successfully');
+        // Send OTP
+        $this->otpService->send($request->phone_number);
 
-        return redirect('plasma/requests');
+        toastr()->success('Please check the request list and help someone in need.', 'Donor registered successfully');
+
+        return redirect('plasma/requests')->with('verify_otp', true)->with('phone_number', $request->phone_number);
     }
 
     /**

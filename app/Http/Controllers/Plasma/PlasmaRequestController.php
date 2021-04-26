@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Plasma;
 
+use Api\Services\Otp\OtpVerificationService;
 use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
 use App\Http\Controllers\Controller;
@@ -21,6 +22,21 @@ use Illuminate\Http\Request;
  */
 class PlasmaRequestController extends Controller
 {
+
+    /**
+     * @var \Api\Services\Otp\OtpVerificationService
+     */
+    private $otpService;
+
+    /**
+     * PlasmaRequestController constructor.
+     *
+     * @param \Api\Services\Otp\OtpVerificationService $otpService
+     */
+    public function __construct(OtpVerificationService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -49,7 +65,7 @@ class PlasmaRequestController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::donor()->latestFirst()->limit(10)->get();
+        $donors = PlasmaDonor::donor()->latestFirst()->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -73,6 +89,7 @@ class PlasmaRequestController extends Controller
     {
         if (PlasmaDonor::requester()->where('phone_number', $request->phone_number)->exists()) {
             toastr()->success('Please check the donors list for suitable donors', 'Already Registered');
+
             return back();
         }
 
@@ -92,9 +109,12 @@ class PlasmaRequestController extends Controller
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
-        toastr()->success('Please search the donors list to find a suitable donor.', 'Request registered successfully');
+        // Send OTP
+        $this->otpService->send($request->phone_number);
 
-        return redirect('plasma/donors');
+        toastr()->success('Here is a list of donors suitable for you.', 'Request registered successfully!');
+
+        return redirect('plasma/donors')->with('verify_otp', true)->with('phone_number', $request->phone_number);
     }
 
     /**

@@ -14,7 +14,7 @@ class AddColumnsToPlasmaDonorsTable extends Migration
     public function up()
     {
         Schema::table('plasma_donors', function (Blueprint $table) {
-            $table->boolean('verified')->default(0);
+            $table->boolean('mobile_verified')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnsToPlasmaDonorsTable extends Migration
     public function down()
     {
         Schema::table('plasma_donors', function (Blueprint $table) {
-            $table->removeColumn('verified');
+            $table->removeColumn('mobile_verified');
         });
     }
 }

@@ -27,6 +27,6 @@ Route::group(['prefix' => 'geo', 'namespace' => 'Geo'], function () {
 });
 
 Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
-    Route::post('/send', 'OtpVerificationController@send');
-    Route::post('/verify', 'OtpVerificationController@verify');
+    Route::post('send', 'OtpVerificationController@send');
+    Route::post('verify', 'OtpVerificationController@verify');
 });

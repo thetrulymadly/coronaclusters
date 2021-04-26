@@ -85,7 +85,7 @@ class Kernel extends HttpKernel
             TrimUrls::class, // Keep this commented, as this strips out https: and http from cdn urls
             \App\Http\Middleware\PageSpeed\RemoveQuotes::class,
             CollapseWhitespace::class, // Note: This middleware invokes "RemoveComments::class" before it runs.
-            DeferJavascript::class,
+//            DeferJavascript::class,
         ],
 
         'api' => [

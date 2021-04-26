@@ -9,13 +9,14 @@ use GuzzleHttp\Client;
 
 class OtpVerificationServiceImpl implements OtpVerificationService
 {
+
     public function send(string $phoneNumber)
     {
         $donor = PlasmaDonor::where('phone_number', '=', $phoneNumber)
             ->where('mobile_verified', '=', '0')
             ->first();
 
-        abort_unless($donor, "422", "Unable to find user");
+        abort_unless($donor, 422, "Unable to find user");
 
         $otp = rand(1000, 9999);
 
@@ -28,7 +29,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
             'gateway_name' => "speqtra",
             'gateway_response' => $gatewayResponse->getBody()->read(1024),
             'verified_at' => null,
-            'expires_at'=>now()->addMinutes(10),
+            'expires_at' => now()->addMinutes(10),
         ];
 
         $model = new PlasmaDonorVerification();
@@ -48,7 +49,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
 
         abort_unless($donor, 422, "No user found with this phone number");
 
-        abort_if($donor->expires_at < now(),422,"Expired OTP. Please request a new");
+        abort_if($donor->expires_at < now(), 422, "Expired OTP. Please request a new");
 
         abort_if($donor->otp != $otp, 422, "Incorrect OTP");
 

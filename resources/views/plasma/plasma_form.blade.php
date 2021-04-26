@@ -31,9 +31,9 @@
                 <div class="card-body">
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
-                        {!! Form::open(['url' => 'plasma/donate']) !!}
+                        {!! Form::open(['id' => 'plasma_donate_form']) !!}
                     @else
-                        {!! Form::open(['url' => 'plasma/request']) !!}
+                        {!! Form::open(['id' => 'plasma_request_form']) !!}
                     @endif
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}
@@ -129,6 +129,10 @@
 @endsection
 
 @section('scrips')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @toastr_render
+
     <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
 
     <script type="text/javascript">
@@ -193,14 +197,10 @@
             });
         });
 
-        function isNumberKey(evt){
-            var charCode = (evt.which) ? evt.which : evt.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
-                return false;
-            return true;
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            return !(charCode > 31 && (charCode < 48 || charCode > 57));
+
         }
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    @toastr_render
 @endsection

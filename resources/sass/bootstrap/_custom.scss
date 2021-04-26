@@ -146,3 +146,26 @@
   background-color: rgba($dark, 0.2);
   color: $dark !important;
 }
+
+.digit-group {
+  input {
+    width: 30px;
+    height: 50px;
+    background-color: white;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: black;
+    line-height: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 200;
+    color: black;
+    margin: 0 2px;
+  }
+
+  .splitter {
+    padding: 0 5px;
+    color: black;
+    font-size: 24px;
+  }
+}

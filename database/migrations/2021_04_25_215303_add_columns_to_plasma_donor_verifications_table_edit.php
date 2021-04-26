@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsToPlasmaDonorVerificationsTable extends Migration
+class AddColumnsToPlasmaDonorVerificationsTableEdit extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddColumnsToPlasmaDonorVerificationsTable extends Migration
     public function up()
     {
         Schema::table('plasma_donor_verifications', function (Blueprint $table) {
-            $table->timestamp('expires_at');
+            $table->timestamp('expires_at')->default(\Illuminate\Support\Facades\DB::raw('CURRENT_TIMESTAMP'))->change();
         });
     }
 

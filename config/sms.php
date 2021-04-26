@@ -2,10 +2,10 @@
 
 return [
     'speqtra' => [
-        'url' => 'http://sms.speqtrainnov.com/api/v4/',
+        'url' => env('SPEQTRA_API_URL', ''),
         'api_key' => env('SPEQTRA_API_KEY', ''),
         'method' => 'sms',
-        'sender' => 'PLSMAM',
+        'sender' => env('SPEQTRA_SENDER', ''),
     ],
 
     'format' => [
