@@ -63,7 +63,7 @@
                             <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
-                            <td>{{ $donor->phone_number }}</td>
+                            <td>{{ \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true' ? $donor->phone_number : substr_replace($donor->phone_number, 'xxxxxx', 2, 6)}}</td>
 
                             @if($requesters === false)
                                 <td>{{ $donor->date_of_negative }}</td>

@@ -27,6 +27,7 @@ class OtpVerificationController extends Controller
     public function verify(VerifyOtpRequest $request)
     {
         $result  = $this->service->verify($request->phone_number,$request->otp);
-        return ResponseHelper::response($result,null);
+        return ResponseHelper::response($result,null)
+            ->withCookie(\cookie()->make('logged_in', 'true', 0, '/', 'corona.localhost', true, false, false, 'None'));
     }
 }

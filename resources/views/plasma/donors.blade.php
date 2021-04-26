@@ -120,6 +120,7 @@
                     success: function (data) {
                         console.log('otp verified');
                         toastr.success('', 'Verified!');
+                        setTimeout(location.reload.bind(location), 100);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log('otp error');
