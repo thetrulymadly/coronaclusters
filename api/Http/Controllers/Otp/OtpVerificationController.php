@@ -28,6 +28,6 @@ class OtpVerificationController extends Controller
     {
         $result  = $this->service->verify($request->phone_number,$request->otp);
         return ResponseHelper::response($result,null)
-            ->withCookie(\cookie()->make('logged_in', 'true', 0, '/', 'corona.localhost', true, false, false, 'None'));
+            ->withCookie(\cookie()->make('logged_in', 'true', 0, '/', config('app.cookie_domain'), true, false, false, 'None'));
     }
 }

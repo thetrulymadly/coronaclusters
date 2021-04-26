@@ -21,6 +21,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
     'admin' => env('APP_ADMIN', false),
+    'cookie_domain' => env('COOKIE_DOMAIN', false),
 
     /*
     |--------------------------------------------------------------------------
