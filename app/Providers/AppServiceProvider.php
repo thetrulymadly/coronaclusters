@@ -10,6 +10,8 @@ namespace App\Providers;
 
 use Api\Services\CovidDataService;
 use Api\Services\CovidDataServiceImpl;
+use Api\Services\Otp\OtpVerificationService;
+use Api\Services\Otp\V1\OtpVerificationServiceImpl;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -37,5 +39,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton(CovidDataService::class, CovidDataServiceImpl::class);
+        $this->app->singleton(OtpVerificationService::class, OtpVerificationServiceImpl::class);
     }
 }
