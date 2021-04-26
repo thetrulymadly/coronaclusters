@@ -36,7 +36,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="d-flex">
+                        <div class="d-flex justify-content-center">
                             <form method="post" id="otp_verify_form" class="digit-group" data-group-name="digits"
                                   data-autosubmit="false"
                                   autocomplete="off">
