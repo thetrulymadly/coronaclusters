@@ -36,7 +36,8 @@
         "laravel/tinker": "^2.6",
         "laravelcollective/html": "^6.2",
         "renatomarinho/laravel-page-speed": "^2.0",
-        "silber/page-cache": "^1.0"
+        "silber/page-cache": "^1.0",
+        "yoeunes/toastr": "^1.2"
     },
     "require-dev": {
         "arubacao/asset-cdn": "^0.2.4",

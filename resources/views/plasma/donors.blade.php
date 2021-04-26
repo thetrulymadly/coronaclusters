@@ -7,6 +7,10 @@
 @endphp
 @extends('layouts.home_layout')
 
+@section('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
     @include('components.breadcrumbs')
 
@@ -22,25 +26,6 @@
 @endsection
 
 @section('scrips')
-    {{--    <script src="{{ mix_cdn('js/corona.js') }}"></script>--}}
-
-    {{--    <script type="text/javascript">--}}
-
-    {{--        $(document).ready(function () {--}}
-    {{--            $('#testing-data-table').DataTable({--}}
-    {{--                "paging": false,--}}
-    {{--                "scrollY": '60vh',--}}
-    {{--                "scrollX": true,--}}
-    {{--                "scrollCollapse": true,--}}
-    {{--                "scroller": true,--}}
-    {{--                "dom": 't',--}}
-    {{--                "order": [[1, "desc"]]--}}
-    {{--            });--}}
-
-    {{--            $('.dataTables_wrapper').css('height', $(window).height() - 145);--}}
-    {{--            $(window).resize(function () {--}}
-    {{--                $('.dataTables_wrapper').css('height', $(window).height() - 145);--}}
-    {{--            });--}}
-    {{--        });--}}
-    {{--    </script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @toastr_render
 @endsection

@@ -71,6 +71,11 @@ class PlasmaDonorController extends Controller
      */
     public function store(Request $request)
     {
+        if (PlasmaDonor::donor()->where('phone_number', $request->phone_number)->exists()) {
+            toastr()->success('Please check the request list to help', 'Already Registered');
+            return back();
+        }
+
         PlasmaDonor::create([
             'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::DONOR),
             'donor_type' => PlasmaDonorType::DONOR,
@@ -85,6 +90,8 @@ class PlasmaDonorController extends Controller
             'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),
             'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
+
+        toastr()->success('Please search the request list to find a suitable donor.', 'Request registered successfully');
 
         return redirect('plasma/requests');
     }

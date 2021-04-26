@@ -25,4 +25,4 @@ require('datatables.net-rowreorder-bs4')();
 require('datatables.net-scroller-bs4')();
 
 // Google Maps
-require('@google/markerclustererplus');
+// require('@google/markerclustererplus');

@@ -9,6 +9,7 @@
 
 @section('styles')
     <link href="{{ mix_cdn('css/select2.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -144,20 +145,6 @@
                     $('.select_state').append(option).trigger('change');
                 }
             });
-            //     .then(function (data) {
-            //     console.log(data.text, data.id)
-            //     // create the option and append to Select2
-            //     var option = new Option(data.text, data.id, false, false);
-            //     $('.select_state').append(option).trigger('change');
-            //
-            //     // manually trigger the `select2:select` event
-            //     // studentSelect.trigger({
-            //     //     type: 'select2:select',
-            //     //     params: {
-            //     //         data: data
-            //     //     }
-            //     // });
-            // });
 
             $('.select_state').select2({
                 placeholder: 'Type to search your state',
@@ -207,25 +194,6 @@
         });
     </script>
 
-    {{--    <script src="{{ mix_cdn('js/corona.js') }}"></script>--}}
-
-    {{--    <script type="text/javascript">--}}
-
-    {{--        $(document).ready(function () {--}}
-    {{--            $('#testing-data-table').DataTable({--}}
-    {{--                "paging": false,--}}
-    {{--                "scrollY": '60vh',--}}
-    {{--                "scrollX": true,--}}
-    {{--                "scrollCollapse": true,--}}
-    {{--                "scroller": true,--}}
-    {{--                "dom": 't',--}}
-    {{--                "order": [[1, "desc"]]--}}
-    {{--            });--}}
-
-    {{--            $('.dataTables_wrapper').css('height', $(window).height() - 145);--}}
-    {{--            $(window).resize(function () {--}}
-    {{--                $('.dataTables_wrapper').css('height', $(window).height() - 145);--}}
-    {{--            });--}}
-    {{--        });--}}
-    {{--    </script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @toastr_render
 @endsection
