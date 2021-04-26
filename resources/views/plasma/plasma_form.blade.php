@@ -124,6 +124,7 @@
             @else
                 @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => false, 'detailed' => false])
             @endif
+            {{ $donors->links() }}
         </div>
     </div>
     @include('components.plasma.login_modal')
