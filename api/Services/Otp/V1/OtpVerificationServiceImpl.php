@@ -12,7 +12,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
     public function send(string $phoneNumber)
     {
         $donor = PlasmaDonor::where('phone_number', '=', $phoneNumber)
-            ->where('verified', '=', '0')
+            ->where('mobile_verified', '=', '0')
             ->first();
 
         abort_unless($donor, "422", "Unable to find user");
@@ -54,7 +54,7 @@ class OtpVerificationServiceImpl implements OtpVerificationService
 
         $donor->verified_at = now();
         $donor->save();
-        $donor->donorData()->update(['verified' => 1]);
+        $donor->donorData()->update(['mobile_verified' => 1]);
 
         return true;
     }
