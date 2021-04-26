@@ -102,7 +102,7 @@
 
                     <div class="form-group">
                         {!! Form::label('phone_number', 'Phone Number'.' *') !!}
-                        {!! Form::text('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10]) !!}
+                        {!! Form::text('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
                     </div>
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
@@ -192,6 +192,13 @@
                 }
             });
         });
+
+        function isNumberKey(evt){
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
