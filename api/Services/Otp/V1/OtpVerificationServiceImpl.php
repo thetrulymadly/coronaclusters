@@ -86,17 +86,8 @@ class OtpVerificationServiceImpl implements OtpVerificationService
     private function getMessage(string $otp)
     {
         $message = config('sms.format.otp');
-        $message = $this->str_replace_first("{#var#}", "<#>", $message);
         $message = str_replace("{#var#}", $otp, $message);
-        $message = str_replace("{{android_hash}}", config('sms.android_hash'), $message);
 
         return $message;
-    }
-
-    private function str_replace_first($from, $to, $content)
-    {
-        $from = '/' . preg_quote($from, '/') . '/';
-
-        return preg_replace($from, $to, $content, 1);
     }
 }
