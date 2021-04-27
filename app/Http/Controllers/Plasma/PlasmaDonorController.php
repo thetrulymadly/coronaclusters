@@ -46,7 +46,7 @@ class PlasmaDonorController extends Controller
      */
     public function index(Request $request)
     {
-        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latestFirst()->get();
+        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latest()->get();
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
