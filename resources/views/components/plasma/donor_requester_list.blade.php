@@ -14,11 +14,21 @@
                 </a>
             </div>
         @endif
+
+        {{-- Login/Logout button--}}
+        @if($detailed === true)
+        <div class="float-right ml-3">
+            @include('components.plasma.login')
+        </div>
+        @endif
+
         <div class="float-right d-none d-md-block">
-            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.request') }}
-                <i class="fa fas fa-ambulance ml-1"></i></a>
-            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }}
-                <i class="fa fas fa-heartbeat ml-1"></i></a>
+            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">
+                {{ __('plasma.request') }}<i class="fa fas fa-ambulance ml-1"></i>
+            </a>
+            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">
+                {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
+            </a>
         </div>
     </div>
     <div class="card-body">

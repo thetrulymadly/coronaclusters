@@ -30,4 +30,10 @@ class OtpVerificationController extends Controller
         return ResponseHelper::response($result,null)
             ->withCookie(\cookie()->make('logged_in', 'true', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'), true, false, false, 'None'));
     }
+
+    public function logout()
+    {
+        return ResponseHelper::success()
+            ->withCookie(\cookie()->make('logged_in', 'false', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'), true, false, false, 'None'));
+    }
 }

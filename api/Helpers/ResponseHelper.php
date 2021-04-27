@@ -15,7 +15,7 @@ class ResponseHelper
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response(bool $result, ?string $message)
+    public static function response(bool $result, ?string $message = null)
     {
         return response()->json([
             'success' => $result,
@@ -28,7 +28,7 @@ class ResponseHelper
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function failure(?string $message)
+    public static function failure(?string $message = null)
     {
         return self::response(false, $message);
     }
@@ -38,7 +38,7 @@ class ResponseHelper
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function success(?string $message)
+    public static function success(?string $message = null)
     {
         return self::response(true, $message);
     }
