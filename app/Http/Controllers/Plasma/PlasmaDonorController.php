@@ -91,7 +91,7 @@ class PlasmaDonorController extends Controller
         if (PlasmaDonor::donor()->where('phone_number', $request->phone_number)->exists()) {
             toastr()->success('Please check the request list to help save lives.', 'Already Registered');
 
-            return back()->withCookie(\cookie()->make('logged_in', 'true', 0, '/', config('app.cookie_domain'), true, false, false, 'None'));
+            return back()->withCookie(\cookie()->make('logged_in', 'true', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'), true, false, false, 'None'));
         }
 
         PlasmaDonor::create([

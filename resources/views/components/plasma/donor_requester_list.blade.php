@@ -63,7 +63,8 @@
                             <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
-                            <td>{{ \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true' ? $donor->phone_number : substr_replace($donor->phone_number, 'xxxxxx', 2, 6)}}</td>
+                            {{-- Show phone number for request list or if logged in then show donor phone number as well --}}
+                            <td>{{ $requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true' ? $donor->phone_number : substr_replace($donor->phone_number, 'xxxxxx', 2, 6)}}</td>
 
                             @if($requesters === false)
                                 <td>{{ $donor->date_of_negative }}</td>
