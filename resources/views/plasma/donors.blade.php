@@ -23,7 +23,7 @@
             @endif
         </div>
     </div>
-    @include('components.plasma.verify_otp_modal')
+    @include('components.plasma.login_modal')
 @endsection
 
 @section('scrips')

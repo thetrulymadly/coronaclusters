@@ -126,12 +126,15 @@
             @endif
         </div>
     </div>
+    @include('components.plasma.login_modal')
 @endsection
 
 @section('scrips')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @toastr_render
+
+    @include('partials.plasma.login_script')
 
     <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
 
@@ -196,11 +199,5 @@
                 }
             });
         });
-
-        function isNumberKey(evt) {
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            return !(charCode > 31 && (charCode < 48 || charCode > 57));
-
-        }
     </script>
 @endsection

@@ -1,4 +1,3 @@
-{{-- This modal will be visible only if the following session variables are set --}}
 <!-- Modal -->
 <div class="modal fade" id="otp_modal" tabindex="-1" role="dialog" aria-labelledby="Verify OTP"
      aria-hidden="true">

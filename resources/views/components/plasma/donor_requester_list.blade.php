@@ -17,9 +17,9 @@
 
         {{-- Login/Logout button--}}
         @if($detailed === true)
-        <div class="float-right ml-3">
-            @include('components.plasma.login')
-        </div>
+            <div class="float-right ml-3">
+                @include('components.plasma.login_button')
+            </div>
         @endif
 
         <div class="float-right d-none d-md-block">
@@ -46,7 +46,7 @@
                         <th>Location</th>
                         <th>Donor</th>
                         <th>Blood Group</th>
-                        <th>Phone number</th>
+                        <th style="width: 100px">Phone number</th>
 
                         @if($requesters === false)
                             <th>Date of negative</th>
@@ -74,7 +74,24 @@
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
                             {{-- Show phone number for request list or if logged in then show donor phone number as well --}}
-                            <td>{{ $requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true' ? $donor->phone_number : substr_replace($donor->phone_number, 'xxxxxx', 2, 6)}}</td>
+                            <td>
+                                @if($requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
+                                    <div class="d-flex justify-content-between">
+                                        <a href="https://wa.me/{{ $donor->phone_number }}"
+                                           class="d-flex justify-content-around">
+                                            <i class="fab fa-whatsapp text-success mr-1 mt-1"></i>
+                                            <span>{{ $donor->phone_number }}</span>
+                                        </a>
+                                        @if($donor->mobile_verified)
+                                            <i class="fa fas fa-check-circle text-success ml-1 text-md"></i>
+                                        @endif
+                                    </div>
+                                @else
+                                    <a href="#" data-toggle="modal" data-target="#login_modal">
+                                        {{ substr_replace($donor->phone_number, 'xxxxxx', 2, 6) }}
+                                    </a>
+                                @endif
+                            </td>
 
                             @if($requesters === false)
                                 <td>{{ $donor->date_of_negative }}</td>
