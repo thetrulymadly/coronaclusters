@@ -13,6 +13,7 @@ use App\Models\Geo\City;
 use App\Models\Geo\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class PlasmaDonor
@@ -37,6 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PlasmaDonor extends Model
 {
+
+    use SoftDeletes;
 
     /**
      * @var array
