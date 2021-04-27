@@ -66,7 +66,7 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::requester()->latestFirst()->get();
+        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester()->latest()->limit(10)->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
