@@ -75,22 +75,26 @@
                             <td>{{ $donor->blood_group }}</td>
                             {{-- Show phone number for request list or if logged in then show donor phone number as well --}}
                             <td>
-                                @if($requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
-                                    <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between align-content-center">
+                                    @if($donor->mobile_verified)
+                                        <div>
+                                            <i class="fa fas fa-check-circle text-success mr-1"></i>
+                                        </div>
+                                    @else
+                                        <div class="d-block" style="width: 12px"></div>
+                                    @endif
+                                    @if($requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
                                         <a href="https://wa.me/{{ $donor->phone_number }}"
-                                           class="d-flex justify-content-around">
-                                            <i class="fab fa-whatsapp text-success mr-1 mt-1"></i>
+                                           class="d-flex justify-content-between align-content-center">
                                             <span>{{ $donor->phone_number }}</span>
+                                            <i class="fab fa-whatsapp text-success ml-1 text-md"></i>
                                         </a>
-                                        @if($donor->mobile_verified)
-                                            <i class="fa fas fa-check-circle text-success ml-1 text-md"></i>
-                                        @endif
-                                    </div>
-                                @else
-                                    <a href="#" data-toggle="modal" data-target="#login_modal">
-                                        {{ substr_replace($donor->phone_number, 'xxxxxx', 2, 6) }}
-                                    </a>
-                                @endif
+                                    @else
+                                        <a href="#" data-toggle="modal" data-target="#login_modal">
+                                            <u>{{ substr_replace($donor->phone_number, 'xxxxxx', 2, 6) }}</u>
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
 
                             @if($requesters === false)
