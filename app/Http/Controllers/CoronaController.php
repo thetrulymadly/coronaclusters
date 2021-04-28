@@ -113,9 +113,10 @@ class CoronaController extends Controller
         }
 
         if (!empty($city)) {
-            $active = $rawData->where('currentstatus', 'Hospitalized')->count();
-            $recovered = $rawData->where('currentstatus', 'Recovered')->count();
-            $deaths = $rawData->where('currentstatus', 'Deceased')->count();
+
+            $active = $this->covidDataService->makeRawDataQuery(null, $state, $city)->where('currentstatus', 'Hospitalized')->count();
+            $recovered = $this->covidDataService->makeRawDataQuery(null, $state, $city)->where('currentstatus', 'Recovered')->count();
+            $deaths = $this->covidDataService->makeRawDataQuery(null, $state, $city)->where('currentstatus', 'Deceased')->count();
 
             $aggregateData = [
                 'confirmed' => $active + $recovered + $deaths,
@@ -125,8 +126,7 @@ class CoronaController extends Controller
             ];
             $templateType = 'city';
         } else {
-            $stateData = $this->getStateData($state ?? '');
-            $aggregateData = $stateData->where('state', $state ?? 'Total')->first();
+            $aggregateData = CovidStateData::where('state', $state ?? 'Total')->first();
 
             $aggregateData = [
                 'confirmed' => $aggregateData->confirmed ?? 0,
@@ -140,16 +140,12 @@ class CoronaController extends Controller
             ];
 
             if (empty($state)) {
-                $stateData = $stateData->toArray();
+                $stateData = CovidStateData::where('state', $state)->get()->toArray();
                 $templateType = 'country';
             } else {
                 $templateType = 'state';
-
-                $districts = $rawData->groupBy('detecteddistrict');
-                $districtData = $this->getDataFromGroups($districts);
-
-                $cities = $rawData->groupBy('detectedcity');
-                $cityData = $this->getDataFromGroups($cities);
+                $districtData = $this->getDataFromGroups($state, 'detecteddistrict');
+                $cityData = $this->getDataFromGroups($state, 'detectedcity');
             }
         }
 
@@ -159,14 +155,14 @@ class CoronaController extends Controller
 
         // Find the center of the map
         $mapCenter = [];
-        if (!empty($string)) {
-            if (!empty($city)) {
-                $mapCenter = $rawData->where('detectedcity', $city)->first();
-            } else {
-                $mapCenter = $rawData->where('detectedstate', $state)->first();
-            }
-            $mapCenter = $mapCenter->geo_city ?? $mapCenter->geo_district ?? $mapCenter->geo_state ?? $mapCenter->geo_country ?? [];
-        }
+//        if (!empty($string)) {
+//            if (!empty($city)) {
+//                $mapCenter = $rawData->where('detectedcity', $city)->first();
+//            } else {
+//                $mapCenter = $rawData->where('detectedstate', $state)->first();
+//            }
+//            $mapCenter = $mapCenter->geo_city ?? $mapCenter->geo_district ?? $mapCenter->geo_state ?? $mapCenter->geo_country ?? [];
+//        }
 
         // ------------------- Meta data ------------------- //
 
@@ -204,6 +200,7 @@ class CoronaController extends Controller
 
         // History
         $timeline = null;
+
 //        $timeline = array_slice($timeline, 0, 3);
 
         return view('index',
@@ -381,35 +378,73 @@ class CoronaController extends Controller
      *
      * @return array
      */
-    private function getDataFromGroups($groups)
+    private function getDataFromGroups($state, $key)
     {
-        $data = [];
-        foreach ($groups as $key => $items) {
-            // Active & its delta
-            $active = $items->where('currentstatus', 'Hospitalized');
-            $delta_active = $active->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
-            $active = $active->count();
+        $totalCases = CovidRawData::query()
+            ->where('detectedstate', $state)
+            ->groupBy($key)
+            ->selectRaw(" $key,  sum(if(currentstatus = 'Hospitalized', 1, 0)) as 'active',
+                                    sum(if(currentstatus = 'Deceased', 1, 0)) as 'deaths',
+                                    sum(if(currentstatus = 'Recovered', 1, 0)) as 'recovered'")
+            ->get()
+            ->keyBy($key)
+            ->toArray();
 
-            // Recovered & its delta
-            $recovered = $items->where('currentstatus', 'Recovered');
-            $delta_recovered = $recovered->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
-            $recovered = $recovered->count();
+        $currentCases = CovidRawData::query()
+            ->where('detectedstate', $state)
+            ->groupBy($key)
+            ->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))
+            ->selectRaw(" $key,  sum(if(currentstatus = 'Hospitalized', 1, 0)) as 'delta_active',
+                                    sum(if(currentstatus = 'Deceased', 1, 0)) as 'delta_recovered',
+                                    sum(if(currentstatus = 'Recovered', 1, 0)) as 'delta_deaths'")
+            ->get()
+            ->keyBy($key)
+            ->toArray();
 
-            // Deaths & its delta
-            $deaths = $items->where('currentstatus', 'Deceased');
-            $delta_deaths = $deaths->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
-            $deaths = $deaths->count();
+        $data = array_merge($totalCases, $currentCases);
 
-            // Confirmed & its delta
-            $confirmed = $active + $recovered + $deaths;
-            $delta_confirmed = $delta_active + $delta_recovered + $delta_deaths;
+        foreach ($data as $city => $datum) {
+            $data[$city]['city'] = $datum[$key];
+            $data[$city]['state'] = $datum[$key];
+            $data[$city]['district'] = $datum[$key];
+            $data[$city]['confirmed'] = $data[$city]['active'] + $data[$city]['deaths'] + $data[$city]['recovered'];
 
-            $lastupdatedtime = $items->max('statuschangedate');
+            $data[$city]['delta_active'] = $data[$city]['delta_active'] ?? 0;
+            $data[$city]['delta_recovered'] = $data[$city]['delta_recovered'] ?? 0;
+            $data[$city]['delta_deaths'] = $data[$city]['delta_deaths'] ?? 0;
 
-            $city = $state = $district = $key;
-            $data[] = compact('city', 'district', 'state', 'active', 'delta_active', 'recovered', 'delta_recovered', 'deaths', 'delta_deaths',
-                'confirmed', 'delta_confirmed', 'lastupdatedtime');
+            $data[$city]['delta_confirmed'] = ($data[$city]['delta_active']) + ($data[$city]['delta_recovered']) + ($data[$city]['delta_deaths']);
+            $data[$city]['lastupdatedtime'] = '';
         }
+
+        $data = array_values($data);
+//        foreach ($groups as $key => $items) {
+//            // Active & its delta
+//            $active = $items->where('currentstatus', 'Hospitalized');
+//            $delta_active = $active->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
+//            $active = $active->count();
+//
+//            // Recovered & its delta
+//            $recovered = $items->where('currentstatus', 'Recovered');
+//            $delta_recovered = $recovered->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
+//            $recovered = $recovered->count();
+//
+//            // Deaths & its delta
+//            $deaths = $items->where('currentstatus', 'Deceased');
+//            $delta_deaths = $deaths->where('statuschangedate', '=', Carbon::today()->format('d/m/Y'))->count();
+//            $deaths = $deaths->count();
+//
+//            // Confirmed & its delta
+//            $confirmed = $active + $recovered + $deaths;
+//            $delta_confirmed = $delta_active + $delta_recovered + $delta_deaths;
+//
+//            $lastupdatedtime = $items->max('statuschangedate');
+//
+//            $city = $state = $district = $key;
+//
+//            $data[] = compact('city', 'district', 'state', 'active', 'delta_active', 'recovered', 'delta_recovered', 'deaths', 'delta_deaths',
+//                'confirmed', 'delta_confirmed', 'lastupdatedtime');
+//        }
 
         return $data;
     }
