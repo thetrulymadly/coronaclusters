@@ -6,10 +6,6 @@
     }
 
     $(document).ready(function () {
-        // $('.verified-tooltip').click(function () {
-        //     $(this).tooltip('toggle');
-        //
-        // });
 
         @if(session('verify_otp') && !empty(session('phone_number')))
 
