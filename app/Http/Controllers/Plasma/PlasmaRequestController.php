@@ -128,4 +128,11 @@ class PlasmaRequestController extends Controller
     {
         //
     }
+
+    public function shareableImage(Request $request)
+    {
+        $name = $request->name;
+        return view('plasma.shareable_image',['name'=>$name]);
+
+    }
 }

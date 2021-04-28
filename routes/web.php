@@ -33,6 +33,8 @@ Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
     Route::get('request', 'PlasmaRequestController@create');
     Route::post('request', 'PlasmaRequestController@store');
     Route::get('requests', 'PlasmaRequestController@index');
+
+    Route::get('shareable-image', 'PlasmaRequestController@shareableImage');
 });
 
 // This should always be the last route in this file
