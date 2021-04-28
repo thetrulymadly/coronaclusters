@@ -3,7 +3,8 @@
 <head>
     <link href="{{ mix_cdn('css/covid_'.config('corona.theme').'.css') }}" rel="stylesheet">
     <link rel="canonical" href="{{ request()->get('canonicalUrl') ?? $url }}"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
+
     <meta name="robot" content="all">
 
     @yield('styles')
@@ -34,26 +35,18 @@
         {{$name}}
     </h6>
 </div>
-
-{{--<div id="canvasWrapper" class="outer">--}}
-{{--    <p>Canvas-rendered (try right-click, save image as!)</p>--}}
-{{--    <p>Or, <a id="downloadLink" download="cat.png">Click Here to Download!</a>--}}
-{{--</div>--}}
-
 </body>
 
 <script type="module">
 
-    window.onload = function () {
-        html2canvas(document.getElementById("imagewrap"), {
-            onrendered: function (canvas) {
-                canvas.className = "html2canvas";
-                var image = canvas.toDataURL("image/jpeg", 1000);
-                document.getElementById("downloadBanner").href = image;
-            },
-            useCORS: false,
-        });
-    }
+   let div =
+       document.getElementById('imagewrap');
+
+   html2canvas(div).then(
+       function (canvas) {
+           document.getElementById("downloadBanner").href = canvas.toDataURL();
+       })
+
 </script>
 
 </html>
