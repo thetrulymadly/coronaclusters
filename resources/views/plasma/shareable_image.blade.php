@@ -1,46 +1,58 @@
-
-@section('styles')
-    <link href="{{ mix_cdn('css/select2.min.css') }}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-@endsection
-
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="{{ mix_cdn('css/covid_'.config('corona.theme').'.css') }}" rel="stylesheet">
+    <link rel="canonical" href="{{ request()->get('canonicalUrl') ?? $url }}"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <meta name="robot" content="all">
+
+    @yield('styles')
     <style>
         .gfg {
             margin: 3%;
-            position: relative;
+            top: 60%;
+            position: absolute;
         }
 
         .first-txt {
             position: absolute;
-            top: 45%;
-            left: 4%;
+            top: 48%;
+            left: 10%;
             color: white;
+            font-weight: bold;
         }
-
-        .second-txt {
-            position: absolute;
-            bottom: 20px;
-            left: 10px;
-        }
-        
     </style>
 </head>
 
 <body>
-<div class="gfg">
-    <img src="/storage/shareable_image.png" width="400" height="400">
 
-    <h3 class="first-txt">
+<div class="gfg" id="imagewrap">
+    <img id="shareableImage" src="/storage/shareable_image.png" width="400" height="400">
+
+    <h6 class="first-txt">
         {{$name}}
-    </h3>
-
-    <h3 class="second-txt">
-
-    </h3>
+    </h6>
 </div>
+
+<div id="canvasWrapper" class="outer">
+    <p>Canvas-rendered (try right-click, save image as!)</p>
+    <p>Or, <a id="downloadLink" download="cat.png">Click Here to Download!</a>
+</div>
+
 </body>
+
+    <script type="module">
+        window.onload = function () {
+            html2canvas(document.getElementById("imagewrap"), {
+                onrendered: function (canvas) {
+                    canvas.className = "html2canvas";
+                    document.getElementById("canvasWrapper").appendChild(canvas);
+                    var image = canvas.toDataURL("image/png");
+                    document.getElementById("downloadLink").href = image;
+                },
+                useCORS: false,
+            });
+        }
+    </script>
 
 </html>
