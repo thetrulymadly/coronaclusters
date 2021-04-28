@@ -41,11 +41,23 @@ class PlasmaRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester()->latest()->paginate(20);
+        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester();
+
+        if (!empty($state = $request->state)) {
+            $donors->where('state', $state);
+        }
+
+        if (!empty($city = $request->city)) {
+            $donors->where('city', $city);
+        }
+
+        $donors = $donors->latest()->paginate(20);
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),

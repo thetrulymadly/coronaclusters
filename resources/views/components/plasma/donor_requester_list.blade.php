@@ -39,6 +39,16 @@
                 <p>There are no donors for plasma yet. We will update when someone is available to donate</p>
             @endif
         @else
+            @if($detailed === true)
+                <div class="form-group form-inline">
+                    {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in your State', ['class' => 'pr-3']) !!}
+                    {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
+                </div>
+            @endif
+            {{--            <div class="form-group form-inline">--}}
+            {{--                {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}--}}
+            {{--                {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Type to search your city']); !!}--}}
+            {{--            </div>--}}
             <div class="table-responsive-sm">
                 <table class="table table-striped table-hover table-sm">
                     <thead>
@@ -78,7 +88,8 @@
                                 <div class="d-flex justify-content-start align-content-center">
                                     @if($donor->mobile_verified)
                                         <div>
-                                            <i class="fa fas fa-check-circle text-primary mr-1 verified-tooltip" data-toggle="tooltip" title="Verified Number" ></i>
+                                            <i class="fa fas fa-check-circle text-primary mr-1 verified-tooltip"
+                                               data-toggle="tooltip" title="Verified Number"></i>
                                         </div>
                                     @else
                                         <div class="d-block" style="width: 15px"></div>
@@ -116,7 +127,7 @@
                     </tbody>
                 </table>
                 @if($detailed === true)
-                    {{ $donors->onEachSide(1)->links() }}
+                    {{ !empty(request()->query('state')) ?  $donors->appends(['state' => request()->query('state')])->onEachSide(1)->links() : $donors->onEachSide(1)->links() }}
                 @endif
             </div>
         @endif
