@@ -43,11 +43,18 @@
                     <div class="form-group">
                         {!! Form::label('gender', 'Gender'.' *') !!}
                         <div class="form-group">
-                            <label class="mr-2"><input type="radio" name="gender" value="male"><span
-                                    class="px-1">Male</span></label>
-                            <label class="mr-2"><input type="radio" name="gender" value="female"><span class="px-1">Female</span></label>
-                            <label class="mr-2"><input type="radio" name="gender" value="other"><span
-                                    class="px-1">Other</span></label>
+                            <label class="mr-2">
+                                <input type="radio" name="gender" value="male">
+                                <span class="px-1">Male</span>
+                            </label>
+                            <label class="mr-2">
+                                <input type="radio" name="gender" value="female">
+                                <span class="px-1">Female</span>
+                            </label>
+                            <label class="mr-2">
+                                <input type="radio" name="gender" value="other">
+                                <span class="px-1">Other</span>
+                            </label>
                         </div>
                         {{--                    <label class="radio-inline">--}}
                         {{--                        Gender--}}
