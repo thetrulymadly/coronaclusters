@@ -6,6 +6,7 @@
     }
 
     $(document).ready(function () {
+
         @if(session('verify_otp') && !empty(session('phone_number')))
 
         $('#otp_modal').modal('show');

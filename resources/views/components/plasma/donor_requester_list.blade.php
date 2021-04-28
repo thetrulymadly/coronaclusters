@@ -75,20 +75,21 @@
                             <td>{{ $donor->blood_group }}</td>
                             {{-- Show phone number for request list or if logged in then show donor phone number as well --}}
                             <td>
-                                <div class="d-flex justify-content-between align-content-center">
+                                <div class="d-flex justify-content-start align-content-center">
                                     @if($donor->mobile_verified)
                                         <div>
-                                            <i class="fa fas fa-check-circle text-success mr-1"></i>
+                                            <i class="fa fas fa-check-circle text-primary mr-1 verified-tooltip" data-toggle="tooltip" title="Verified Number" ></i>
                                         </div>
                                     @else
-                                        <div class="d-block" style="width: 12px"></div>
+                                        <div class="d-block" style="width: 15px"></div>
                                     @endif
                                     @if($requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
-                                        <a href="https://wa.me/{{ $donor->phone_number }}"
-                                           class="d-flex justify-content-between align-content-center">
-                                            <span>{{ $donor->phone_number }}</span>
-                                            <i class="fab fa-whatsapp text-success ml-1 text-md"></i>
+                                        <a href="https://wa.me/{{ '91'.$donor->phone_number }}">
+                                            {{ $donor->phone_number }}
                                         </a>
+                                        <div>
+                                            <i class="fab fa-whatsapp text-success ml-1 text-md"></i>
+                                        </div>
                                     @else
                                         <a href="#" data-toggle="modal" data-target="#login_modal">
                                             <u>{{ substr_replace($donor->phone_number, 'xxxxxx', 2, 6) }}</u>
@@ -114,10 +115,13 @@
                     @endforeach
                     </tbody>
                 </table>
+                @if($detailed === true)
+                    {{ $donors->onEachSide(1)->links() }}
+                @endif
             </div>
         @endif
     </div>
-    <div class="card-footer">
+    <div class="card-footer overflow-auto">
         @if($detailed === false)
             <div class="float-right d-none d-md-block">
                 <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">

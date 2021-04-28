@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('raw_data', 'CoronaApiController@getRawData');
 Route::get('geo_data', 'CoronaApiController@getGeoJson');
 Route::group(['prefix' => 'geo', 'namespace' => 'Geo'], function () {
-    Route::get('state/search', 'GeoController@searchState');
-    Route::get('city/search', 'GeoController@searchCity');
+    Route::get('state/search', 'GeoController@searchState')->middleware('cache.headers:public;max_age=1800');
+    Route::get('city/search', 'GeoController@searchCity')->middleware('cache.headers:public;max_age=1800');
 });
 
 Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {

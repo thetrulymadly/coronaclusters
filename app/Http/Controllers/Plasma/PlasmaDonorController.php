@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Class PlasmaDonorController
@@ -44,9 +43,9 @@ class PlasmaDonorController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latest()->get();
+        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor()->latest()->paginate(20);
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -91,7 +90,8 @@ class PlasmaDonorController extends Controller
         if (PlasmaDonor::donor()->where('phone_number', $request->phone_number)->exists()) {
             toastr()->success('Please check the request list to help save lives.', 'Already Registered');
 
-            return back()->withCookie(\cookie()->make('logged_in', 'true', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'), true, false, false, 'None'));
+            return back()->withCookie(\cookie()->make('logged_in', 'true', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'),
+                true, false, false, 'None'));
         }
 
         PlasmaDonor::create([
