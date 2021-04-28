@@ -27,32 +27,33 @@
 <body>
 
 <div class="gfg" id="imagewrap">
-    <img id="shareableImage" src="/storage/shareable_image.png" width="400" height="400">
-
+    <a id="downloadBanner" download>
+        <img id="shareableImage" src="/storage/shareable_image.png" width="400" height="400">
+    </a>
     <h6 class="first-txt">
         {{$name}}
     </h6>
 </div>
 
-<div id="canvasWrapper" class="outer">
-    <p>Canvas-rendered (try right-click, save image as!)</p>
-    <p>Or, <a id="downloadLink" download="cat.png">Click Here to Download!</a>
-</div>
+{{--<div id="canvasWrapper" class="outer">--}}
+{{--    <p>Canvas-rendered (try right-click, save image as!)</p>--}}
+{{--    <p>Or, <a id="downloadLink" download="cat.png">Click Here to Download!</a>--}}
+{{--</div>--}}
 
 </body>
 
-    <script type="module">
-        window.onload = function () {
-            html2canvas(document.getElementById("imagewrap"), {
-                onrendered: function (canvas) {
-                    canvas.className = "html2canvas";
-                    document.getElementById("canvasWrapper").appendChild(canvas);
-                    var image = canvas.toDataURL("image/png");
-                    document.getElementById("downloadLink").href = image;
-                },
-                useCORS: false,
-            });
-        }
-    </script>
+<script type="module">
+
+    window.onload = function () {
+        html2canvas(document.getElementById("imagewrap"), {
+            onrendered: function (canvas) {
+                canvas.className = "html2canvas";
+                var image = canvas.toDataURL("image/jpeg", 1000);
+                document.getElementById("downloadBanner").href = image;
+            },
+            useCORS: false,
+        });
+    }
+</script>
 
 </html>
