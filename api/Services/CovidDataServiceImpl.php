@@ -54,7 +54,7 @@ class CovidDataServiceImpl implements CovidDataService
         if (!empty($city)) {
             $data->where(function ($q) use ($city) {
                 $q->where('detectedcity', $city);
-                $q->where('detectedDistrict', $city);
+                $q->orWhere('detectedDistrict', $city);
             });
         }
         if (!empty($state)) {
