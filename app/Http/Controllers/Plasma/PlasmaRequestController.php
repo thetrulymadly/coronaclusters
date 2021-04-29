@@ -118,7 +118,6 @@ class PlasmaRequestController extends Controller
             'state' => $request->state,
             'hospital' => $request->hospital,
             'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),
-            'date_of_negative' => Carbon::parse($request->date_of_negative)->toDateString(),
         ]);
 
         // Send OTP

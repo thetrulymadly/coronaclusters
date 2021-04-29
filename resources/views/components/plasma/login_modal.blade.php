@@ -33,13 +33,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert bg-warning-trans mb-3">
+                    <div class="alert bg-danger mb-3 text-light">
                         <i class="fa fas fa-exclamation-triangle mr-1"></i>
-                        You can login only if you are either a donor or a requester for plasma
+                        <span class="text-base">You can login only if you are either a donor or a requester for plasma</span>
                     </div>
                     {!! Form::open(['id' => 'login_form']) !!}
                     {!! Form::label('phone_number_login', 'Enter your phone number to receive OTP') !!}
-                    {!! Form::text('phone_number_login', '', ['class' => 'form-control text-center', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
+                    {!! Form::tel('phone_number_login', '', ['class' => 'form-control text-center', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'minlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
+                    <div class="alert bg-danger-trans mb-3 d-none" id="phone_number_login_error">
+                        <i class="fa fas fa-exclamation mr-1"></i>
+                        Please enter 10-digit phone number
+                    </div>
 
                     {!! Form::token(); !!}
                     {!! Form::close() !!}
@@ -66,7 +70,11 @@
                 <div class="d-flex justify-content-center">
                     {!! Form::open(['id' => 'otp_verify_form_new']) !!}
                     {!! Form::label('otp', 'Enter OTP sent to: ' . session('phone_number')) !!}
-                    {!! Form::text('otp', '', ['class' => 'form-control text-center', 'required', 'placeholder' => 'X X X X', 'maxlength' => 4, 'onkeypress' => 'return isNumberKey(event)']) !!}
+                    {!! Form::tel('otp', '', ['class' => 'form-control text-center', 'required', 'placeholder' => 'X X X X', 'maxlength' => 4, 'minlength' => 4, 'onkeypress' => 'return isNumberKey(event)']) !!}
+                    <div class="alert bg-danger-trans mb-3 d-none" id="verify_otp_error">
+                        <i class="fa fas fa-exclamation mr-1"></i>
+                        Please enter 4-digit OTP
+                    </div>
 
                     {!! Form::token(); !!}
                     {!! Form::close() !!}

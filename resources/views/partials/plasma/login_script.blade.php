@@ -61,52 +61,64 @@
         @endif
 
         $('#verify_otp_btn').click(function () {
-            $('#otp_modal').modal('hide');
-            $.ajax({
-                type: 'POST',
-                url: "{{ config('app.url').'api/otp/verify' }}",
-                dataType: 'json',
-                async: true,
-                data: {
-                    phone_number: $('#phone_number_login').val(),
-                    // otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
-                    otp: $('#otp').val()
-                },
-                success: function (data) {
-                    console.log('otp verified');
-                    toastr.success('', 'Verified!');
-                    setTimeout(location.reload.bind(location), 100);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log('otp error');
-                }
-            });
+            var otp = $('#otp').val();
+            if (otp.length < 4) {
+                $('#verify_otp_error').removeClass('d-none');
+            } else {
+                $('#verify_otp_error').addClass('d-none');
+                $('#otp_modal').modal('hide');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ config('app.url').'api/otp/verify' }}",
+                    dataType: 'json',
+                    async: true,
+                    data: {
+                        phone_number: $('#phone_number_login').val(),
+                        // otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
+                        otp: otp
+                    },
+                    success: function (data) {
+                        console.log('otp verified');
+                        toastr.success('', 'Verified!');
+                        setTimeout(location.reload.bind(location), 100);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log('otp error');
+                    }
+                });
+            }
         });
 
         $('#get_otp_btn').click(function () {
-            $.ajax({
-                type: 'POST',
-                url: "{{ config('app.url').'api/otp/send' }}",
-                dataType: 'json',
-                async: true,
-                data: {
-                    phone_number: $('#phone_number_login').val(),
-                },
-                success: function (data) {
-                    console.log('otp sent');
-                    $('#login_modal').modal('hide');
-                    $('#otp_modal').modal('show');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log('otp not sent');
-                    $('#login_modal').modal('hide');
-                    if (xhr.status === 422) {
-                        toastr.error(xhr.responseJson.message, 'Failed');
-                    } else {
-                        toastr.error('OTP could not be sent. Please try again!', 'Failed');
+            var phoneNumber = $('#phone_number_login').val();
+            if (phoneNumber.length < 10) {
+                $('#phone_number_login_error').removeClass('d-none');
+            } else {
+                $('#phone_number_login_error').addClass('d-none');
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ config('app.url').'api/otp/send' }}",
+                    dataType: 'json',
+                    async: true,
+                    data: {
+                        phone_number: phoneNumber,
+                    },
+                    success: function (data) {
+                        console.log('otp sent');
+                        $('#login_modal').modal('hide');
+                        $('#otp_modal').modal('show');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log('otp not sent');
+                        $('#login_modal').modal('hide');
+                        if (xhr.status === 422) {
+                            toastr.error('You must be either a Requester or Donor to login', 'Failed');
+                        } else {
+                            toastr.error('OTP could not be sent. Please try again!', 'Failed');
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
         $('#logout_plasma').click(function () {
