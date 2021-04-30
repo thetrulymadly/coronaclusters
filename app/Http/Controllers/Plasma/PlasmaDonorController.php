@@ -48,10 +48,16 @@ class PlasmaDonorController extends Controller
      */
     public function index(Request $request)
     {
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        }
+
         $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor();
 
         if (!empty($state = $request->state)) {
             $donors->where('state', $state);
+        } elseif (!empty($loggedInDonor)) {
+            $donors->where('state', $loggedInDonor->state);
         }
 
         if (!empty($city = $request->city)) {
@@ -59,10 +65,6 @@ class PlasmaDonorController extends Controller
         }
 
         $donors = $donors->latest()->paginate(20);
-
-        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
-            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
-        }
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -83,11 +85,17 @@ class PlasmaDonorController extends Controller
      */
     public function create()
     {
-        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester()->latest()->limit(10)->get();
-
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
         }
+
+        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester();
+
+        if (!empty($loggedInDonor)) {
+            $donors->where('state', $loggedInDonor->state);
+        }
+
+        $donors = $donors->latest()->limit(10)->get();
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),

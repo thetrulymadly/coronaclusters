@@ -48,10 +48,16 @@ class PlasmaRequestController extends Controller
      */
     public function index(Request $request)
     {
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        }
+
         $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester();
 
         if (!empty($state = $request->state)) {
             $donors->where('state', $state);
+        } elseif (!empty($loggedInDonor)) {
+            $donors->where('state', $loggedInDonor->state);
         }
 
         if (!empty($city = $request->city)) {
@@ -83,7 +89,15 @@ class PlasmaRequestController extends Controller
      */
     public function create()
     {
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        }
+
         $donors = PlasmaDonor::with(['geoState', 'geoCity'])->donor()->latest()->limit(10)->get();
+
+        if (!empty($loggedInDonor)) {
+            $donors->where('state', $loggedInDonor->state);
+        }
 
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();

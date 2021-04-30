@@ -45,6 +45,11 @@
                     {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
                 </div>
             @endif
+            @if(!empty($loggedInDonor))
+                <div class="alert alert-info">
+                    <span class="text-base"><i class="fa fas fa-location-arrow mr-2"></i>Here is a list of {{ $requesters === true ? __('plasma.requests') : __('plasma.eligible_donors') }} NEAR YOU</span>
+                </div>
+            @endif
             {{--            <div class="form-group form-inline">--}}
             {{--                {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}--}}
             {{--                {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Type to search your city']); !!}--}}

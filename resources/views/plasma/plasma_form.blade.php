@@ -111,7 +111,7 @@
 
                     <div class="form-group">
                         {!! Form::label('phone_number', 'Phone Number'.' *') !!}
-                        {!! Form::tel('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
+                        {!! Form::tel('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'minlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
                     </div>
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
