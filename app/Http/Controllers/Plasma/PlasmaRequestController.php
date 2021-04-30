@@ -66,10 +66,6 @@ class PlasmaRequestController extends Controller
 
         $donors = $donors->latest()->paginate(20);
 
-        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
-            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
-        }
-
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('plasma.page.plasma_requests.title'),

@@ -67,7 +67,7 @@
                 // window.location.replace("http://stackoverflow.com");
 
                 // similar behavior as clicking on a link
-                window.location.href = "{{ config('app.url').'plasma/donors?state=' }}" + e.params.data.id;
+                window.location.href = "{{ config('app.url').'plasma/'.($donorType === \App\Dictionary\PlasmaDonorType::DONOR ? 'donors' : 'requests').'?state=' }}" + e.params.data.id;
 
                 // clear selected city
                 // $('.select_state').val(null).trigger('change');
