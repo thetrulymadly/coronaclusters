@@ -21,7 +21,7 @@
         <div class="d-flex justify-content-center align-content-center align-items-center">
             @if($donor->mobile_verified)
                 <div>
-                    <i class="fa fas fa-check-circle text-primary mr-1 verified-tooltip"
+                    <i class="fa fas fa-check-circle text-primary mr-1 verified-number-tooltip"
                        data-toggle="tooltip" title="Verified Number"></i>
                 </div>
             @endif

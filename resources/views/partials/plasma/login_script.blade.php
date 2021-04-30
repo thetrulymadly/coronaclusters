@@ -5,6 +5,13 @@
         return !(charCode > 31 && (charCode < 48 || charCode > 57));
     }
 
+    $('.verified-number-tooltip').click(function () {
+        $(this).tooltip('toggle');
+    });
+    $('.verified-details-tooltip').click(function () {
+        $(this).tooltip('toggle');
+    });
+
     $(document).ready(function () {
 
         @if(session('verify_otp') && !empty(session('phone_number')))

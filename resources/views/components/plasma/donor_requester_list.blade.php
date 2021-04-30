@@ -53,7 +53,7 @@
                 <table class="table table-striped table-hover table-sm">
                     <thead>
                     <tr>
-                        <th></th>
+                        <th>Verified?</th>
                         <th>Location</th>
                         <th>Donor</th>
                         <th>Blood Group</th>
@@ -81,9 +81,11 @@
                     <tbody>
                     @foreach($donors as $donor)
                         <tr>
-                            <td>
+                            <td class="align-middle text-center">
                                 @if($donor->details_verified === \App\Dictionary\DetailsVerified::VERIFIED)
-                                    <img src="{{ asset_cdn('images/details_verified.png') }}" alt="Verified" width="25" data-toggle="tooltip" title="Verified Details">
+                                    <img src="{{ asset_cdn('images/details_verified.png') }}"
+                                         class="verified-details-tooltip" alt="Verified" width="25"
+                                         data-toggle="tooltip" title="Verified Details">
                                 @endif
                             </td>
                             <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
@@ -94,7 +96,7 @@
                                 <div class="d-flex justify-content-start align-content-center">
                                     @if($donor->mobile_verified)
                                         <div>
-                                            <i class="fa fas fa-check-circle text-primary mr-1 verified-tooltip"
+                                            <i class="fa fas fa-check-circle text-primary mr-1 verified-number-tooltip"
                                                data-toggle="tooltip" title="Verified Number"></i>
                                         </div>
                                     @else
