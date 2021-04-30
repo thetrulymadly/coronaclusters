@@ -53,6 +53,7 @@
                 <table class="table table-striped table-hover table-sm">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Location</th>
                         <th>Donor</th>
                         <th>Blood Group</th>
@@ -80,6 +81,11 @@
                     <tbody>
                     @foreach($donors as $donor)
                         <tr>
+                            <td>
+                                @if($donor->details_verified === \App\Dictionary\DetailsVerified::VERIFIED)
+                                    <img src="{{ asset_cdn('images/details_verified.png') }}" alt="Verified" width="25" data-toggle="tooltip" title="Verified Details">
+                                @endif
+                            </td>
                             <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                             <td>{{ ucfirst($donor->gender) }} / {{ $donor->age }}</td>
                             <td>{{ $donor->blood_group }}</td>
