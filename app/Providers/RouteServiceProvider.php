@@ -10,6 +10,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /**
  * Class RouteServiceProvider
@@ -41,7 +42,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (!$this->app->environment('local')) {
+            URL::forceScheme('https');
+        }
 
         parent::boot();
     }
