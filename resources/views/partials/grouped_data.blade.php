@@ -1,7 +1,9 @@
-<div class="tab-pane fade @if($active) show active @endif" id="{{ $group }}-data" role="tabpanel" aria-labelledby="{{ $group }}-data-tab">
+<div class="tab-pane fade @if($active) show active @endif" id="{{ $group }}-data" role="tabpanel"
+     aria-labelledby="{{ $group }}-data-tab">
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <table id="{{ $group }}-data-table" class="table table-striped table-bordered table-hover table-sm bg-white">
+            <table id="{{ $group }}-data-table"
+                   class="table table-striped table-bordered table-hover table-sm bg-white">
                 <thead class="thead-light">
                 <tr>
                     @foreach(config('corona.table.'.$group.'_data') as $dataHeader)
@@ -21,7 +23,7 @@
                                 @if(!empty($data[$group]))
                                     <th scope="row" data-order="{{ $data[$group] }}">
                                         @if($data['confirmed'] !== 0)
-                                            <a href="{{ \App\Http\Controllers\Helpers::sanitize($parentUrl.'/'.$data[$group]) }}">{{ $data[$group] }}</a>
+                                            <a href="{{ config('app.url').\App\Http\Controllers\Helpers::sanitize($parentUrl.'/'.$data[$group]) }}">{{ $data[$group] }}</a>
                                         @else
                                             {{ $data[$group] }}
                                         @endif
