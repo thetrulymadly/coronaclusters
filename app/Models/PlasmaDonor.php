@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Dictionary\PlasmaDonorType;
+use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\Geo\City;
 use App\Models\Geo\State;
 use Carbon\Carbon;
@@ -34,6 +35,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  *
+ * @property \App\Models\Geo\State $geoState
+ * @property \App\Models\Geo\City $geoCity
+ *
  * @package App\Models
  */
 class PlasmaDonor extends Model
@@ -54,6 +58,7 @@ class PlasmaDonor extends Model
      */
     protected $fillable = [
         'uuid',
+        'uuid_hex',
         'donor_type',
         'name',
         'gender',
@@ -67,6 +72,15 @@ class PlasmaDonor extends Model
         'date_of_positive',
         'date_of_negative',
     ];
+
+    protected $appends = [
+        'url',
+    ];
+
+    public function getUrlAttribute()
+    {
+        return DonorRequestParamsDTO::makeUrl($this);
+    }
 
     /**
      * @return string
@@ -82,6 +96,28 @@ class PlasmaDonor extends Model
     public function getDateOfNegativeAttribute()
     {
         return $this->attributes['date_of_negative'] ? Carbon::parse($this->attributes['date_of_negative'])->toDateString() : '';
+    }
+
+    /**
+     * @param $query
+     * @param string $uuid
+     *
+     * @return mixed
+     */
+    public function scopeUuid($query, string $uuid)
+    {
+        return $query->where('uuid', $uuid);
+    }
+
+    /**
+     * @param $query
+     * @param string $uuidHex
+     *
+     * @return mixed
+     */
+    public function scopeUuidHex($query, string $uuidHex)
+    {
+        return $query->where('uuid_hex', $uuidHex);
     }
 
     /**

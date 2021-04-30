@@ -9,7 +9,9 @@
 namespace App\Http\Controllers\Plasma;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\PlasmaDonor;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class PlasmaController
@@ -34,6 +36,64 @@ class PlasmaController extends Controller
             'url' => request()->url(),
             'keywords' => trans('plasma.page.plasma.meta.keywords'),
             'plasmaCount' => $plasmaCount,
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param string $requestId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function donorDetail(string $requestId)
+    {
+        $request = DonorRequestParamsDTO::getParams($requestId);
+
+        if (empty($request)) {
+            throw new NotFoundHttpException();
+        }
+
+        if (empty($donor = PlasmaDonor::with(['geoState', 'geoCity'])->uuidHex($request->uuidHex)->first())) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!DonorRequestParamsDTO::validateParams($donor, $request)) {
+            throw new NotFoundHttpException();
+        }
+
+        $breadcrumbs = $this->getBreadcrumbs();
+        array_pop($breadcrumbs);
+        $breadcrumbs[] = [
+            'url' => $request->uuidHex,
+            'name' => $request->uuidHex,
+        ];
+
+        return view('plasma.detail', [
+            'breadcrumbs' => $breadcrumbs,
+            'title' => trans('plasma.page.' . $donor->donor_type . '_detail.title', [
+                'state' => $request->state,
+                'city' => $request->city,
+                'gender' => $request->gender,
+                'age' => $request->age,
+                'blood_group' => $request->bloodGroup,
+            ]),
+            'description' => trans('plasma.page.' . $donor->donor_type . '_detail.meta.description', [
+                'state' => $request->state,
+                'city' => $request->city,
+                'gender' => $request->gender,
+                'age' => $request->age,
+                'blood_group' => $request->bloodGroup,
+            ]),
+            'url' => request()->url(),
+            'keywords' => trans('plasma.page.' . $donor->donor_type . '_detail.meta.keywords', [
+                'state' => $request->state,
+                'city' => $request->city,
+                'gender' => $request->gender,
+                'age' => $request->age,
+                'blood_group' => $request->bloodGroup,
+            ]),
+            'donor' => $donor,
         ]);
     }
 }

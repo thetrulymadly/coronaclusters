@@ -33,6 +33,9 @@ Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
     Route::get('request', 'PlasmaRequestController@create');
     Route::post('request', 'PlasmaRequestController@store');
     Route::get('requests', 'PlasmaRequestController@index');
+
+    Route::get('requests/{request_id}', 'PlasmaController@donorDetail');
+    Route::get('donors/{request_id}', 'PlasmaController@donorDetail');
 });
 
 // This should always be the last route in this file

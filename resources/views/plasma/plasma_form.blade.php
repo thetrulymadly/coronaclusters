@@ -15,6 +15,8 @@
 @section('content')
     @include('components.breadcrumbs')
 
+    @include('components.plasma.manage_request_alert')
+
     <div class="row">
         {{-- Last Update & Stats (Desktop Position 2) --}}
         <div class="col-12 col-lg-6">

@@ -9,6 +9,7 @@
 namespace App\Helpers;
 
 use App\Dictionary\PlasmaDonorType;
+use App\Models\PlasmaDonor;
 
 /**
  * Class PlasmaHelper
@@ -34,5 +35,14 @@ final class PlasmaHelper
         $random_id .= round(microtime(true));
 
         return $random_id;
+    }
+
+    /**
+     * @return string
+     */
+    public static function generateHexUUID()
+    {
+        $hex = sprintf('%06X', mt_rand(0, 16777215));
+        return PlasmaDonor::where('uuid_hex', $hex)->exists() ? self::generateHexUUID() : $hex;
     }
 }

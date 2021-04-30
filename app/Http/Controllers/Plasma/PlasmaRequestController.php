@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 /**
  * Class PlasmaRequestController
@@ -59,6 +60,10 @@ class PlasmaRequestController extends Controller
 
         $donors = $donors->latest()->paginate(20);
 
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        }
+
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('plasma.page.plasma_requests.title'),
@@ -67,6 +72,7 @@ class PlasmaRequestController extends Controller
             'keywords' => trans('plasma.page.plasma_requests.meta.keywords'),
             'donors' => $donors,
             'donorType' => PlasmaDonorType::REQUESTER,
+            'loggedInDonor' => $loggedInDonor ?? null,
         ]);
     }
 
@@ -79,6 +85,10 @@ class PlasmaRequestController extends Controller
     {
         $donors = PlasmaDonor::with(['geoState', 'geoCity'])->donor()->latest()->limit(10)->get();
 
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        }
+
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
             'title' => trans('plasma.page.request_plasma.title'),
@@ -87,6 +97,7 @@ class PlasmaRequestController extends Controller
             'keywords' => trans('plasma.page.request_plasma.meta.keywords'),
             'donors' => $donors,
             'donorType' => PlasmaDonorType::REQUESTER,
+            'loggedInDonor' => $loggedInDonor ?? null,
         ]);
     }
 
@@ -105,8 +116,11 @@ class PlasmaRequestController extends Controller
             return back()->withCookie(\cookie()->make('logged_in', 'true', 0, '/', config('app.cookie_domain'), true, false, false, 'None'));
         }
 
+        $uuidHex = PlasmaHelper::generateHexUUID();
+
         PlasmaDonor::create([
             'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::REQUESTER),
+            'uuid_hex' => $uuidHex,
             'donor_type' => PlasmaDonorType::REQUESTER,
             'name' => $request->name,
             'gender' => $request->gender,
@@ -126,17 +140,5 @@ class PlasmaRequestController extends Controller
         toastr()->success('Here is a list of donors suitable for you.', 'Request registered successfully!');
 
         return redirect('plasma/donors')->with('verify_otp', true)->with('phone_number', $request->phone_number);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\PlasmaDonor $plasmaDonor
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PlasmaDonor $plasmaDonor)
-    {
-        //
     }
 }

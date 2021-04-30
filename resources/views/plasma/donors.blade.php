@@ -15,6 +15,7 @@
 @section('content')
     @include('components.breadcrumbs')
 
+    @include('components.plasma.manage_request_alert')
     <div class="row" id="plasma_donors">
         <div class="col-12">
             @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
@@ -37,17 +38,17 @@
         $(document).ready(function () {
 
             @if(!empty(request()->query('state', null)))
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ config('app.url').'api/geo/state/search' }}",
-                    dataType: 'json',
-                    success: function (data) {
-                        // create the option and append to Select2
+            $.ajax({
+                type: 'GET',
+                url: "{{ config('app.url').'api/geo/state/search' }}",
+                dataType: 'json',
+                success: function (data) {
+                    // create the option and append to Select2
 
-                        var option = new Option(data.text, data.id, false, false);
-                        $('.select_state').append(option).trigger('change');
-                    }
-                });
+                    var option = new Option(data.text, data.id, false, false);
+                    $('.select_state').append(option).trigger('change');
+                }
+            });
             @endif
 
             $('.select_state').select2({
