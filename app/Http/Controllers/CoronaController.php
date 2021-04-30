@@ -230,27 +230,15 @@ class CoronaController extends Controller
 
             if ($i - 1 >= 0) { // All iterations
 
-//                $currDate = Carbon::parse($testsArray[$i]['updatetimestamp'])->toDateString();
-//                $prevDate = Carbon::parse($testsArray[$i - 1]['updatetimestamp'])->toDateString();
-//                if ($currDate == $prevDate) {
-//                    $prev['today_totalindividualstested'] = $prev['today_totalindividualstested'] + $testsArray[$i]['totalindividualstested'] - $testsArray[$i - 1]['totalindividualstested'];
-//                    $prev['today_totalpositivecases'] = $prev['today_totalpositivecases'] + $testsArray[$i]['totalpositivecases'] - $testsArray[$i - 1]['totalpositivecases'];
-//                    $prev['today_totalsamplestested'] = $prev['today_totalsamplestested'] + $testsArray[$i]['totalsamplestested'] - $testsArray[$i - 1]['totalsamplestested'];
-//
-//                    continue;
-//                }
 
                 $peopleTested = $testsArray[$i]['totalindividualstested'] - $testsArray[$i - 1]['totalindividualstested'];
                 $peoplePositive = $testsArray[$i]['totalpositivecases'] - $testsArray[$i - 1]['totalpositivecases'];
                 $sampleTested = $testsArray[$i]['totalsamplestested'] - $testsArray[$i - 1]['totalsamplestested'];
-//                $percentIncreasePositive = (($testsArray[$i]['totalpositivecases'] - $testsArray[$i + 1]['totalpositivecases']) / $testsArray[$i]['totalpositivecases']) * 100;
-//                $percentIncreaseTested = (($testsArray[$i]['totalindividualstested'] - $testsArray[$i + 1]['totalindividualstested']) / $testsArray[$i]['totalindividualstested']) * 100;
 
             } else { // The first iteration
                 $peopleTested = $prev['today_totalindividualstested'] = $testsArray[$i]['totalindividualstested'];
                 $peoplePositive = $prev['today_totalpositivecases'] = $testsArray[$i]['totalpositivecases'];
                 $sampleTested = $prev['today_totalsamplestested'] = $testsArray[$i]['totalsamplestested'];
-//                $percentIncreaseTested = $percentIncreasePositive = 0;
             }
 
             $prev['today_totalindividualstested'] = $peopleTested > 0 ? $peopleTested : $prev['today_totalindividualstested'];
@@ -266,9 +254,6 @@ class CoronaController extends Controller
                 'today_totalsamplestested' => $prev['today_totalsamplestested'],
                 'today_totalpositivecases_percent' => round((($prev['today_totalpositivecases'] ?? 0) / ($prev['today_totalindividualstested'] ?? 0)) * 100,
                         2) . '%',
-//                'today_totalsamplestested_percent' => round((($peoplePositive ?? 0) / ($peopleTested ?? 0)) * 100, 2) . '%',
-//                'percent_increase_tested' => round($percentIncreaseTested, 2) . '%',
-//                'percent_increase_positive' => round($percentIncreasePositive, 2) . '%',
                 'updatetimestamp' => Carbon::parse($testsArray[$i]['updatetimestamp'])->toDateString(),
                 'source' => $testsArray[$i]['source'],
             ];
@@ -281,11 +266,6 @@ class CoronaController extends Controller
 
         $stats = [
             'total_samples' => $topTests[0]['totalsamplestested'],
-//            'total_tested' => $topTests[0]['totalindividualstested'],
-//            'total_positive' => $topTests[0]['totalpositivecases'],
-//            'total_positive_percent' => round(($topTests[0]['totalpositivecases'] / $topTests[0]['totalindividualstested']) * 100, 2) . '%',
-//            'delta_total_tested' => $topTests[0]['totalindividualstested'] - $topTests[1]['totalindividualstested'],
-//            'delta_total_positive' => $topTests[0]['totalpositivecases'] - $topTests[1]['totalpositivecases'],
             'delta_total_samples' => $topTests[0]['totalsamplestested'] - $topTests[1]['totalsamplestested'],
             'last_testing_on' => $topTests[0]['updatetimestamp'],
         ];
@@ -297,6 +277,8 @@ class CoronaController extends Controller
         $description = trans('corona.page.testing.meta.description', $stats);
         $url = request()->url();
         $keywords = trans('corona.page.testing.meta.keywords', $stats);
+
+        $dailyTests = array_reverse($dailyTests);
 
         return view('testing', compact('dailyTests', 'stats', 'breadcrumbs', 'title', 'description', 'url', 'keywords'));
     }

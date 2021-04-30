@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('', 'CoronaController@home');
+Route::get('', 'CoronaController@home')->middleware('cache.headers:public;max_age=1800');
 //Route::get('timeline', 'CoronaController@timeline');
 //Route::get('{string?}/timeline', 'CoronaController@timeline')->where('string', '.*');
-Route::get('corona-testing-per-day-india', 'CoronaController@testing');
+Route::get('corona-testing-per-day-india', 'CoronaController@testing')->middleware('cache.headers:public;max_age=1800');
 
 Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
-    Route::get('', 'PlasmaController@index');
+    Route::get('', 'PlasmaController@index')->middleware('cache.headers:public;max_age=120');
 
     Route::get('donate', 'PlasmaDonorController@create');
     Route::post('donate', 'PlasmaDonorController@store');
@@ -36,4 +36,4 @@ Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
 });
 
 // This should always be the last route in this file
-Route::get('{string}', 'CoronaController@index')->where('string', '.*');
+Route::get('{string}', 'CoronaController@index')->where('string', '.*')->middleware('cache.headers:public;max_age=1800');
