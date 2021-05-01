@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Dictionary\DetailsVerified;
 use App\Dictionary\PlasmaDonorType;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\Geo\City;
@@ -145,9 +146,9 @@ class PlasmaDonor extends Model
      *
      * @return mixed
      */
-    public function scopeLatestFirst($query)
+    public function scopeNotInvalid($query)
     {
-        return $query->orderBy('created_at', 'desc');
+        return $query->where('details_verified', '!=', DetailsVerified::INVALID);
     }
 
     /**

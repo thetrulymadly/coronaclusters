@@ -23,7 +23,7 @@
                                 @if(!empty($data[$group]))
                                     <th scope="row" data-order="{{ $data[$group] }}">
                                         @if($data['confirmed'] !== 0)
-                                            <a href="{{ config('app.url').\App\Http\Controllers\Helpers::sanitize($parentUrl.'/'.$data[$group]) }}">{{ $data[$group] }}</a>
+                                            <a href="{{ \App\Http\Controllers\Helpers::sanitize($parentUrl.'/'.$data[$group]) }}">{{ $data[$group] }}</a>
                                         @else
                                             {{ $data[$group] }}
                                         @endif

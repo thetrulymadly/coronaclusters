@@ -12,6 +12,8 @@ use Api\Services\CovidDataService;
 use Api\Services\CovidDataServiceImpl;
 use Api\Services\Otp\OtpVerificationService;
 use Api\Services\Otp\V1\OtpVerificationServiceImpl;
+use App\Services\Plasma\PlasmaService;
+use App\Services\Plasma\PlasmaServiceImpl;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(CovidDataService::class, CovidDataServiceImpl::class);
         $this->app->singleton(OtpVerificationService::class, OtpVerificationServiceImpl::class);
+        $this->app->singleton(PlasmaService::class, PlasmaServiceImpl::class);
     }
 }

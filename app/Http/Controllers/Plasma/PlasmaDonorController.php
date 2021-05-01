@@ -13,7 +13,9 @@ use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
 use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
+use App\Services\Plasma\PlasmaService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -30,13 +32,20 @@ class PlasmaDonorController extends Controller
     private $otpService;
 
     /**
-     * PlasmaRequestController constructor.
+     * @var \App\Services\Plasma\PlasmaService
+     */
+    private $plasmaService;
+
+    /**
+     * PlasmaDonorController constructor.
      *
+     * @param \App\Services\Plasma\PlasmaService $plasmaService
      * @param \Api\Services\Otp\OtpVerificationService $otpService
      */
-    public function __construct(OtpVerificationService $otpService)
+    public function __construct(PlasmaService $plasmaService, OtpVerificationService $otpService)
     {
         $this->otpService = $otpService;
+        $this->plasmaService = $plasmaService;
     }
 
     /**
@@ -48,23 +57,22 @@ class PlasmaDonorController extends Controller
      */
     public function index(Request $request)
     {
+        // Check if logged in
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+            if (!empty($loggedInDonor)) {
+                // if logged in: show user's state/city donors by default
+                $state = $loggedInDonor->state;
+                $city = $loggedInDonor->city;
+            }
         }
 
-        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->donor();
-
-        if (!empty($state = $request->state)) {
-            $donors->where('state', $state);
-        } elseif (!empty($loggedInDonor)) {
-            $donors->where('state', $loggedInDonor->state);
-        }
-
-        if (!empty($city = $request->city)) {
-            $donors->where('city', $city);
-        }
-
-        $donors = $donors->latest()->paginate(20);
+        // Get eligible donors
+        $donors = $this->plasmaService->getEligibleDonors(
+            $request->state ?? $state ?? null,
+            $request->city ?? $city ?? null,
+            20
+        );
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -149,5 +157,26 @@ class PlasmaDonorController extends Controller
         toastr()->success('Please check the request list and help someone in need.', 'Donor registered successfully');
 
         return redirect('plasma/requests')->with('verify_otp', true)->with('phone_number', $request->phone_number);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $donors
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getDonorEligibilityQuery(Builder $donors)
+    {
+        // Donor eligibility criteria:
+        // Show donors who got positive more than 28 days days ago
+        $donors->where('date_of_positive', '<=', now()->subDays(28)->toDateString());
+        // Show donors who donated more than 2 weeks ago
+        $donors->where(function ($query) {
+            $query->whereNull('last_donated_on');
+            $query->orWhere('last_donated_on', '<=', now()->subWeeks(2)->toDateString());
+
+            return $query;
+        });
+
+        return $donors;
     }
 }

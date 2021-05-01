@@ -13,6 +13,7 @@ use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
 use App\Http\Controllers\Controller;
 use App\Models\PlasmaDonor;
+use App\Services\Plasma\PlasmaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -30,13 +31,20 @@ class PlasmaRequestController extends Controller
     private $otpService;
 
     /**
+     * @var \App\Services\Plasma\PlasmaService
+     */
+    private $plasmaService;
+
+    /**
      * PlasmaRequestController constructor.
      *
+     * @param \App\Services\Plasma\PlasmaService $plasmaService
      * @param \Api\Services\Otp\OtpVerificationService $otpService
      */
-    public function __construct(OtpVerificationService $otpService)
+    public function __construct(PlasmaService $plasmaService, OtpVerificationService $otpService)
     {
         $this->otpService = $otpService;
+        $this->plasmaService = $plasmaService;
     }
 
     /**
@@ -85,19 +93,22 @@ class PlasmaRequestController extends Controller
      */
     public function create()
     {
+        // Check if logged in
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+            if (!empty($loggedInDonor)) {
+                // if logged in: show user's state/city donors by default
+                $state = $loggedInDonor->state;
+                $city = $loggedInDonor->city;
+            }
         }
 
-        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->donor()->latest()->limit(10)->get();
-
-        if (!empty($loggedInDonor)) {
-            $donors->where('state', $loggedInDonor->state);
-        }
-
-        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
-            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
-        }
+        // Get eligible donors
+        $donors = $this->plasmaService->getEligibleDonors(
+            $state ?? null,
+            $city ?? null,
+            10
+        );
 
         return view('plasma.plasma_form', [
             'breadcrumbs' => $this->getBreadcrumbs(),
