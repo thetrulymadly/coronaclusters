@@ -58,8 +58,8 @@ class PlasmaDonorController extends Controller
     public function index(Request $request)
     {
         // Check if logged in
-        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
-            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+        if (!empty($phoneNumber = Cookie::get('phone_number')) && empty($request->state)  && empty($request->city)) {
+            $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
             if (!empty($loggedInDonor)) {
                 // if logged in: show user's state/city donors by default
                 $state = $loggedInDonor->state;
@@ -94,7 +94,7 @@ class PlasmaDonorController extends Controller
     public function create()
     {
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
-            $loggedInDonor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
+            $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
         }
 
         $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester();
