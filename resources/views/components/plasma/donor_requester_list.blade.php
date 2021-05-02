@@ -108,7 +108,7 @@
                             {{-- Show phone number for request list or if logged in then show donor phone number as well --}}
                             <td>
                                 <div class="d-flex justify-content-start align-content-center">
-                                    @if($donor->mobile_verified)
+                                    @if($donor->mobile_verified || $donor->details_verified === \App\Dictionary\DetailsVerified::VERIFIED)
                                         <div>
                                             <i class="fa fas fa-check-circle text-primary mr-1 verified-number-tooltip"
                                                data-toggle="tooltip" title="Verified Number"></i>

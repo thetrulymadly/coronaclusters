@@ -6,7 +6,7 @@ use Api\Helpers\ResponseHelper;
 use Api\Http\Requests\Otp\SendOtpRequest;
 use Api\Http\Requests\Otp\VerifyOtpRequest;
 use Api\Services\Otp\OtpVerificationService;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 
 class OtpVerificationController extends Controller
 {
@@ -34,12 +34,5 @@ class OtpVerificationController extends Controller
                 false, 'None'))
             ->withCookie(\cookie()->make('phone_number', $request->phone_number, (int)config('app.cookie_expire_minutes'), '/',
                 config('app.cookie_domain'), true, false, false, 'None'));
-    }
-
-    public function logout()
-    {
-        return ResponseHelper::success()
-            ->withCookie(\cookie()->make('logged_in', 'false', (int)config('app.cookie_expire_minutes'), '/', config('app.cookie_domain'), true,
-                false, false, 'None'));
     }
 }

@@ -29,10 +29,12 @@ Route::group(['prefix' => 'geo', 'namespace' => 'Geo'], function () {
 Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
     Route::post('send', 'OtpVerificationController@send');
     Route::post('verify', 'OtpVerificationController@verify');
-    Route::post('logout', 'OtpVerificationController@logout');
 });
 
-Route::group(['prefix' => 'plasma'], function () {
+Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
+    Route::post('logout', 'PlasmaAccountController@logout');
+    Route::post('delete', 'PlasmaAccountController@deleteRegistration');
+
     Route::get('count', 'PlasmaApiController@getCount');
     Route::get('users', 'PlasmaApiController@getActiveUsers');
 });

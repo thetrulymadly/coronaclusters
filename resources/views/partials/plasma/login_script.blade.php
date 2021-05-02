@@ -132,7 +132,7 @@
             $('#logout_modal').modal('hide');
             $.ajax({
                 type: 'POST',
-                url: "{{ config('app.url').'api/otp/logout' }}",
+                url: "{{ config('app.url').'api/plasma/logout' }}",
                 dataType: 'json',
                 async: true,
                 success: function (data) {
@@ -142,9 +142,30 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.log('logout failed');
-                    toastr.error('Could not logout at this moment. Try later', 'Failed');
+                    toastr.error('Could not logout at this moment. Please try later.', 'Logout Failed!');
                 }
             });
         });
+
+        $('#delete_plasma').click(function () {
+            $('#delete_modal').modal('hide');
+            $.ajax({
+                type: 'POST',
+                url: "{{ config('app.url').'api/plasma/delete' }}",
+                dataType: 'json',
+                async: true,
+                success: function (data) {
+                    console.log('deleted');
+                    toastr.success('Your registration is now deleted from the list', 'Deleted!');
+                    setTimeout(function () {
+                        window.location.replace("{{ config('app.url').'plasma' }}")
+                    }, 5000);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log('delete failed');
+                    toastr.error('Could not delete at this moment. Please try later', 'Failed!');
+                }
+            });
+        })
     });
 </script>

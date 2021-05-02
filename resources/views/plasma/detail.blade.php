@@ -6,6 +6,11 @@
 @endphp
 @extends('layouts.home_layout')
 
+@section('styles')
+    <link href="{{ mix_cdn('css/select2.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
     @include('components.breadcrumbs')
 
@@ -78,31 +83,45 @@
                 </table>
             </div>
         </div>
+
+        @if(\Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
+            <div class="card-footer d-flex justify-content-between justify-content-md-end align-content-center align-items-center">
+                <span>{{ __('plasma.manage_request') }}</span>
+                <div class="d-flex justify-content-between align-content-center align-items-center ml-md-3">
+                    <button class="btn btn-sm btn-outline-secondary" id="delete_btn" type="button" data-toggle="modal" data-target="#delete_modal">Delete</button>
+{{--                    <button class="btn btn-sm btn-primary ml-3" type="button">Edit Info</button>--}}
+                </div>
+                <!-- DELETE Modal -->
+                <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="Delete"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ __('plasma.delete_modal_title') }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>{{ __('plasma.delete_confirm') }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-primary" id="delete_plasma">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
-{{--    @if(\Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')--}}
-{{--        <div class="card-footer d-flex justify-content-between align-content-center align-items-center">--}}
-{{--            {{ __('plasma.manage_request') }}--}}
-{{--            <div class="dropdown">--}}
-{{--                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="manage_btn"--}}
-{{--                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                    {{ __('plasma.manage') }}--}}
-{{--                </button>--}}
-{{--                @php--}}
-{{--                    $manageUrl = config('app.url').'plasma/'. ($donor->donor_type === \App\Dictionary\PlasmaDonorType::REQUESTER ? 'request/' : 'donor/'). '/'.$donor->uuid_hex;--}}
-{{--                @endphp--}}
-{{--                <div class="dropdown-menu" aria-labelledby="Manage">--}}
-{{--                    <a class="dropdown-item" href="{{ $manageUrl.'/edit' }}">{{ __('plasma.edit') }}</a>--}}
-{{--                    <a class="dropdown-item" href="{{ $manageUrl.'/delete' }}">{{ __('plasma.delete') }}</a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    @endif--}}
     @include('components.plasma.login_modal')
 @endsection
 
 @section('scrips')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @toastr_render
+    <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
     @include('partials.plasma.login_script')
 @endsection

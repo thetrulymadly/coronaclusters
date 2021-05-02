@@ -20,7 +20,7 @@ class ResponseHelper
         return response()->json([
             'success' => $result,
             'message' => $message === null ? ($result ? 'Success' : 'Failure') : $message,
-        ]);
+        ], $result ? 200 : 422);
     }
 
     /**

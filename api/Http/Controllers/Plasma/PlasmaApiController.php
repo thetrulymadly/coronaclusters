@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2020 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
+ * @copyright Copyright (c) 2021 TrulyMadly Matchmakers Pvt. Ltd. (https://github.com/thetrulymadly)
  *
  * @author    Deekshant Joshi (deekshant.joshi@gmail.com)
- * @since     21 April 2020
+ * @since     02 May 2021
  */
 
-namespace Api\Http\Controllers;
+namespace Api\Http\Controllers\Plasma;
 
 use Api\Http\Requests\PlasmaDataRequest;
 use Api\Http\Resources\PlasmaDataResource;
@@ -25,6 +25,11 @@ class PlasmaApiController extends Controller
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * @param \Api\Services\PlasmaDataServiceImpl $plasmaDataService
+     *
+     * @return array
+     */
     public function getCount(PlasmaDataServiceImpl $plasmaDataService)
     {
         return [
@@ -33,6 +38,12 @@ class PlasmaApiController extends Controller
         ];
     }
 
+    /**
+     * @param \Api\Http\Requests\PlasmaDataRequest $plasmaDataRequest
+     * @param \Api\Services\PlasmaDataServiceImpl $plasmaDataService
+     *
+     * @return array
+     */
     public function getActiveUsers(PlasmaDataRequest $plasmaDataRequest, PlasmaDataServiceImpl $plasmaDataService)
     {
         $type = $plasmaDataRequest->type;
