@@ -17,9 +17,9 @@ use BenSampo\Enum\Enum;
 class DonorStatus extends Enum
 {
 
-    const ACTIVE = 'active';
-
-    const EXPIRED = 'expired';
-
     const PENDING = 'pending';
+
+    const HOLD = 'hold';
+
+    const DONATED = 'donated';
 }

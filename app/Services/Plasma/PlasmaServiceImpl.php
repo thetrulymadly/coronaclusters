@@ -47,8 +47,8 @@ class PlasmaServiceImpl implements PlasmaService
             return $query;
         });
 
-        // Latest donors whose details are not invalid
-        $donors->latest()->donor()->notInvalid();
+        // Latest donors whose details are not invalid and not on hold
+        $donors->latest()->donor()->notOnHold()->notInvalid();
 
         // Send all results if not paginated
         if (!$paginated) {

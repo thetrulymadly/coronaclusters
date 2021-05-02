@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Dictionary\DetailsVerified;
+use App\Dictionary\DonorStatus;
 use App\Dictionary\PlasmaDonorType;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\Geo\City;
@@ -150,6 +151,16 @@ class PlasmaDonor extends Model
     public function scopeNotInvalid($query)
     {
         return $query->where('details_verified', '!=', DetailsVerified::INVALID);
+    }
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeNotOnHold($query)
+    {
+        return $query->where('donor_status', '!=', DonorStatus::HOLD);
     }
 
     /**
