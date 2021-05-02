@@ -53,7 +53,7 @@
                     {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
                 </div>
             @endif
-            @if(!empty($loggedInDonor))
+            @if(!empty($loggedInDonor) && empty(request()->state))
                 <div class="alert alert-info">
                     <span class="text-base"><i class="fa fas fa-location-arrow mr-2"></i>Here is a list of {{ $requesters === true ? __('plasma.requests') : __('plasma.eligible_donors') }} NEAR YOU</span>
                 </div>
