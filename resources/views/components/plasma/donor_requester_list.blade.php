@@ -54,15 +54,15 @@
             {{--                {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}--}}
             {{--                {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Type to search your city']); !!}--}}
             {{--            </div>--}}
-            @if($requesters === false)
-                <div class="alert bg-info-trans">
-                    <span class="text-base">
-                        <i class="fa fas fa-info-circle mr-1"></i>Showing donors strictly as per eligibility criteria mentioned here:
-                        <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}"
-                           class="ml-1"><u>Donor eligibility</u></a>
-                    </span>
-                </div>
-            @endif
+{{--            @if($requesters === false)--}}
+{{--                <div class="alert bg-info-trans">--}}
+{{--                    <span class="text-base">--}}
+{{--                        <i class="fa fas fa-info-circle mr-1"></i>Showing donors strictly as per eligibility criteria mentioned here:--}}
+{{--                        <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}"--}}
+{{--                           class="ml-1"><u>Donor eligibility</u></a>--}}
+{{--                    </span>--}}
+{{--                </div>--}}
+{{--            @endif--}}
             <div class="table-responsive-sm">
                 <table class="table table-striped table-hover table-sm">
                     <thead>
