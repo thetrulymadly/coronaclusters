@@ -33,8 +33,26 @@
                 <div class="card-body">
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
+                        <div class="alert alert-info">
+                            <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}" class="text-base d-flex flex-column">
+                                <span>
+                                    <i class="fa fas fa-info-circle mr-1"></i>
+                                    {{ __('plasma.check_donate_guidelines_alert') }}
+                                </span>
+                                <span class="align-self-end text-sm"><u>{{ __('plasma.tap_to_view') }}</u></span>
+                            </a>
+                        </div>
                         {!! Form::open(['url' => 'plasma/donate', 'id' => 'plasma_donate_form']) !!}
                     @else
+                        <div class="alert alert-info">
+                            <a href="{{ config('app.url').'plasma#plasma-request-guidelines' }}" class="text-base d-flex flex-column">
+                                <span>
+                                    <i class="fa fas fa-info-circle mr-1"></i>
+                                    {{ __('plasma.check_request_guidelines_alert') }}
+                                </span>
+                                <span class="align-self-end text-sm"><u>{{ __('plasma.tap_to_view') }}</u></span>
+                            </a>
+                        </div>
                         {!! Form::open(['url' => 'plasma/request', 'id' => 'plasma_request_form']) !!}
                     @endif
                     <div class="form-group">

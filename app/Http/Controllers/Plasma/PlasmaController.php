@@ -24,9 +24,9 @@ class PlasmaController extends Controller
     {
         $plasmaCount = [
             'requests' => PlasmaDonor::requester()->count(),
-            'requests_delta' => PlasmaDonor::requester()->where('created_at', now()->toDateString())->count(),
+            'requests_delta' => PlasmaDonor::requester()->whereDate('created_at', now()->toDateString())->count(),
             'donors' => PlasmaDonor::donor()->count(),
-            'donors_delta' => PlasmaDonor::donor()->where('created_at', now()->toDateString())->count(),
+            'donors_delta' => PlasmaDonor::donor()->whereDate('created_at', now()->toDateString())->count(),
         ];
 
         return view('plasma.index', [

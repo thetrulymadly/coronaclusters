@@ -17,7 +17,7 @@ interface PlasmaService
      * @param int $limit
      * @param bool $paginated
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|int
      */
     public function getEligibleDonors(?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true);
 }
