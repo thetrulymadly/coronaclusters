@@ -31,3 +31,8 @@ Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
     Route::post('verify', 'OtpVerificationController@verify');
     Route::post('logout', 'OtpVerificationController@logout');
 });
+
+Route::group(['prefix' => 'plasma'], function () {
+    Route::get('count', 'PlasmaApiController@getCount');
+    Route::get('users', 'PlasmaApiController@getActiveUsers');
+});
