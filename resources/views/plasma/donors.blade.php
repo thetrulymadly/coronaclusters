@@ -25,7 +25,6 @@
             @endif
         </div>
     </div>
-    @include('components.plasma.login_modal')
 @endsection
 
 @section('scrips')
@@ -34,6 +33,7 @@
 
     <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
 
+    @include('partials.plasma.login_script')
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -114,6 +114,4 @@
             {{--});--}}
         });
     </script>
-
-    @include('partials.plasma.login_script')
 @endsection

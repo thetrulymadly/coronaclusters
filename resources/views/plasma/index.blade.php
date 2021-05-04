@@ -10,7 +10,7 @@
     @include('components.breadcrumbs')
 
     <div class="alert bg-success-trans mt-0">
-        <strong>Your contribution may help save a life!</strong>
+        <strong class="text-base"><i class="fa fas fa-hand-holding-medical mr-1"></i>Your contribution may help save a life!</strong>
     </div>
 
     <div class="row">

@@ -20,6 +20,7 @@
             <div class="float-right ml-3">
                 @include('components.plasma.login_button')
             </div>
+            @include('components.plasma.login_modal')
         @endif
 
         <div class="float-right d-none d-md-block">
