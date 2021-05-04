@@ -9,6 +9,8 @@
 @section('content')
     @include('components.breadcrumbs')
 
+    @include('components.plasma.manage_request_alert')
+
     <div class="alert bg-success-trans mt-0">
         <strong class="text-base"><i class="fa fas fa-hand-holding-medical mr-1"></i>Your contribution may help save a life!</strong>
     </div>

@@ -125,7 +125,7 @@
                                     @else
                                         <div class="d-block" style="width: 15px"></div>
                                     @endif
-                                    @if($requesters === true || \Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
+                                    @if(\Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
                                         <a href="https://wa.me/{{ '91'.$donor->phone_number }}">
                                             {{ $donor->phone_number }}
                                         </a>

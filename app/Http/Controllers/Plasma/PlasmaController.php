@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Plasma;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\PlasmaDonor;
+use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -22,6 +23,11 @@ class PlasmaController extends Controller
 
     public function index()
     {
+        // Check if logged in
+        if (!empty($phoneNumber = Cookie::get('phone_number'))) {
+            $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
+        }
+
         $plasmaCount = [
             'requests' => PlasmaDonor::requester()->count(),
             'requests_delta' => PlasmaDonor::requester()->whereDate('created_at', now()->toDateString())->count(),
@@ -36,6 +42,7 @@ class PlasmaController extends Controller
             'url' => request()->url(),
             'keywords' => trans('plasma.page.plasma.meta.keywords'),
             'plasmaCount' => $plasmaCount,
+            'loggedInDonor' => $loggedInDonor ?? null,
         ]);
     }
 

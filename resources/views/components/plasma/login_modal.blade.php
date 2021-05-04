@@ -35,7 +35,13 @@
                 <div class="modal-body">
                     <div class="alert bg-danger mb-3 text-light">
                         <i class="fa fas fa-exclamation-triangle mr-1"></i>
-                        <span class="text-base">You can login only if you are either a donor or a requester for plasma</span>
+                        <span class="text-base">
+                            You can login only if you are either a
+                            <a href="{{ config('app.url').'plasma/donate' }}" class="text-light"> <u>donor</u> </a>
+                            or a
+                            <a href="{{ config('app.url').'plasma/request' }}" class="text-light"> <u>requester</u> </a>
+                            for plasma
+                        </span>
                     </div>
                     {!! Form::open(['id' => 'login_form']) !!}
                     {!! Form::label('phone_number_login', 'Enter your phone number to receive OTP') !!}
