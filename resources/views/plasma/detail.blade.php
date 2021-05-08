@@ -85,11 +85,14 @@
         </div>
 
         @if(\Illuminate\Support\Facades\Cookie::get('logged_in') === 'true')
-            <div class="card-footer d-flex justify-content-between justify-content-md-end align-content-center align-items-center">
+            <div
+                class="card-footer d-flex justify-content-between justify-content-md-end align-content-center align-items-center">
                 <span>{{ __('plasma.manage_request') }}</span>
                 <div class="d-flex justify-content-between align-content-center align-items-center ml-md-3">
-                    <button class="btn btn-sm btn-outline-secondary" id="delete_btn" type="button" data-toggle="modal" data-target="#delete_modal">Delete</button>
-{{--                    <button class="btn btn-sm btn-primary ml-3" type="button">Edit Info</button>--}}
+                    <button class="btn btn-sm btn-outline-secondary" id="delete_btn" type="button" data-toggle="modal"
+                            data-target="#delete_modal">Delete
+                    </button>
+                    {{--                    <button class="btn btn-sm btn-primary ml-3" type="button">Edit Info</button>--}}
                 </div>
                 <!-- DELETE Modal -->
                 <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="Delete"
@@ -103,11 +106,35 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>{{ __('plasma.delete_confirm') }}</p>
+                                <p class="delete_confirm_content">{{ __('plasma.delete_confirm') }}</p>
+                                <div class="delete_reason_content d-none">
+                                    <div class="form-group">
+                                        {!! Form::label('delete_reason', 'Please tell us why you want to delete your registration? *') !!}
+                                        {!! Form::select('delete_reason', [], null, ['class' => 'form-control', 'placeholder' => 'Select a reason', 'required']); !!}
+                                        <div class="alert bg-danger-trans mb-3 d-none" id="delete_reason_error">
+                                            <i class="fa fas fa-exclamation mr-1"></i>
+                                            Please select a reason *
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-none delete_reason_other_content">
+                                        {!! Form::label('delete_reason_other', 'Other reason *') !!}
+                                        {!! Form::textarea('delete_reason_other', null, ['class' => 'form-control', 'placeholder' => 'Please type a reason', 'required']) !!}
+                                        <div class="alert bg-danger-trans mb-3 d-none" id="delete_reason_other_error">
+                                            <i class="fa fas fa-exclamation mr-1"></i>
+                                            Please type other reason *
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                                <button type="button" class="btn btn-primary" id="delete_plasma">Yes</button>
+                                <div class="delete_confirm_content">
+                                    <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-primary" id="delete_confirm_btn">Yes</button>
+                                </div>
+                                <div class="delete_reason_content d-none">
+                                    <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal" id="delete_plasma_cancel_btn">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="delete_plasma_btn" disabled>Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,8 @@
     @include('components.plasma.manage_request_alert')
 
     <div class="alert bg-success-trans mt-0">
-        <strong class="text-base"><i class="fa fas fa-hand-holding-medical mr-1"></i>Your contribution may help save a life!</strong>
+        <strong class="text-base"><i class="fa fas fa-hand-holding-medical mr-1"></i>Your contribution may help save a
+            life!</strong>
     </div>
 
     <div class="row">
@@ -59,6 +60,15 @@
         </div>
     </div>
 
+    @if(\Illuminate\Support\Facades\Cookie::get('logged_in') !== 'true')
+        <div class="alert bg-primary-trans d-flex justify-content-center align-content-center align-items-center">
+            <p class="text-base mb-0 mr-3">
+                {{ __('plasma.manage_registration') }}
+            </p>
+            @include('components.plasma.login_button')
+        </div>
+        @include('components.plasma.login_modal')
+    @endif
     <div class="row" id="plasma">
         <div class="col-12 col-lg-6" id="plasma-request-guidelines">
             <div class="card">
@@ -114,7 +124,8 @@
                         <li>You have ever been pregnant.</li>
                         <li>You are diabetic on insulin.</li>
                         <li>Your Blood Pressure is more than 140 and diastolic less than 60 or more than 90.</li>
-                        <li>You have uncontrolled diabetes or hypertension with change in medication in last 28 days.</li>
+                        <li>You have uncontrolled diabetes or hypertension with change in medication in last 28 days.
+                        </li>
                         <li>You are a Cancer Survivor.</li>
                         <li>You have chronic kidney/heart/lung or liver disease.</li>
                     </ul>
@@ -127,4 +138,10 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scrips')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @toastr_render
+    @include('partials.plasma.login_script')
 @endsection

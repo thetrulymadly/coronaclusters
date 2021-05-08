@@ -74,6 +74,8 @@ class PlasmaDonor extends Model
         'date_of_positive',
         'date_of_negative',
         'deleted_by',
+        'delete_reason',
+        'delete_reason_other',
     ];
 
     protected $appends = [

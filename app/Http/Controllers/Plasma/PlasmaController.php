@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Plasma;
 
+use App\Dictionary\DeleteReasons;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\PlasmaDonor;
@@ -76,6 +77,15 @@ class PlasmaController extends Controller
             'name' => $request->uuidHex,
         ];
 
+        $reasons = DeleteReasons::getValues();
+        $deleteReasons = [];
+        foreach ($reasons as $reason) {
+            $deleteReasons[] = [
+                'name' => $reason,
+                'value' => DeleteReasons::getDescription($reason),
+            ];
+        }
+
         return view('plasma.detail', [
             'breadcrumbs' => $breadcrumbs,
             'title' => trans('plasma.page.' . $donor->donor_type . '_detail.title', [
@@ -101,6 +111,7 @@ class PlasmaController extends Controller
                 'blood_group' => $request->bloodGroup,
             ]),
             'donor' => $donor,
+            'deleteReasons' => $deleteReasons ?? null,
         ]);
     }
 }

@@ -9,8 +9,11 @@
 namespace Api\Http\Controllers\Plasma;
 
 use Api\Helpers\ResponseHelper;
+use Api\Http\Requests\Plasma\DeletePlasmaRequest;
 use App\Dictionary\DeletedBy;
 use App\Models\PlasmaDonor;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +36,11 @@ class PlasmaAccountController extends Controller
     }
 
     /**
+     * @param \Api\Http\Requests\Plasma\DeletePlasmaRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteRegistration()
+    public function deleteRegistration(DeletePlasmaRequest $request): JsonResponse
     {
         if (empty($phoneNumber = Cookie::get('phone_number'))) {
             return ResponseHelper::failure();
@@ -43,8 +48,10 @@ class PlasmaAccountController extends Controller
 
         $donor = PlasmaDonor::where('phone_number', $phoneNumber)->first();
 
-        $deleted = DB::transaction(function () use ($donor) {
+        $deleted = DB::transaction(function () use ($donor, $request) {
             $donor->deleted_by = DeletedBy::USER;
+            $donor->delete_reason = $request->delete_reason;
+            $donor->delete_reason_other = $request->delete_reason_other;
             $donor->save();
 
             return $donor->delete();
