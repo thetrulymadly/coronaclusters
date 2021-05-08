@@ -1,6 +1,12 @@
 @php
     $hideLocale = true;
     $requestActive = $donorType === \App\Dictionary\PlasmaDonorType::REQUESTER;
+    $ageMin = 0;
+    $ageMax = 100;
+    if (!$requestActive) {
+        $ageMin = 18;
+        $ageMax = 60;
+    }
     $nav = [
         'current_page' => $requestActive ? 'plasma/request' : 'plasma/donate',
     ];
@@ -34,7 +40,8 @@
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
                         <div class="alert alert-info">
-                            <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}" class="text-base d-flex flex-column">
+                            <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}"
+                               class="text-base d-flex flex-column">
                                 <span>
                                     <i class="fa fas fa-info-circle mr-1"></i>
                                     {{ __('plasma.check_donate_guidelines_alert') }}
@@ -45,7 +52,8 @@
                         {!! Form::open(['url' => 'plasma/donate', 'id' => 'plasma_donate_form']) !!}
                     @else
                         <div class="alert alert-info">
-                            <a href="{{ config('app.url').'plasma#plasma-request-guidelines' }}" class="text-base d-flex flex-column">
+                            <a href="{{ config('app.url').'plasma#plasma-request-guidelines' }}"
+                               class="text-base d-flex flex-column">
                                 <span>
                                     <i class="fa fas fa-info-circle mr-1"></i>
                                     {{ __('plasma.check_request_guidelines_alert') }}
@@ -84,7 +92,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('age', 'Age'.' * ' . '(Should be between 18 to 60)') !!}
-                        {!! Form::number('age', 18, ['class' => 'form-control', 'required', 'placeholder' => 'Enter your Age', 'min'=> 18, 'max' => 60]); !!}
+                        {!! Form::number('age', 18, ['class' => 'form-control', 'required', 'placeholder' => 'Enter your Age', 'min'=> $ageMin, 'max' => $ageMax]); !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('blood_group', 'Blood Group'.' *') !!}
