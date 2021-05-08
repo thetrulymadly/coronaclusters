@@ -52,7 +52,6 @@
                 async: true,
                 data: {
                     phone_number: '{{ session('phone_number') }}',
-                    // otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
                     otp: $('#otp').val()
                 },
                 success: function (data) {
@@ -81,7 +80,6 @@
                     async: true,
                     data: {
                         phone_number: $('#phone_number_login').val(),
-                        // otp: $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val()
                         otp: otp
                     },
                     success: function (data) {
@@ -205,11 +203,11 @@
                 if (otherReason.length === 0) {
                     $('#delete_reason_other_error').removeClass('d-none');
                 } else {
-                    // submit via ajax with other reason
+                    {{-- submit via ajax with other reason --}}
                     deletePlasma(reason, otherReason);
                 }
             } else {
-                // submit via ajax
+                {{-- submit via ajax --}}
                 deletePlasma(reason);
             }
         });
