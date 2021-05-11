@@ -125,9 +125,8 @@ class PlasmaRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return string
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function store(Request $request)
     {
@@ -139,7 +138,7 @@ class PlasmaRequestController extends Controller
 
         $uuidHex = PlasmaHelper::generateHexUUID();
 
-        PlasmaDonor::create([
+        $donor = PlasmaDonor::create([
             'uuid' => PlasmaHelper::generateUUID(PlasmaDonorType::REQUESTER),
             'uuid_hex' => $uuidHex,
             'donor_type' => PlasmaDonorType::REQUESTER,
@@ -154,6 +153,10 @@ class PlasmaRequestController extends Controller
             'hospital' => $request->hospital,
             'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),
         ]);
+
+        if ($request->hasFile('prescription')) {
+            $donor->savePrescription('prescription');
+        }
 
         // Send OTP
         $this->otpService->send($request->phone_number);

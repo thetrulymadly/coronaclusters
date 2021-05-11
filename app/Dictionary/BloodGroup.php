@@ -17,21 +17,55 @@ use BenSampo\Enum\Enum;
 class BloodGroup extends Enum
 {
 
-    const A_PLUS = 'A+';
+    const A_POSITIVE = 'A+';
 
-    const A_MINUS = 'A-';
+    const A_NEGATIVE = 'A-';
 
-    const B_PLUS = 'B+';
+    const B_POSITIVE = 'B+';
 
-    const B_MINUS = 'B-';
+    const B_NEGATIVE = 'B-';
 
-    const O_PLUS = 'O+';
+    const O_POSITIVE = 'O+';
 
-    const O_MINUS = 'O-';
+    const O_NEGATIVE = 'O-';
 
-    const AB_PLUS = 'AB+';
+    const AB_POSITIVE = 'AB+';
 
-    const AB_MINUS = 'AB-';
+    const AB_NEGATIVE = 'AB-';
 
     const DONT_KNOW = 'Don\'t Know';
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function getUrlName(string $value): string
+    {
+        if (strstr($value, '+')) {
+            return str_replace('+', 'positive', $value);
+        }
+        if (strstr($value, '-')) {
+            return str_replace('-', 'negative', $value);
+        }
+
+        return 'plasma';
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    public static function getValueFromUrl(string $url): string
+    {
+        if (strstr($url, 'positive')) {
+            return str_replace('positive', '+', $url);
+        }
+        if (strstr($url, 'negative')) {
+            return str_replace('negative', '-', $url);
+        }
+
+        return 'Don\'t Know';
+    }
 }

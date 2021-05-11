@@ -34,6 +34,7 @@ Route::group(['prefix' => 'otp', 'namespace' => 'Otp'], function () {
 Route::group(['prefix' => 'plasma', 'namespace' => 'Plasma'], function () {
     Route::post('logout', 'PlasmaAccountController@logout');
     Route::post('delete', 'PlasmaAccountController@deleteRegistration');
+    Route::post('registration/{request_id}', 'PlasmaAccountController@updateRegistration');
 
     Route::get('count', 'PlasmaApiController@getCount');
     Route::get('users', 'PlasmaApiController@getActiveUsers');

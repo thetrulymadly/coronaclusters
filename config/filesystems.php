@@ -69,8 +69,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'options' => ['CacheControl' => 'max-age=1296000, no-transform, public',
-                'ACL' => 'public-read', 'visibility' => 'public']
+            'options' => ['CacheControl' => 'max-age=1296000, public']
         ],
 
         'asset-cdn' => [

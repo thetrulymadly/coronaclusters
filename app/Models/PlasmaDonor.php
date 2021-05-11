@@ -17,6 +17,8 @@ use App\Models\Geo\State;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
 /**
  * Class PlasmaDonor
@@ -42,10 +44,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class PlasmaDonor extends Model
+class PlasmaDonor extends Model implements HasMedia
 {
 
-    use SoftDeletes;
+    use SoftDeletes, HasMediaTrait;
 
     /**
      * @var array
@@ -76,15 +78,33 @@ class PlasmaDonor extends Model
         'deleted_by',
         'delete_reason',
         'delete_reason_other',
+        'prescription_verified',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $appends = [
         'url',
+        'prescription_url',
     ];
 
+    /**
+     * @return string
+     */
     public function getUrlAttribute()
     {
         return DonorRequestParamsDTO::makeUrl($this);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrescriptionUrlAttribute()
+    {
+        $prescription = $this->getMedia('plasma-prescription')->last();
+
+        return !empty($prescription) ? $prescription->getFullUrl() : null;
     }
 
     /**
@@ -179,5 +199,17 @@ class PlasmaDonor extends Model
     public function geoCity()
     {
         return $this->hasOne(City::class, 'city_id', 'city');
+    }
+
+    /**
+     * @param string $requestKey
+     *
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\DiskDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig
+     */
+    public function savePrescription(string $requestKey)
+    {
+        $this->addMediaFromRequest($requestKey)->setFileName($this->uuid_hex . '-' . 'prescription')->toMediaCollection('plasma-prescription');
     }
 }

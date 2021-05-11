@@ -10,13 +10,14 @@ namespace Api\Http\Controllers\Plasma;
 
 use Api\Helpers\ResponseHelper;
 use Api\Http\Requests\Plasma\DeletePlasmaRequest;
+use Api\Http\Requests\Plasma\UpdatePlasmaRequest;
 use App\Dictionary\DeletedBy;
 use App\Models\PlasmaDonor;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class PlasmaAccountController
@@ -64,5 +65,32 @@ class PlasmaAccountController extends Controller
         return ResponseHelper::success()
             ->withCookie(\cookie()->forget('logged_in', '/', config('app.cookie_domain')))
             ->withCookie(\cookie()->forget('phone_number', '/', config('app.cookie_domain')));
+    }
+
+    /**
+     * @param string $uuidHex
+     * @param \Api\Http\Requests\Plasma\UpdatePlasmaRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateRegistration(string $uuidHex, UpdatePlasmaRequest $request): JsonResponse
+    {
+        $phoneNumber = Cookie::get('phone_number');
+        $loggedIn = Cookie::get('logged_in');
+
+        if (empty($phoneNumber) || empty($loggedIn) || empty($donor = PlasmaDonor::uuidHex($uuidHex)->first()) || $donor->phone_number !== $phoneNumber) {
+            throw new BadRequestHttpException();
+        }
+
+        $donor->update(array_filter($request->validated()));
+
+        if ($request->hasFile('prescription')) {
+            $donor->savePrescription('prescription');
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Success',
+        ], 301, ['location' => $donor->url]);
     }
 }

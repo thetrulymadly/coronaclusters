@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Plasma\DTO;
 
+use App\Dictionary\BloodGroup;
 use App\Dictionary\PlasmaDonorType;
 use App\Models\PlasmaDonor;
 
@@ -102,6 +103,7 @@ class DonorRequestParamsDTO
     public static function getTitle(self $request)
     {
         $donor = $request->donorType === PlasmaDonorType::REQUESTER ? 'Plasma Request' : 'Plasma Donor';
+
         return trans('plasma.request');
     }
 
@@ -120,7 +122,7 @@ class DonorRequestParamsDTO
             $donor->geoCity->name . '-' .
             $donor->gender . '-' .
             $donor->age . '-' .
-            $donor->blood_group . '-' .
+            BloodGroup::getUrlName($donor->blood_group) . '-' .
             $donor->donor_type;
     }
 
@@ -136,7 +138,7 @@ class DonorRequestParamsDTO
             $donor->geoCity->name === $request->city &&
             $donor->gender === $request->gender &&
             $donor->age === $request->age &&
-            $donor->blood_group === $request->bloodGroup &&
+            $donor->blood_group === BloodGroup::getValueFromUrl($request->bloodGroup) &&
             $donor->donor_type === $request->donorType
         ) {
             return true;

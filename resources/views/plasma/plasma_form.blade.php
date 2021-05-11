@@ -61,7 +61,7 @@
                                 <span class="align-self-end text-sm"><u>{{ __('plasma.tap_to_view') }}</u></span>
                             </a>
                         </div>
-                        {!! Form::open(['url' => 'plasma/request', 'id' => 'plasma_request_form']) !!}
+                        {!! Form::open(['url' => 'plasma/request', 'id' => 'plasma_request_form', 'files' => true]) !!}
                     @endif
                     <div class="form-group">
                         {!! Form::label('name', 'Name'.' *') !!}
@@ -91,7 +91,7 @@
                         {{--                    </label>--}}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('age', 'Age'.' * ' . '(Should be between 18 to 60)') !!}
+                        {!! Form::label('age', 'Age'.' * ' . (!$requestActive ? '(Should be between 18 to 60)' : '')) !!}
                         {!! Form::number('age', 18, ['class' => 'form-control', 'required', 'placeholder' => 'Enter your Age', 'min'=> $ageMin, 'max' => $ageMax]); !!}
                     </div>
                     <div class="form-group">
@@ -130,15 +130,22 @@
                     @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
                         <div class="form-group">
                             {!! Form::label('hospital', 'Hospital') !!}
-                            {!! Form::textarea('hospital', '', ['class' => 'form-control', 'placeholder' => 'Enter the name and address of the hospital']) !!}
+                            {!! Form::textarea('hospital', '', ['class' => 'form-control', 'placeholder' => 'Enter the name and address of the hospital', 'rows' => 3]) !!}
                         </div>
                     @endif
-
 
                     <div class="form-group">
                         {!! Form::label('phone_number', 'Phone Number'.' *') !!}
                         {!! Form::tel('phone_number', '', ['class' => 'form-control', 'required', 'placeholder' => 'Enter your 10-digit phone number', 'maxlength' => 10, 'minlength' => 10, 'onkeypress' => 'return isNumberKey(event)']) !!}
                     </div>
+
+                    @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
+                        <p class="mb-2">Doctor's prescription stating that the patient requires plasma *</p>
+                        <div class="custom-file mb-3">
+                            {!! Form::label('prescription', 'Please upload an image/file', ['class' => 'custom-file-label']) !!}
+                            {!! Form::file('prescription', ['class' => 'custom-file-input', 'placeholder' => 'Please select a file']) !!}
+                        </div>
+                    @endif
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
                         {!! Form::submit('Register to Donate', ['class' => 'btn btn-lg btn-block btn-primary']); !!}

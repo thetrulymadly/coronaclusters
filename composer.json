@@ -38,6 +38,7 @@
         "predis/predis": "^1.1",
         "renatomarinho/laravel-page-speed": "^2.0",
         "silber/page-cache": "^1.0",
+        "spatie/laravel-medialibrary": "^7.0.0",
         "yoeunes/toastr": "^1.2"
     },
     "require-dev": {
