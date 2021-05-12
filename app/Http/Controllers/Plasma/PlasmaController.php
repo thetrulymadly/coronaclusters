@@ -9,9 +9,11 @@
 namespace App\Http\Controllers\Plasma;
 
 use App\Dictionary\DeleteReasons;
+use App\Dictionary\PlasmaDonorType;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
 use App\Models\PlasmaDonor;
+use App\Services\Plasma\PlasmaService;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,6 +23,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class PlasmaController extends Controller
 {
+
+    /**
+     * @var \App\Services\Plasma\PlasmaService
+     */
+    private $plasmaService;
+
+    /**
+     * PlasmaController constructor.
+     *
+     * @param \App\Services\Plasma\PlasmaService $plasmaService
+     */
+    public function __construct(PlasmaService $plasmaService)
+    {
+        $this->plasmaService = $plasmaService;
+    }
 
     public function index()
     {
@@ -86,6 +103,17 @@ class PlasmaController extends Controller
             ];
         }
 
+        if (Cookie::get('logged_in') === 'true' && Cookie::get('phone_number') === $donor->phone_number) {
+            $donors = $this->plasmaService->getEligibleDonors(
+                $donor->donor_type === PlasmaDonorType::REQUESTER ? PlasmaDonorType::DONOR : PlasmaDonorType::REQUESTER,
+                null,
+                $donor->city,
+                20,
+                true,
+                true
+            );
+        }
+
         return view('plasma.detail', [
             'breadcrumbs' => $breadcrumbs,
             'title' => trans('plasma.page.' . $donor->donor_type . '_detail.title', [
@@ -112,6 +140,7 @@ class PlasmaController extends Controller
             ]),
             'donor' => $donor,
             'deleteReasons' => $deleteReasons ?? null,
+            'donors' => $donors ?? null,
         ]);
     }
 }

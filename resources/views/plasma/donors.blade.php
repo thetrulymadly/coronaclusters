@@ -16,6 +16,7 @@
     @include('components.breadcrumbs')
 
     @include('components.plasma.manage_request_alert')
+
     <div class="row" id="plasma_donors">
         <div class="col-12">
             @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)

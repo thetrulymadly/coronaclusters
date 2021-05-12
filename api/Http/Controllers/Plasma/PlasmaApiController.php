@@ -61,12 +61,12 @@ class PlasmaApiController extends Controller
 
         //TODO implement pagination: For future backward compatibility wrap the collection
 
-        $users = $query->with(['GeoCity', 'GeoState'])->get();
+        $users = $query->with(['GeoCity', 'GeoState'])->orderByDesc('created_at')->paginate();
 
         return [
-            'total' => count($users),
-            'count' => count($users),
-            'per_page' => count($users),
+            'recordsTotal' => $users->total(),
+            'recordsFiltered' => $users->total(),
+            'length' => $users->perPage(),
             'data' => PlasmaDataResource::collection($users),
         ];
     }

@@ -12,12 +12,14 @@ interface PlasmaService
 {
 
     /**
+     * @param string $donorType
      * @param string|null $state
      * @param string|null $city
      * @param int $limit
      * @param bool $paginated
+     * @param bool $nearby
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|int
      */
-    public function getEligibleDonors(?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true);
+    public function getEligibleDonors(string $donorType, ?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true, bool $nearby = false);
 }

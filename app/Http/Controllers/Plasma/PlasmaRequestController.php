@@ -98,16 +98,18 @@ class PlasmaRequestController extends Controller
             $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
             if (!empty($loggedInDonor)) {
                 // if logged in: show user's state/city donors by default
-                $state = $loggedInDonor->state;
                 $city = $loggedInDonor->city;
             }
         }
 
         // Get eligible donors
         $donors = $this->plasmaService->getEligibleDonors(
-            $state ?? null,
+            PlasmaDonorType::DONOR,
+            null,
             $city ?? null,
-            10
+            10,
+            false,
+            isset($loggedInDonor)
         );
 
         return view('plasma.plasma_form', [
@@ -163,6 +165,6 @@ class PlasmaRequestController extends Controller
 
         toastr()->success('Here is a list of donors suitable for you.', 'Request registered successfully!');
 
-        return redirect('plasma/donors')->with('verify_otp', true)->with('phone_number', $request->phone_number);
+        return redirect($donor->url)->with('verify_otp', true)->with('phone_number', $request->phone_number);
     }
 }

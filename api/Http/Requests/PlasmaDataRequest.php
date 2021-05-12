@@ -36,10 +36,10 @@ class PlasmaDataRequest extends FormRequest
     {
         return [
             'type' => 'required|in:donor,requester',
-            'blood_groups' => 'required|array',
-            'negative_date' => 'date',
-            'gender' => 'string',
-            'city_id' => 'integer',
+            'blood_groups' => 'nullable|array',
+            'negative_date' => 'nullable|date',
+            'gender' => 'nullable|string',
+            'city_id' => 'nullable|integer',
         ];
     }
 }

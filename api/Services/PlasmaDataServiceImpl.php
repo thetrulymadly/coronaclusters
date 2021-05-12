@@ -91,9 +91,11 @@ class PlasmaDataServiceImpl implements PlasmaDataService
      */
     private function getActiveUsersQuery($type = 'donor', $bloodGroups = [], $gender = null, $negativeDate = null)
     {
-        $query = PlasmaDonor::where('status', 'active')
-            ->where('donor_type', $type)
-            ->whereIn('blood_group', $bloodGroups);
+        $query = PlasmaDonor::where('status', 'active')->where('donor_type', $type);
+
+        if (!empty($bloodGroups)) {
+            $query->whereIn('blood_group', $bloodGroups);
+        }
 
         if ($gender) {
             $query->where('gender', $gender);

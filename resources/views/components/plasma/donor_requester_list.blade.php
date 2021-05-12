@@ -1,36 +1,37 @@
 <div class="card @if($detailed === false) mt-3 mt-lg-0 @endif">
-    <div class="card-header">
-        <h4 class="card-title m-0 float-left">
-            @if($requesters === true)
-                {{ __('plasma.plasma_requests') }}
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title m-0">
+            @if(!empty($loggedInDonor) && empty(request()->state) && empty(request()->city))
+                {{ $requesters ? __('plasma.matching_requests') : __('plasma.matching_donors') }}
             @else
-                {{ __('plasma.plasma_donors') }}
+                {{ $requesters ? __('plasma.plasma_requests') : __('plasma.plasma_donors') }}
             @endif
-        </h4>
+        </h5>
         @if($detailed === false)
-            <div class="float-right d-md-none">
+            <div class="d-md-none">
                 <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">
                     {{ __('plasma.view_all') }}<i class="fa fas fa-arrow-right ml-1"></i>
                 </a>
             </div>
         @endif
 
-        {{-- Login/Logout button--}}
-        @if($detailed === true)
-            <div class="float-right ml-3">
-                @include('components.plasma.login_button')
-            </div>
-            @include('components.plasma.login_modal')
-        @endif
+        @if(!isset($hide_controls) || $hide_controls === false)
+            {{-- Login/Logout button--}}
+            @if($detailed === true)
+                <div class="float-right ml-3">
+                    @include('components.plasma.login_button')
+                </div>
+            @endif
 
-        <div class="float-right d-none d-md-block">
-            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">
-                {{ __('plasma.request') }}<i class="fa fas fa-ambulance ml-1"></i>
-            </a>
-            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">
-                {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
-            </a>
-        </div>
+            <div class="float-right d-none d-md-block">
+                <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">
+                    {{ __('plasma.request') }}<i class="fa fas fa-ambulance ml-1"></i>
+                </a>
+                <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">
+                    {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
+                </a>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         @if($donors->isEmpty())
@@ -41,22 +42,22 @@
                     {{ !empty($loggedInDonor) ? ': '.$loggedInDonor->geoCity->name.', '.$loggedInDonor->geoState->name : '' }}
                     . Please select some other location.</p>
             @endif
-            @if($detailed === true)
+            @if($detailed === true && (!isset($hide_controls) || $hide_controls === false))
                 <div class="form-group form-inline">
                     {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in some other State', ['class' => 'pr-3']) !!}
                     {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
                 </div>
             @endif
         @else
-            @if($detailed === true)
+            @if($detailed === true && (!isset($hide_controls) || $hide_controls === false))
                 <div class="form-group form-inline">
-                    {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in your State', ['class' => 'pr-3']) !!}
+                    {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in a State', ['class' => 'pr-3']) !!}
                     {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
                 </div>
             @endif
             @if(!empty($loggedInDonor) && empty(request()->state))
                 <div class="alert alert-info">
-                    <span class="text-base"><i class="fa fas fa-location-arrow mr-2"></i>Here is a list of {{ $requesters === true ? __('plasma.requests') : __('plasma.eligible_donors') }} NEAR YOU</span>
+                    <span class="text-base"><i class="fa fas fa-location-arrow mr-2"></i>Here is a list of <strong>COMPATIBLE {{ strtoupper($requesters === true ? __('plasma.requests') : __('plasma.donors')) }}</strong> near you</span>
                 </div>
             @endif
             {{--            <div class="form-group form-inline">--}}
@@ -163,19 +164,26 @@
             </div>
         @endif
     </div>
-    <div class="card-footer overflow-auto">
-        @if($detailed === false)
-            <div class="float-right d-none d-md-block">
-                <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">
-                    {{ __('plasma.view_all_requests') }}<i class="fa fas fa-arrow-right ml-1"></i>
-                </a>
+    @if(!isset($hide_controls) || $hide_controls === false)
+        <div class="card-footer overflow-auto">
+            @if($detailed === false)
+                <div class="float-right d-none d-md-block">
+                    <a href="{{ config('app.url'). ($requesters === true ? 'plasma/requests' : 'plasma/donors') }}">
+                        {{ __('plasma.view_all_requests') }}<i class="fa fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            @endif
+            <div class="btn-group btn-block d-md-none">
+                <a href="{{ config('app.url').'plasma/request' }}"
+                   class="btn btn-secondary mr-3">{{ __('plasma.request') }}
+                    <i class="fa fas fa-ambulance ml-1"></i></a>
+                <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }}
+                    <i class="fa fas fa-heartbeat ml-1"></i></a>
             </div>
-        @endif
-        <div class="btn-group btn-block d-md-none">
-            <a href="{{ config('app.url').'plasma/request' }}" class="btn btn-secondary mr-3">{{ __('plasma.request') }}
-                <i class="fa fas fa-ambulance ml-1"></i></a>
-            <a href="{{ config('app.url').'plasma/donate' }}" class="btn btn-primary">{{ __('plasma.donate') }}
-                <i class="fa fas fa-heartbeat ml-1"></i></a>
         </div>
-    </div>
+    @endif
 </div>
+
+@if(!isset($include_login_modal) || $include_login_modal === true)
+    @include('components.plasma.login_modal')
+@endif

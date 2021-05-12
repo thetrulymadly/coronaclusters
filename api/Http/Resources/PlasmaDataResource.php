@@ -21,13 +21,13 @@ class PlasmaDataResource extends JsonResource
     {
         return [
             'location' => $this->geoCity->name . ', ' . $this->geoState->name,
-            'donor' => $this->gender . '/ ' . $this->age,
-            'requester' => $this->gender . '/ ' . $this->age,
+            'donor' => $this->gender . ' / ' . $this->age,
+            'requester' => $this->gender . ' / ' . $this->age,
             'blood_group' => $this->blood_group,
             'phone_number' => $this->phone_number,
             'date_of_negative' => $this->date_of_negative,
             'date_of_positive' => $this->date_of_positive,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->toDateString(),
         ];
     }
 }
