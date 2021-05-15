@@ -59,16 +59,18 @@ class PlasmaDonorController extends Controller
         // Check if logged in
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
-            if (!empty($loggedInDonor)) {
-                // if logged in: show user's state/city donors by default
-                $state = $loggedInDonor->state;
-                $city = $loggedInDonor->city;
-            }
         }
 
-        if (!empty($request->state) || !empty($request->city)) {
+        // Requested state/city will be prioritized over default logged in user's state/city
+        if (!empty($request->city) && $request->city === 'all') {
+            $city = null;
+        } elseif (!empty($request->state) || !empty($request->city)) {
             $state = $request->state;
             $city = $request->city;
+        } elseif (!empty($loggedInDonor)) {
+            // if logged in: show user's state/city donors by default
+            $state = $loggedInDonor->state;
+            $city = $loggedInDonor->city;
         }
 
         // Get eligible donors
@@ -78,7 +80,8 @@ class PlasmaDonorController extends Controller
             $city ?? null,
             20,
             true,
-            isset($loggedInDonor)
+            isset($loggedInDonor) || !empty($city),
+            $request->nearby_radius
         );
 
         return view('plasma.donors', [
@@ -96,9 +99,11 @@ class PlasmaDonorController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
             $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
@@ -115,7 +120,8 @@ class PlasmaDonorController extends Controller
             $city ?? null,
             10,
             false,
-            isset($loggedInDonor)
+            isset($loggedInDonor),
+            $request->nearby_radius
         );
 
         return view('plasma.plasma_form', [

@@ -8,14 +8,13 @@
 
 namespace App\Services\Plasma;
 
+use App\Dictionary\DetailsVerified;
 use App\Dictionary\PlasmaDonorType;
 use App\Models\Geo\City;
 use App\Models\PlasmaDonor;
 
 class PlasmaServiceImpl implements PlasmaService
 {
-
-    const MAX_DISTANCE = 100 * 1000; // 100 km
 
     /**
      * @param string $donorType
@@ -24,17 +23,25 @@ class PlasmaServiceImpl implements PlasmaService
      * @param int $limit
      * @param bool $paginated
      * @param bool $nearby
+     * @param int|null $radiusInKM
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|int
      */
-    public function getEligibleDonors(string $donorType, ?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true, bool $nearby = false)
-    {
+    public function getEligibleDonors(
+        string $donorType,
+        ?string $state = null,
+        ?string $city = null,
+        int $limit = 10,
+        bool $paginated = true,
+        bool $nearby = false,
+        ?int $radiusInKM = null
+    ) {
         // Get donors
-        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->where('donor_type', $donorType)->latest();
+        $donors = PlasmaDonor::with(['geoCity', 'geoState'])->where('donor_type', $donorType);
 
         // Get nearby donors/requests
-        if ($nearby && !empty($city) && empty($state)) {
-            $this->nearbyUsers($donors, $city);
+        if ($nearby && !empty($city)) {
+            $this->nearbyUsers($donors, $city, $radiusInKM);
         } else {
             // State query
             if (!empty($state)) {
@@ -63,6 +70,15 @@ class PlasmaServiceImpl implements PlasmaService
             $donors->notOnHold()->notInvalid();
         }
 
+        if (!empty($city)) {
+            $donors->orderByRaw('IF(city = ?, 1, 2) ASC', [$city]);
+        }
+        $donors->orderByRaw('FIELD(details_verified, "?", "?") ASC', [
+            DetailsVerified::VERIFIED,
+            DetailsVerified::UNVERIFIED,
+        ]);
+        $donors->latest();
+
         // Send all results if not paginated
         if (!$paginated) {
             // Send only count if limit is set to 0
@@ -77,16 +93,27 @@ class PlasmaServiceImpl implements PlasmaService
         return $donors->paginate($limit);
     }
 
-    private function nearbyUsers($query, int $cityId)
+    /**
+     * @param $query
+     * @param int $cityId
+     * @param int|null $radiusInKM
+     *
+     * @return mixed
+     */
+    private function nearbyUsers($query, int $cityId, int $radiusInKM = null)
     {
         $city = City::where('city_id', '=', $cityId)->first();
 
         if (!empty($city)) {
+            $operator = '<=';
+            if (($radiusInKM ?? config('plasma_donor.default_nearby_distance')) > config('plasma_donor.max_nearby_distance')) {
+                $operator = '>';
+            }
             $query->join('geo_city', 'geo_city.city_id', '=', 'plasma_donors.city');
-            $query->whereRaw('round((ST_Distance_Sphere(POINT(?, ?), POINT(geo_city.lon, geo_city.lat)) )) <= ?', [
+            $query->whereRaw('round((ST_Distance_Sphere(POINT(?, ?), POINT(geo_city.lon, geo_city.lat)) )) ' . $operator . ' ?', [
                 $city->lon,
                 $city->lat,
-                self::MAX_DISTANCE,
+                $radiusInKM * 1000, // distance in meters ( km x 1000)
             ]);
         }
 

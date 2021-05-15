@@ -38,7 +38,7 @@ class State extends Model
      */
     public $timestamps = false;
 
-    public const TOP_CITIES = [
+    public const TOP_STATES = [
         2168, // Delhi
         2182, // Maharashtra
         2191, // Tamil Nadu

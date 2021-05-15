@@ -12,6 +12,7 @@ use Api\Services\Otp\OtpVerificationService;
 use App\Dictionary\PlasmaDonorType;
 use App\Helpers\PlasmaHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Plasma\StorePlasmaRequest;
 use App\Models\PlasmaDonor;
 use App\Services\Plasma\PlasmaService;
 use Carbon\Carbon;
@@ -60,19 +61,28 @@ class PlasmaRequestController extends Controller
             $loggedInDonor = PlasmaDonor::with(['geoState', 'geoCity'])->where('phone_number', $phoneNumber)->first();
         }
 
-        $donors = PlasmaDonor::with(['geoState', 'geoCity'])->requester();
-
-        if (!empty($state = $request->state)) {
-            $donors->where('state', $state);
+        // Requested state/city will be prioritized over default logged in user's state/city
+        if (!empty($request->city) && $request->city === 'all') {
+            $city = null;
+        } elseif (!empty($request->state) || !empty($request->city)) {
+            $state = $request->state;
+            $city = $request->city;
         } elseif (!empty($loggedInDonor)) {
-            $donors->where('state', $loggedInDonor->state);
+            // if logged in: show user's state/city donors by default
+            $state = $loggedInDonor->state;
+            $city = $loggedInDonor->city;
         }
 
-        if (!empty($city = $request->city)) {
-            $donors->where('city', $city);
-        }
-
-        $donors = $donors->latest()->paginate(20);
+        // Get eligible requests
+        $donors = $this->plasmaService->getEligibleDonors(
+            PlasmaDonorType::REQUESTER,
+            $state ?? null,
+            $city ?? null,
+            20,
+            true,
+            isset($loggedInDonor),
+            $request->nearby_radius
+        );
 
         return view('plasma.donors', [
             'breadcrumbs' => $this->getBreadcrumbs(),
@@ -89,9 +99,11 @@ class PlasmaRequestController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         // Check if logged in
         if (!empty($phoneNumber = Cookie::get('phone_number'))) {
@@ -109,7 +121,8 @@ class PlasmaRequestController extends Controller
             $city ?? null,
             10,
             false,
-            isset($loggedInDonor)
+            isset($loggedInDonor),
+            $request->nearby_radius
         );
 
         return view('plasma.plasma_form', [
@@ -127,10 +140,12 @@ class PlasmaRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param \App\Http\Requests\Plasma\StorePlasmaRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function store(Request $request)
+    public function store(StorePlasmaRequest $request)
     {
         if (PlasmaDonor::requester()->where('phone_number', $request->phone_number)->exists()) {
             toastr()->success('Please check the donors list for suitable donors', 'Already Registered');
@@ -150,7 +165,7 @@ class PlasmaRequestController extends Controller
             'blood_group' => $request->blood_group,
             'phone_number' => $request->phone_number,
             'city' => $request->city,
-            'district' => $request->district,
+//            'district' => $request->district,
             'state' => $request->state,
             'hospital' => $request->hospital,
             'date_of_positive' => Carbon::parse($request->date_of_positive)->toDateString(),

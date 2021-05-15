@@ -12,6 +12,7 @@ use App\Dictionary\DeleteReasons;
 use App\Dictionary\PlasmaDonorType;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Plasma\DTO\DonorRequestParamsDTO;
+use App\Http\Requests\Plasma\DonorDetailRequest;
 use App\Models\PlasmaDonor;
 use App\Services\Plasma\PlasmaService;
 use Illuminate\Support\Facades\Cookie;
@@ -68,30 +69,31 @@ class PlasmaController extends Controller
      * Display the specified resource.
      *
      * @param string $requestId
+     * @param \App\Http\Requests\Plasma\DonorDetailRequest $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function donorDetail(string $requestId)
+    public function donorDetail(string $requestId, DonorDetailRequest $request)
     {
-        $request = DonorRequestParamsDTO::getParams($requestId);
+        $donorRequest = DonorRequestParamsDTO::getParams($requestId);
 
-        if (empty($request)) {
+        if (empty($donorRequest)) {
             throw new NotFoundHttpException();
         }
 
-        if (empty($donor = PlasmaDonor::with(['geoState', 'geoCity'])->uuidHex($request->uuidHex)->first())) {
+        if (empty($donor = PlasmaDonor::with(['geoState', 'geoCity'])->uuidHex($donorRequest->uuidHex)->first())) {
             throw new NotFoundHttpException();
         }
 
-        if (!DonorRequestParamsDTO::validateParams($donor, $request)) {
+        if (!DonorRequestParamsDTO::validateParams($donor, $donorRequest)) {
             throw new NotFoundHttpException();
         }
 
         $breadcrumbs = $this->getBreadcrumbs();
         array_pop($breadcrumbs);
         $breadcrumbs[] = [
-            'url' => $request->uuidHex,
-            'name' => $request->uuidHex,
+            'url' => $donorRequest->uuidHex,
+            'name' => $donorRequest->uuidHex,
         ];
 
         $reasons = DeleteReasons::getValues();
@@ -110,33 +112,34 @@ class PlasmaController extends Controller
                 $donor->city,
                 20,
                 true,
-                true
+                true,
+                $request->nearby_radius
             );
         }
 
         return view('plasma.detail', [
             'breadcrumbs' => $breadcrumbs,
             'title' => trans('plasma.page.' . $donor->donor_type . '_detail.title', [
-                'state' => $request->state,
-                'city' => $request->city,
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'blood_group' => $request->bloodGroup,
+                'state' => $donorRequest->state,
+                'city' => $donorRequest->city,
+                'gender' => $donorRequest->gender,
+                'age' => $donorRequest->age,
+                'blood_group' => $donorRequest->bloodGroup,
             ]),
             'description' => trans('plasma.page.' . $donor->donor_type . '_detail.meta.description', [
-                'state' => $request->state,
-                'city' => $request->city,
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'blood_group' => $request->bloodGroup,
+                'state' => $donorRequest->state,
+                'city' => $donorRequest->city,
+                'gender' => $donorRequest->gender,
+                'age' => $donorRequest->age,
+                'blood_group' => $donorRequest->bloodGroup,
             ]),
             'url' => request()->url(),
             'keywords' => trans('plasma.page.' . $donor->donor_type . '_detail.meta.keywords', [
-                'state' => $request->state,
-                'city' => $request->city,
-                'gender' => $request->gender,
-                'age' => $request->age,
-                'blood_group' => $request->bloodGroup,
+                'state' => $donorRequest->state,
+                'city' => $donorRequest->city,
+                'gender' => $donorRequest->gender,
+                'age' => $donorRequest->age,
+                'blood_group' => $donorRequest->bloodGroup,
             ]),
             'donor' => $donor,
             'deleteReasons' => $deleteReasons ?? null,

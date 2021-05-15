@@ -1,7 +1,7 @@
 <div class="card @if($detailed === false) mt-3 mt-lg-0 @endif">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title m-0">
-            @if(!empty($loggedInDonor) && empty(request()->state) && empty(request()->city))
+        <h5 class="card-title m-0" @if(isset($hide_controls) && $hide_controls === true) style="width: 70%" @endif>
+            @if(!empty($loggedInDonor) && empty(request()->city))
                 {{ $requesters ? __('plasma.matching_requests') : __('plasma.matching_donors') }}
             @else
                 {{ $requesters ? __('plasma.plasma_requests') : __('plasma.plasma_donors') }}
@@ -31,49 +31,45 @@
                     {{ __('plasma.donate') }}<i class="fa fas fa-heartbeat ml-1"></i>
                 </a>
             </div>
+        @else
+            @php
+                $disabled = (empty($loggedInDonor) && empty(request()->query('city'))) || request()->query('city') === 'all';
+            @endphp
+            <div style="width: 30%">
+                {!! Form::select('nearby_radius', config('plasma_donor.nearby_radius_options'), $disabled ? null : (request()->query('nearby_radius') ?? config('plasma_donor.default_nearby_distance')), ['class' => 'form-control', 'id' => 'nearby_radius_select', 'placeholder' => 'Select distance', $disabled ? 'disabled' : '']); !!}
+            </div>
         @endif
     </div>
     <div class="card-body">
+        @if($detailed === true && (!isset($hide_controls) || $hide_controls === false))
+            <div class="form-row mb-3">
+                <div class="col-8">
+                    {!! Form::label('city', 'Search City *', ['class' => 'pr-3']) !!}
+                    {!! Form::select('city', [], request()->query('city'), ['class' => 'form-control', 'id' => 'select_city_list', 'placeholder' => 'Type to search']); !!}
+                </div>
+                <div class="col-4">
+                    @php
+                        $disabled = (empty($loggedInDonor) && empty(request()->query('city'))) || request()->query('city') === 'all';
+                    @endphp
+                    {!! Form::label('nearby_radius', 'Distance *', ['class' => 'pr-3']) !!}
+                    {!! Form::select('nearby_radius', config('plasma_donor.nearby_radius_options'), $disabled ? null : (request()->query('nearby_radius') ?? config('plasma_donor.default_nearby_distance')), ['class' => 'form-control', 'id' => 'nearby_radius_select', 'placeholder' => 'Select distance', $disabled ? 'disabled' : '']); !!}
+                </div>
+            </div>
+        @endif
         @if($donors->isEmpty())
-            @if($requesters === true)
-                <p>There are no requests for plasma yet. We will update when someone requests</p>
-            @else
-                <p>There are no plasma donors near your location
-                    {{ !empty($loggedInDonor) ? ': '.$loggedInDonor->geoCity->name.', '.$loggedInDonor->geoState->name : '' }}
-                    . Please select some other location.</p>
-            @endif
-            @if($detailed === true && (!isset($hide_controls) || $hide_controls === false))
-                <div class="form-group form-inline">
-                    {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in some other State', ['class' => 'pr-3']) !!}
-                    {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
-                </div>
-            @endif
+            <p>There are no {{ $requesters === true ? __('plasma.plasma_requests') : __('plasma.plasma_donors') }}
+                near your location
+                {{ !empty($loggedInDonor) ? ': '.$loggedInDonor->geoCity->name.', '.$loggedInDonor->geoState->name : '' }}
+                <br>Please select some other location or increase the distance.
+            </p>
         @else
-            @if($detailed === true && (!isset($hide_controls) || $hide_controls === false))
-                <div class="form-group form-inline">
-                    {!! Form::label('state', 'Search '. ($requesters === true ? __('plasma.requests') : __('plasma.donors')) .' in a State', ['class' => 'pr-3']) !!}
-                    {!! Form::select('state', [], (string)request()->query('state'), ['class' => 'form-control select_state', 'placeholder' => 'Type to search your state']); !!}
-                </div>
-            @endif
-            @if(!empty($loggedInDonor) && empty(request()->state))
+            @if(!empty($loggedInDonor) && empty(request()->city))
                 <div class="alert alert-info">
                     <span class="text-base"><i class="fa fas fa-location-arrow mr-2"></i>Here is a list of <strong>COMPATIBLE {{ strtoupper($requesters === true ? __('plasma.requests') : __('plasma.donors')) }}</strong> near you</span>
                 </div>
             @endif
-            {{--            <div class="form-group form-inline">--}}
-            {{--                {!! Form::label('city', 'City'.' *', ['class' => 'pr-3']) !!}--}}
-            {{--                {!! Form::select('city', [], null, ['class' => 'form-control select_city', 'required' => 'required', 'placeholder' => 'Type to search your city']); !!}--}}
-            {{--            </div>--}}
-            {{--            @if($requesters === false)--}}
-            {{--                <div class="alert bg-info-trans">--}}
-            {{--                    <span class="text-base">--}}
-            {{--                        <i class="fa fas fa-info-circle mr-1"></i>Showing donors strictly as per eligibility criteria mentioned here:--}}
-            {{--                        <a href="{{ config('app.url').'plasma#plasma-donation-guidelines' }}"--}}
-            {{--                           class="ml-1"><u>Donor eligibility</u></a>--}}
-            {{--                    </span>--}}
-            {{--                </div>--}}
-            {{--            @endif--}}
-            <div class="table-responsive-sm">
+
+            <div class="table-responsive">
                 <table class="table table-striped table-hover table-sm">
                     <thead>
                     <tr>
@@ -100,6 +96,7 @@
                                 <th>Registered On</th>
                             @endif
                         @endif
+                        <th>Details</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -154,12 +151,15 @@
 
                                 <td>{{ $donor->created_at }}</td>
                             @endif
+                            <td>
+                                <a href="{{ $donor->url }}">{{ $donor->uuid_hex }}</a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
                 @if($detailed === true)
-                    {{ !empty(request()->query('state')) ?  $donors->appends(['state' => request()->query('state')])->onEachSide(1)->links() : $donors->onEachSide(1)->links() }}
+                    {{ $donors->appends(['city' => request()->query('city'), 'nearby_radius' => request()->query('nearby_radius')])->onEachSide(1)->links() }}
                 @endif
             </div>
         @endif

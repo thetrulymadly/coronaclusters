@@ -18,8 +18,9 @@ interface PlasmaService
      * @param int $limit
      * @param bool $paginated
      * @param bool $nearby
+     * @param int|null $radiusInKM
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|int
      */
-    public function getEligibleDonors(string $donorType, ?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true, bool $nearby = false);
+    public function getEligibleDonors(string $donorType, ?string $state = null, ?string $city = null, int $limit = 10, bool $paginated = true, bool $nearby = false, ?int $radiusInKM = null);
 }

@@ -20,8 +20,8 @@ class CitiesResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->city_id,
-            'text' => $this->name,
+            'id' => (string)$this->city_id,
+            'text' => (int)$request->with_state === 1 ? $this->name . ', ' . $this->state->name : $this->name,
         ];
     }
 }

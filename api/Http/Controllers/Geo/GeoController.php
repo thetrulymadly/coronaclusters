@@ -26,17 +26,24 @@ class GeoController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Api\Http\Resources\Geo\StatesResource|\Illuminate\Http\JsonResponse
      */
     public function searchState(Request $request)
     {
         $states = State::ofIndia()->where('name', 'like', '%' . $request->term . '%');
-        if (empty($request->term)) {
-            $states = $states->whereIn('state_id', State::TOP_CITIES);
+
+        if (!empty($request->state_id)) {
+            $states->where('state_id', (int)$request->state_id);
+        } elseif (empty($request->term)) {
+            $states = $states->whereIn('state_id', State::TOP_STATES);
         }
         $states = $states->select(['state_id', 'name'])
             ->orderBy('name', 'asc')
             ->get();
+
+        if (!empty($request->state_id)) {
+            return StatesResource::make($states->first());
+        }
 
         return Response::json([
             'results' => StatesResource::collection($states),
@@ -47,16 +54,30 @@ class GeoController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Api\Http\Resources\Geo\CitiesResource|\Illuminate\Http\JsonResponse
      */
     public function searchCity(Request $request)
     {
-        $cities = City::ofIndia()
-            ->where('state_id', (int)$request->state_id)
-            ->where('name', 'like', '%' . $request->term . '%')
-            ->select(['city_id', 'name'])
+        $cities = City::ofIndia();
+        if ((int)$request->with_state === 1) {
+            $cities->with('state');
+        }
+
+        if (!empty($request->city_id)) {
+            $cities->where('city_id', (int)$request->city_id);
+        } elseif (!empty($request->state_id)) {
+            $cities->where('state_id', (int)$request->state_id);
+        } elseif (empty($request->state_id)) {
+            $cities->whereIn('city_id', City::TOP_CITIES);
+        }
+
+        $cities = $cities->where('name', 'like', '%' . $request->term . '%')
             ->orderBy('name', 'asc')
             ->get();
+
+        if (!empty($request->city_id)) {
+            return CitiesResource::make($cities->first());
+        }
 
         return Response::json([
             'results' => CitiesResource::collection($cities),

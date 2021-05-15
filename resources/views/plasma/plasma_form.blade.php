@@ -141,9 +141,14 @@
 
                     @if($donorType === \App\Dictionary\PlasmaDonorType::REQUESTER)
                         <p class="mb-2">Doctor's prescription stating that the patient requires plasma *</p>
-                        <div class="custom-file mb-3">
-                            {!! Form::label('prescription', 'Please upload an image/file', ['class' => 'custom-file-label']) !!}
-                            {!! Form::file('prescription', ['class' => 'custom-file-input', 'placeholder' => 'Please select a file']) !!}
+                        <div class="mb-3">
+                            <div class="custom-file">
+                                {!! Form::label('prescription', 'Please select an image', ['class' => 'custom-file-label text-truncate']) !!}
+                                {!! Form::file('prescription', ['class' => 'custom-file-input', 'placeholder' => 'Please select an image']) !!}
+                                <div class="alert alert-danger d-none" id="prescription_error">
+                                    Please upload an image less than 5MB in size.
+                                </div>
+                            </div>
                         </div>
                     @endif
 
@@ -179,9 +184,33 @@
     @include('partials.plasma.login_script')
 
     <script src="{{ mix_cdn('js/select2.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
+            bsCustomFileInput.init();
+
+            var prescription = $('#prescription');
+            prescription.change(function () {
+                validatePrescription();
+            });
+            $('#plasma_request_form').submit(function (e) {
+                var valid = validatePrescription();
+                if (!valid) {
+                    e.preventDefault();
+                }
+            });
+
+            function validatePrescription() {
+                var fileExtension = ['jpeg', 'jpg', 'png'];
+                if ($.inArray(prescription.val().split('.').pop().toLowerCase(), fileExtension) === -1 || prescription[0].files[0].size > 5120*1024) {
+                    $('#prescription_error').removeClass('d-none');
+                    return false;
+                } else {
+                    $('#prescription_error').addClass('d-none');
+                    return true;
+                }
+            }
 
             $.ajax({
                 type: 'GET',
@@ -239,6 +268,19 @@
                         }
                     }
                 }
+            });
+
+            $('#nearby_radius_select').select2({
+                placeholder: 'Select',
+                minimumResultsForSearch: Infinity,
+            }).on('select2:select', function (e) {
+                @if(!empty(request()->query('page')))
+                var nearByQueryOperator = "&";
+                @else
+                var nearByQueryOperator = "?";
+                @endif
+                var url = "{{ request()->url() }}" + nearByQueryOperator + 'nearby_radius=' + e.params.data.id;
+                window.location.href = url.replace("&amp;", "&");
             });
         });
     </script>

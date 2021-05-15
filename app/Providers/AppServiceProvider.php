@@ -14,6 +14,7 @@ use Api\Services\Otp\OtpVerificationService;
 use Api\Services\Otp\V1\OtpVerificationServiceImpl;
 use App\Services\Plasma\PlasmaService;
 use App\Services\Plasma\PlasmaServiceImpl;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        JsonResource::withoutWrapping();
         //
     }
 

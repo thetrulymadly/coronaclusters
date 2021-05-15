@@ -4,6 +4,8 @@
     $nav = [
         'current_page' => $requestActive ? 'plasma/requests' : 'plasma/donors',
     ];
+    $cityQuery = request()->query('city');
+    $selectedCity = $cityQuery ?? (!empty($loggedInDonor) ? $loggedInDonor->city : null);
 @endphp
 @extends('layouts.home_layout')
 
@@ -19,10 +21,10 @@
 
     <div class="row" id="plasma_donors">
         <div class="col-12">
-            @if($donorType === \App\Dictionary\PlasmaDonorType::DONOR)
-                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => false, 'detailed' => true])
-            @else
+            @if($requestActive)
                 @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => true, 'detailed' => true])
+            @else
+                @include('components.plasma.donor_requester_list', ['donors' => $donors, 'requesters' => false, 'detailed' => true])
             @endif
         </div>
     </div>
@@ -37,82 +39,46 @@
     @include('partials.plasma.login_script')
     <script type="text/javascript">
         $(document).ready(function () {
+            var select_city = $('#select_city_list');
 
-            @if(!empty(request()->query('state', null)))
+            {{-- Fetch the preselected item, and add to the control --}}
             $.ajax({
                 type: 'GET',
-                url: "{{ config('app.url').'api/geo/state/search' }}",
+                url: "{{ config('app.url').'api/geo/city/search?with_state=1'. (!empty($selectedCity) & $selectedCity !== 'all' ? '&city_id='.$selectedCity : '') }}".replace("&amp;", "&"),
                 dataType: 'json',
                 success: function (data) {
-                    // create the option and append to Select2
-
-                    var option = new Option(data.text, data.id, false, false);
-                    $('.select_state').append(option).trigger('change');
+                    {{-- create the option and append to Select2 --}}
+                    var option = new Option(data.text, data.id, true, true);
+                    select_city.append(option).trigger('change');
                 }
             });
-            @endif
 
-            $('.select_state').select2({
-                placeholder: 'Type to search your state',
-                // minimumInputLength: 3,
+            select_city.select2({
+                placeholder: 'Type to search',
                 maximumInputLength: 20,
+                allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: "{{ config('app.url').'api/geo/state/search' }}",
+                    url: "{{ config('app.url').'api/geo/city/search?with_state=1' }}",
                     dataType: 'json',
                 }
             }).on('select2:select', function (e) {
-
-                // setTimeout(location.reload.bind(location), 100);
-                // similar behavior as an HTTP redirect
-                // window.location.replace("http://stackoverflow.com");
-
-                // similar behavior as clicking on a link
-                window.location.href = "{{ config('app.url').'plasma/'.($donorType === \App\Dictionary\PlasmaDonorType::DONOR ? 'donors' : 'requests').'?state=' }}" + e.params.data.id;
-
-                // clear selected city
-                // $('.select_state').val(null).trigger('change');
-                // Prefill cities of the selected state
-                {{--$('.select_city').select2({--}}
-                {{--    placeholder: 'Type to search your city',--}}
-                {{--    ajax: {--}}
-                {{--        type: 'GET',--}}
-                {{--        url: "{{ config('app.url').'api/geo/city/search' }}",--}}
-                {{--        dataType: 'json',--}}
-                {{--        data: function (params) {--}}
-                {{--            return query = {--}}
-                {{--                term: params.term,--}}
-                {{--                state_id: e.params.data.id--}}
-                {{--            }--}}
-                {{--        },--}}
-                {{--        success: function (data) {--}}
-                {{--            // setTimeout(location.reload.bind(location), 100);--}}
-                {{--            // similar behavior as an HTTP redirect--}}
-                {{--            // window.location.replace("http://stackoverflow.com");--}}
-
-                {{--            // similar behavior as clicking on a link--}}
-                {{--            window.location.href = "{{ config('app.url').'plasma/donors?state=' }}";--}}
-                {{--        }--}}
-                {{--    }--}}
-                {{--});--}}
+                window.location.href = "{{ config('app.url').'plasma/'.($requestActive ? 'requests' : 'donors').'?city=' }}" + e.params.data.id;
+            }).on('select2:clear', function (e) {
+                window.location.href = "{{ config('app.url').'plasma/'.($requestActive ? 'requests' : 'donors').'?city=all' }}";
             });
-            {{--$('.select_city').select2({--}}
-            {{--    placeholder: 'Type to search your city',--}}
-            {{--    minimumInputLength: 3,--}}
-            {{--    maximumInputLength: 20,--}}
-            {{--    ajax: {--}}
-            {{--        type: 'GET',--}}
-            {{--        url: "{{ config('app.url').'api/geo/city/search' }}",--}}
-            {{--        dataType: 'json',--}}
-            {{--        data: function (params) {--}}
-            {{--            var state = $('.select_state').select2('data');--}}
-            {{--            return query = {--}}
-            {{--                term: params.term,--}}
-            {{--                state_id: state.id--}}
-            {{--            }--}}
-            {{--        }--}}
-            {{--    }--}}
-            {{--});--}}
+
+            $('#nearby_radius_select').select2({
+                placeholder: 'Select',
+                minimumResultsForSearch: Infinity,
+            }).on('select2:select', function (e) {
+                @if(!empty($cityQuery))
+                var query = "{{ config('app.url').'plasma/'.($requestActive ? 'requests' : 'donors').'?city='.$cityQuery.'&nearby_radius=' }}" + e.params.data.id;
+                window.location.href = query.replace("&amp;", "&");
+                @else
+                    window.location.href = "{{ config('app.url').'plasma/'.($requestActive ? 'requests' : 'donors').'?nearby_radius=' }}" + e.params.data.id;
+                @endif
+            });
         });
     </script>
 @endsection

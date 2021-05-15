@@ -50,7 +50,8 @@
             {{-- Registration details --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div><h5 class="mb-0 float-left mr-1">{{ $requester ? __('plasma.plasma_request') : __('plasma.plasma_donor') }}</h5>
+                    <div><h5
+                            class="mb-0 float-left mr-1">{{ $requester ? __('plasma.plasma_request') : __('plasma.plasma_donor') }}</h5>
                         <strong>{{ '#'. $donor->uuid_hex }}</strong></div>
                     @include('components.plasma.login_button', ['btn_sm' => true])
                 </div>
@@ -61,16 +62,21 @@
                             <tbody>
                             {{-- Location --}}
                             <tr>
-                                <th>{{ __('plasma.location') }}</th>
+                                <th style="width: 35%">{{ __('plasma.location') }}</th>
                                 <td>{{ $donor->geoCity->name . ', ' . $donor->geoState->name }}</td>
                             </tr>
                             @if($userProfile)
                                 <tr class="edit-form d-none">
+                                    <td></td>
                                     <td>
-                                        {!! Form::select('state', [], $donor->geoState->state_id, ['class' => 'form-control form-control-sm select_state', 'placeholder' => 'Type to search your state']); !!}
-                                    </td>
-                                    <td>
-                                        {!! Form::select('city', [], $donor->geoCity->city_id, ['class' => 'form-control form-control-sm select_city', 'placeholder' => 'Type to search your city']); !!}
+                                        <div class="form-group form-inline mb-2">
+                                            {!! Form::label('state', 'State') !!}
+                                            {!! Form::select('state', [], $donor->geoState->state_id, ['class' => 'form-control form-control-sm', 'id' => 'select_state_detail', 'placeholder' => 'Type to search state']); !!}
+                                        </div>
+                                        <div class="form-group form-inline">
+                                            {!! Form::label('city', 'City') !!}
+                                            {!! Form::select('city', [], $donor->geoCity->city_id, ['class' => 'form-control form-control-sm', 'id' => 'select_city_detail', 'placeholder' => 'Type to search city']); !!}
+                                        </div>
                                     </td>
                                 </tr>
                             @endif
@@ -171,11 +177,15 @@
                                 @if($userProfile && empty($donor->prescription_url))
                                     <tr class="edit-form d-none">
                                         <td colspan="2">
-                                            <strong>(Doctor's prescription stating that the patient requires
-                                                plasma)</strong>
-                                            <div class="custom-file">
-                                                {!! Form::label('prescription', 'Please upload an image/file', ['class' => 'custom-file-label']) !!}
-                                                {!! Form::file('prescription', ['class' => 'custom-file-input', 'placeholder' => 'Please upload an image/file']) !!}
+                                            <strong>(Doctor's prescription stating that the patient requires plasma)</strong>
+                                            <div class="mb-3">
+                                                <div class="custom-file">
+                                                    {!! Form::label('prescription', 'Please select an image', ['class' => 'custom-file-label text-truncate']) !!}
+                                                    {!! Form::file('prescription', ['class' => 'custom-file-input', 'placeholder' => 'Please select an image']) !!}
+                                                    <div class="alert alert-danger d-none" id="prescription_error">
+                                                        Please upload an image less than 5MB in size.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -293,18 +303,61 @@
                 $(this).tooltip('toggle');
             });
 
+            var prescription = $('#prescription');
+            prescription.change(function () {
+                validatePrescription();
+            });
+            $('#plasma_request_form').submit(function (e) {
+                var valid = validatePrescription();
+                if (!valid) {
+                    e.preventDefault();
+                }
+            });
+
+            function validatePrescription() {
+                var fileExtension = ['jpeg', 'jpg', 'png'];
+                if ($.inArray(prescription.val().split('.').pop().toLowerCase(), fileExtension) === -1 || prescription[0].files[0].size > 5120*1024) {
+                    $('#prescription_error').removeClass('d-none');
+                    return false;
+                } else {
+                    $('#prescription_error').addClass('d-none');
+                    return true;
+                }
+            }
+
             {{-- Script related to EDIT functionality --}}
             $('#edit_btn').click(function () {
                 $('.edit-form').removeClass('d-none');
                 $('.manage-controls').addClass('d-none');
                 $('.manage-view').removeClass('bg-light');
+                {{-- Show donor's state --}}
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ config('app.url').'api/geo/state/search?state_id='.$donor->state }}",
+                    dataType: 'json',
+                    success: function (data) {
+                        {{-- create the option and append to Select2 --}}
+                        var option = new Option(data.text, data.id, true, true);
+                        $('#select_state_detail').append(option).trigger('change');
+                    }
+                });
+                {{-- Show donor's city --}}
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ config('app.url').'api/geo/city/search?city_id='.$donor->city }}",
+                    dataType: 'json',
+                    success: function (data) {
+                        {{-- create the option and append to Select2 --}}
+                        var option = new Option(data.text, data.id, true, true);
+                        $('#select_city_detail').append(option).trigger('change');
+                    }
+                });
             });
             $('#edit_cancel_btn').click(function () {
                 $('.edit-form').addClass('d-none');
                 $('.manage-controls').removeClass('d-none');
                 $('.manage-view').addClass('bg-light');
             });
-
             $('#edit_save_btn').click(function () {
                 $('#registration_edit_form').submit();
             });
@@ -407,9 +460,8 @@
             @endif
 
             {{-- Script for state city edit --}}
-            $('.select_state').select2({
-                placeholder: 'Type to search your state',
-                minimumInputLength: 3,
+            $('#select_state_detail').select2({
+                placeholder: 'Type to search state',
                 maximumInputLength: 20,
                 width: '100%',
                 ajax: {
@@ -421,8 +473,8 @@
                 // clear selected city
                 // $('.select_state').val(null).trigger('change');
                 // Prefill cities of the selected state
-                $('.select_city').select2({
-                    placeholder: 'Type to search your city',
+                $('#select_city_detail').select2({
+                    placeholder: 'Type to search city',
                     ajax: {
                         type: 'GET',
                         url: "{{ config('app.url').'api/geo/city/search' }}",
@@ -436,16 +488,17 @@
                     }
                 });
             });
-            $('.select_city').select2({
-                placeholder: 'Type to search your city',
+            $('#select_city_detail').select2({
+                placeholder: 'Type to search city',
                 minimumInputLength: 3,
                 maximumInputLength: 20,
+                width: '100%',
                 ajax: {
                     type: 'GET',
                     url: "{{ config('app.url').'api/geo/city/search' }}",
                     dataType: 'json',
                     data: function (params) {
-                        var state = $('.select_state').select2('data');
+                        var state = $('#select_city_detail').select2('data');
                         return query = {
                             term: params.term,
                             state_id: state.id
@@ -453,6 +506,14 @@
                     }
                 }
             });
+        });
+
+        {{-- Script for Near by radius select --}}
+        $('#nearby_radius_select').select2({
+            placeholder: 'Select',
+            minimumResultsForSearch: Infinity,
+        }).on('select2:select', function (e) {
+            window.location.href = "{{ request()->url() }}" + '?nearby_radius=' + e.params.data.id;
         });
     </script>
 @endsection

@@ -24,10 +24,12 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  */
 class City extends Eloquent
 {
+
     /**
      * @var string
      */
     protected $table = 'geo_city';
+
     /**
      * @var bool
      */
@@ -42,15 +44,31 @@ class City extends Eloquent
         'state_id' => 'int',
         'latitude' => 'float',
         'longitude' => 'float',
-        'tier' => 'int'
+        'tier' => 'int',
+    ];
+
+    public const TOP_CITIES = [
+        16743, // Delhi
+        6457, // Mumbai
+        4062, // Pune
+        4058, // Bengaluru
+        42561, // Kolkata
+        13147, // Chennai
+        4060, // Jaipur
     ];
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function scopeOfIndia($query)
     {
         return $query->where('country_id', 113);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id', 'state_id');
     }
 }
