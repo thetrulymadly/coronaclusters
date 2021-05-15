@@ -470,9 +470,7 @@
                     dataType: 'json',
                 }
             }).on('select2:select', function (e) {
-                // clear selected city
-                // $('.select_state').val(null).trigger('change');
-                // Prefill cities of the selected state
+                {{-- Prefill cities of the selected state --}}
                 $('#select_city_detail').select2({
                     placeholder: 'Type to search city',
                     ajax: {
