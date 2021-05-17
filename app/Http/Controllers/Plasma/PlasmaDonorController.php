@@ -161,7 +161,7 @@ class PlasmaDonorController extends Controller
             'donor_type' => PlasmaDonorType::DONOR,
             'name' => $request->name,
             'gender' => $request->gender,
-            'age' => $request->age,
+            'age' => $request->age > 60 ? 60 : $request->age, // Don't let the age be greater than 60
             'blood_group' => $request->blood_group,
             'phone_number' => $request->phone_number,
             'city' => $request->city,

@@ -203,7 +203,9 @@
 
             function validatePrescription() {
                 var fileExtension = ['jpeg', 'jpg', 'png'];
-                if ($.inArray(prescription.val().split('.').pop().toLowerCase(), fileExtension) === -1 || prescription[0].files[0].size > 5120*1024) {
+                if (prescription.val() === '') {
+                    return true;
+                } else if ($.inArray(prescription.val().split('.').pop().toLowerCase(), fileExtension) === -1 || prescription[0].files[0].size > 5120*1024) {
                     $('#prescription_error').removeClass('d-none');
                     return false;
                 } else {
