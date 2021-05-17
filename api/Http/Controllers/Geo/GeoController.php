@@ -67,13 +67,15 @@ class GeoController extends Controller
             $cities->where('city_id', (int)$request->city_id);
         } elseif (!empty($request->state_id)) {
             $cities->where('state_id', (int)$request->state_id);
-        } elseif (empty($request->state_id)) {
+        } elseif (empty($request->state_id) & empty($request->term)) {
             $cities->whereIn('city_id', City::TOP_CITIES);
         }
 
-        $cities = $cities->where('name', 'like', '%' . $request->term . '%')
-            ->orderBy('name', 'asc')
-            ->get();
+        if (!empty($request->term)) {
+            $cities->where('name', 'like', '%' . $request->term . '%');
+        }
+
+        $cities = $cities->orderBy('name', 'asc')->get();
 
         if (!empty($request->city_id)) {
             return CitiesResource::make($cities->first());
