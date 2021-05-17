@@ -40,7 +40,6 @@ return [
     'footer' =>
         [
             'link_cdc' => 'Centers for Disease Control and Prevention (CDC)',
-            'link_contribute' => 'Contribute to Source Code',
             'link_covid19_org' => 'APIs by Covid19India',
             'link_crowdsource_db' => 'Crowdsourced Patient Database',
             'link_global_tracker' => 'COVID-19 Global Tracker',
@@ -54,7 +53,6 @@ return [
             'title_sources' => 'Sources',
         ],
     'gender' => 'Gender',
-    'help' => 'Help',
     'help_links' => 'Helpful Links',
     'lastest_update_text' => 'Last case recorded in :location - :time_ago',
     'lastupdatedtime' => 'Last Updated',
@@ -73,10 +71,6 @@ return [
     'notes' => 'Notes',
     'page' =>
         [
-            'donate_plasma' =>
-                [
-                    'title' => 'Donate Plasma',
-                ],
             'home' =>
                 [
                     'h1' => 'Corona Update (Live) : :delta_confirmed new cases in :location today',
@@ -87,18 +81,6 @@ return [
                         ],
                     'p1' => ':confirmed people are so far affected in :location by novel coronavirus covid-19. :recovered out of :confirmed have recovered. Sadly, :deaths patients have died due to coronavirus in :location. :active patients are still in hospital and recovering. The last recorded case of coronavirus in :location was :time_ago. Below is the list of sources from which data is aggregated into a crowdsourced patient database along with some note on travel history and suspected contraction from another patient if any. All data is verified by a group of volunteers at Covid19India.org after aggregating from various district and state level health bulletins and other reliable sources.',
                     'title' => 'Covid-19 :location Update (LIVE) : :confirmed Cases and :deaths Deaths from Coronavirus Outbreak in India - Corona Clusters | Historical Data & Daily Charts of Corona Virus in Indian States',
-                ],
-            'plasma_donor' =>
-                [
-                    'title' => 'Plasma Donors',
-                ],
-            'plasma_request' =>
-                [
-                    'title' => 'Plasma Request',
-                ],
-            'request_plasma' =>
-                [
-                    'title' => 'Request Plasma',
                 ],
             'testing' =>
                 [
@@ -119,17 +101,6 @@ return [
         [
             'india' => 'India',
             'some_area' => 'the area',
-        ],
-    'plasma' =>
-        [
-            'donate' => 'Donate',
-            'donate_plasma' => 'Donate Plasma',
-            'plasma_request' =>
-                [
-                    'title' => 'Plasma Requests',
-                ],
-            'request' => 'Request',
-            'request_plasma' => 'Request Plasma',
         ],
     'raw_data' => 'Raw Data',
     'recovered' => 'Recovered',

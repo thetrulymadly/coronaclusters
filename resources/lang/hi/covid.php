@@ -38,7 +38,6 @@ return [
     'footer' =>
         [
             'link_cdc' => 'रोग नियंत्रण और रोकथाम केंद्र (सीडीसी)',
-            'link_contribute' => 'Source Code में योगदान करें',
             'link_covid19_org' => 'कोविद -19 भारत द्वारा एपीआई',
             'link_crowdsource_db' => 'मरीजों के क्राउडसोर्स आँकड़े',
             'link_global_tracker' => 'कोविद -19 वैश्विक खोजी',
@@ -144,7 +143,6 @@ return [
     'timeline_link' => 'पूरी समयरेखा देखें',
     'timeline_title' => 'कोविद -19 :location की समयरेखा',
     'title' => '<span class="text-primary"> कोरोना </span> <span class="text-secondary"> भारत </span> ट्रैकर',
-    'today_totalindividualstested' => 'मरीजों का अब तक परीक्षण किया गया',
     'today_totalpositivecases' => 'सकारात्मक',
     'today_totalpositivecases_percent' => '% सकारात्मक',
     'today_totalsamplestested' => 'नया',
