@@ -161,23 +161,27 @@
                                     <th>{{ __('plasma.prescription') }}</th>
                                     <td>
                                         @if($donor->prescription_verified)
-                                            <i class="fa fas fa-check-circle text-success text-base prescription-tooltip"
-                                               data-toggle="tooltip" title="Prescription Verified"></i>
+                                            <i class="fa fas fa-check-circle text-success text-base prescription-tooltip mr-2"
+                                               data-toggle="tooltip"
+                                               title="{{ __('plasma.prescription_verified') }}"></i> {{ __('plasma.prescription_verified') }}
                                         @elseif(!$donor->prescription_verified && !empty($donor->prescription_url))
-                                            <i class="fa fas fa-exclamation-circle text-warning text-base prescription-tooltip"
-                                               data-toggle="tooltip" title="Verification Pending"></i>
+                                            <i class="fa fas fa-exclamation-circle text-warning text-base prescription-tooltip mr-2"
+                                               data-toggle="tooltip"
+                                               title="{{ __('plasma.prescription_verification_pending') }}"></i> {{ __('plasma.prescription_verification_pending') }}
                                         @elseif($userProfile && empty($donor->prescription_url))
-                                            <strong>Upload prescription to see donors list</strong><br>
+                                            <strong>{{ __('plasma.prescription_upload_text') }}</strong><br>
                                         @else
-                                            <i class="fa fas fa-times-circle text-danger text-base prescription-tooltip"
-                                               data-toggle="tooltip" title="Verified Number"></i>
+                                            <i class="fa fas fa-times-circle text-danger text-base prescription-tooltip mr-2"
+                                               data-toggle="tooltip"
+                                               title="{{ __('plasma.prescription_not_uploaded') }}"></i>{{ __('plasma.prescription_not_uploaded') }}
                                         @endif
                                     </td>
                                 </tr>
                                 @if($userProfile && empty($donor->prescription_url))
                                     <tr class="edit-form d-none">
                                         <td colspan="2">
-                                            <strong>(Doctor's prescription stating that the patient requires plasma)</strong>
+                                            <strong>(Doctor's prescription stating that the patient requires
+                                                plasma)</strong>
                                             <div class="mb-3">
                                                 <div class="custom-file">
                                                     {!! Form::label('prescription', 'Please select an image', ['class' => 'custom-file-label text-truncate']) !!}
