@@ -98,13 +98,7 @@ return [
     'plasma_donors' => 'Plasma Donors',
     'plasma_home' => 'Plasma Info',
     'plasma_request' => 'Plasma Request',
-    'plasma_requests' =>
-        [
-            'meta' =>
-                [
-                    'keywords' => 'convalescent plasma therapy,plasma bank,plasma blood bank,plasma donation requirements,plasma required',
-                ],
-        ],
+    'plasma_requests' => 'Plasma Requests',
     'prescription' => 'Prescription',
     'register_request' => 'Register Request',
     'registered_on' => 'Registered on',
