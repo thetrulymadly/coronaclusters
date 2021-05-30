@@ -31,7 +31,7 @@
     "devDependencies": {
         "@babel/preset-react": "^7.9.4",
         "@fortawesome/fontawesome-free": "^5.13.0",
-        "axios": "^0.19",
+        "axios": "^0.21",
         "bootstrap": "^4.4.0",
         "browser-sync": "^2.26.7",
         "browser-sync-webpack-plugin": "^2.2.2",
